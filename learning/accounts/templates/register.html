@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<main class="main">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6 col-xl-5 mt-5">
+        <div class="card shadow-sm border-0 rounded-4 p-4 p-md-5" style="background-color: var(--surface-color);">
+          <div class="text-center mb-4">
+            <h2 class="fw-bold" style="color: var(--heading-color);">Create Account</h2>
+            <p class="text-muted">Join our learning community</p>
+          </div>
+
+          <form method="post" action="{% url 'register' %}" class="php-email-form">
+            {% csrf_token %}
+            <div class="row">
+                <!-- first name -->
+              <div class="col-md-6 form-group mb-3">
+                <label for="first_name" class="form-label fw-semibold" style="color: var(--heading-color);">First Name</label>
+                <input type="text" class="form-control rounded-3" name="first_name" id="first_name" placeholder="John" required>
+              </div>
+              <!-- lastname  -->
+              <div class="col-md-6 form-group mb-3">
+                <label for="last_name" class="form-label fw-semibold" style="color: var(--heading-color);">Last Name</label>
+                <input type="text" class="form-control rounded-3" name="last_name" id="last_name" placeholder="Doe" required>
+              </div>
+            </div>
+<!-- email -->
+            <div class="form-group mb-3">
+              <label for="email" class="form-label fw-semibold" style="color: var(--heading-color);">Email</label>
+              <input type="email" class="form-control rounded-3" name="email" id="email" placeholder="you@example.com" required>
+            </div>
+<!-- username -->
+            <div class="form-group mb-3">
+              <label for="username" class="form-label fw-semibold" style="color: var(--heading-color);">Username</label>
+              <input type="text" class="form-control rounded-3" name="username" id="username" placeholder="Enter username" required>
+            </div>
+            <!-- phone number -->
+            <div class="form-group mb-3">
+              <label for="phone_number" class="form-label fw-semibold" style="color: var(--heading-color);">Phone Number</label>
+              <input type="number" class="form-control rounded-3" name="phone_number" id="phone_number" placeholder="+1 (555) 123-4567" required>
+<!-- password -->
+            <div class="form-group mb-3">
+              <label for="password1" class="form-label fw-semibold" style="color: var(--heading-color);">Password</label>
+              <input type="password" class="form-control rounded-3" name="password" id="password1" placeholder="Create a password" required>
+            </div>
+<!-- conform password -->
+            <div class="form-group mb-4">
+              <label for="password2" class="form-label fw-semibold" style="color: var(--heading-color);">Confirm Password</label>
+              <input type="password" class="form-control rounded-3" name="password1" id="password2" placeholder="Re-enter password" required>
+            </div>
+
+            <button type="submit" class="btn w-100 py-2 fw-semibold rounded-3" style="background-color: var(--accent-color); color: var(--contrast-color); border: none;">
+              Sign Up
+            </button>
+
+            <p class="text-center mt-4 mb-0 mb-5">
+              Already have an account?
+              <a href="{% url 'signin' %}" class="text-decoration-none fw-semibold" style="color: var(--accent-color);">Sign in</a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}

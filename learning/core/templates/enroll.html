@@ -1,0 +1,536 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<main class="main">
+
+  <!-- Enroll Section -->
+  <section id="enroll" class="enroll section">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row g-4">
+
+        <!-- ===== Form Column ===== -->
+        <div class="col-lg-8 mx-auto col-xl-8">
+          <div class="enrollment-form-wrapper">
+
+            <!-- Header -->
+            <div class="enroll-header" data-aos="fade-up" data-aos-delay="200">
+              <div class="enroll-label">
+                <i class="bi bi-mortarboard-fill me-2"></i>Enrollment
+              </div>
+              <h2>Enroll in Your <span class="enroll-accent">Dream Course</span></h2>
+              <p>Take the next step in your educational journey. Complete the form below to secure your spot in our comprehensive online learning program.</p>
+
+            </div>
+
+            <form class="enrollment-form" data-aos="fade-up" data-aos-delay="300">
+
+              <!-- Personal Info Section -->
+              <div class="ef-section">
+                <div class="ef-section-title">
+                  <div class="ef-section-icon"><i class="bi bi-person-fill"></i></div>
+                  <h5>Personal Information</h5>
+                </div>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="ef-field">
+                      <label class="ef-label" for="firstName">
+                        <i class="bi bi-person me-1"></i>First Name <span class="req">*</span>
+                      </label>
+                      <input type="text" id="firstName" name="firstName" class="ef-input"
+                        placeholder="John" required autocomplete="given-name">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="ef-field">
+                      <label class="ef-label" for="lastName">
+                        <i class="bi bi-person me-1"></i>Last Name <span class="req">*</span>
+                      </label>
+                      <input type="text" id="lastName" name="lastName" class="ef-input"
+                        placeholder="Doe" required autocomplete="family-name">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="ef-field">
+                      <label class="ef-label" for="email">
+                        <i class="bi bi-envelope me-1"></i>Email Address <span class="req">*</span>
+                      </label>
+                      <input type="email" id="email" name="email" class="ef-input"
+                        placeholder="john@example.com" required autocomplete="email">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="ef-field">
+                      <label class="ef-label" for="phone">
+                        <i class="bi bi-telephone me-1"></i>Phone Number
+                      </label>
+                      <input type="tel" id="phone" name="phone" class="ef-input"
+                        placeholder="+1 (555) 000-0000" autocomplete="tel">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Course Selection Section -->
+              <div class="ef-section">
+                <div class="ef-section-title">
+                  <div class="ef-section-icon ef-icon-green"><i class="bi bi-collection-play-fill"></i></div>
+                  <h5>Course Selection</h5>
+                </div>
+                <div class="row g-3">
+                  <div class="col-12">
+                    <div class="ef-field">
+                      <label class="ef-label" for="course">
+                        <i class="bi bi-grid me-1"></i>Select Course <span class="req">*</span>
+                      </label>
+                      <select id="course" name="course" class="ef-input ef-select" required>
+                        <option value="">Choose a course...</option>
+                        <option value="web-development">Full Stack Web Development</option>
+                        <option value="data-science">Data Science &amp; Analytics</option>
+                        <option value="digital-marketing">Digital Marketing Mastery</option>
+                        <option value="ui-ux-design">UI/UX Design Fundamentals</option>
+                        <option value="cybersecurity">Cybersecurity Essentials</option>
+                        <option value="mobile-development">Mobile App Development</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="ef-field">
+                      <label class="ef-label" for="education">
+                        <i class="bi bi-mortarboard me-1"></i>Education Level
+                      </label>
+                      <select id="education" name="education" class="ef-input ef-select">
+                        <option value="">Select education level...</option>
+                        <option value="high-school">High School</option>
+                        <option value="associate">Associate Degree</option>
+                        <option value="bachelor">Bachelor's Degree</option>
+                        <option value="master">Master's Degree</option>
+                        <option value="doctorate">Doctorate</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="ef-field">
+                      <label class="ef-label" for="experience">
+                        <i class="bi bi-bar-chart me-1"></i>Experience Level
+                      </label>
+                      <select id="experience" name="experience" class="ef-input ef-select">
+                        <option value="">Select experience...</option>
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                        <option value="expert">Expert</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Motivation Section -->
+              <div class="ef-section">
+                <div class="ef-section-title">
+                  <div class="ef-section-icon ef-icon-orange"><i class="bi bi-chat-quote-fill"></i></div>
+                  <h5>Your Goals</h5>
+                </div>
+                <div class="ef-field">
+                  <label class="ef-label" for="motivation">
+                    <i class="bi bi-chat-text me-1"></i>What motivates you to take this course?
+                  </label>
+                  <textarea id="motivation" name="motivation" class="ef-input ef-textarea"
+                    rows="4" placeholder="Share your goals and what you hope to achieve..."></textarea>
+                </div>
+              </div>
+
+              <!-- Schedule Section -->
+              <div class="ef-section">
+                <div class="ef-section-title">
+                  <div class="ef-section-icon ef-icon-purple"><i class="bi bi-calendar-check-fill"></i></div>
+                  <h5>Preferred Learning Schedule</h5>
+                </div>
+                <div class="ef-schedule-grid">
+                  <label class="ef-schedule-item" for="weekdays">
+                    <input class="ef-radio" type="radio" name="schedule" id="weekdays" value="weekdays">
+                    <div class="esi-content">
+                      <div class="esi-icon"><i class="bi bi-briefcase-fill"></i></div>
+                      <strong>Weekdays</strong>
+                      <span>Monday - Friday</span>
+                    </div>
+                    <div class="esi-check"><i class="bi bi-check-lg"></i></div>
+                  </label>
+                  <label class="ef-schedule-item" for="weekends">
+                    <input class="ef-radio" type="radio" name="schedule" id="weekends" value="weekends">
+                    <div class="esi-content">
+                      <div class="esi-icon"><i class="bi bi-sun-fill"></i></div>
+                      <strong>Weekends</strong>
+                      <span>Saturday - Sunday</span>
+                    </div>
+                    <div class="esi-check"><i class="bi bi-check-lg"></i></div>
+                  </label>
+                  <label class="ef-schedule-item" for="flexible">
+                    <input class="ef-radio" type="radio" name="schedule" id="flexible" value="flexible" checked>
+                    <div class="esi-content">
+                      <div class="esi-icon"><i class="bi bi-infinity"></i></div>
+                      <strong>Flexible</strong>
+                      <span>Self-paced</span>
+                    </div>
+                    <div class="esi-check"><i class="bi bi-check-lg"></i></div>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Agreement Section -->
+              <div class="ef-section">
+                <div class="ef-agreement">
+                  <label class="ef-check-item" for="terms">
+                    <input class="ef-checkbox" type="checkbox" id="terms" name="terms" required>
+                    <div class="efci-box"></div>
+                    <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a> <span class="req">*</span></span>
+                  </label>
+                  <label class="ef-check-item" for="newsletter">
+                    <input class="ef-checkbox" type="checkbox" id="newsletter" name="newsletter">
+                    <div class="efci-box"></div>
+                    <span>I would like to receive course updates and educational content via email</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Submit -->
+              <div class="ef-submit-section">
+                <button type="submit" class="ef-submit-btn">
+                  <i class="bi bi-rocket-takeoff-fill me-2"></i>Enroll Now
+                </button>
+                <p class="ef-privacy-note">
+                  <i class="bi bi-shield-lock-fill me-1"></i>
+                  Your information is secure and will never be shared with third parties
+                </p>
+              </div>
+
+            </form>
+          </div>
+        </div><!-- End Form Column -->
+
+        <!-- ===== Benefits Sidebar ===== -->
+        <div class="col-lg-4 d-none d-lg-block">
+          <div class="enrollment-benefits" data-aos="fade-left" data-aos-delay="400">
+
+            <div class="eb-header">
+              <div class="enroll-label"><i class="bi bi-stars me-2"></i>Why Choose Us</div>
+              <h3>Benefits of Enrolling</h3>
+            </div>
+
+            <div class="benefit-item eb-item">
+              <div class="benefit-icon eb-icon eb-blue">
+                <i class="bi bi-trophy-fill"></i>
+              </div>
+              <div class="benefit-content">
+                <h4>Expert Instructors</h4>
+                <p>Learn from industry professionals with years of real-world experience</p>
+              </div>
+            </div>
+
+            <div class="benefit-item eb-item">
+              <div class="benefit-icon eb-icon eb-green">
+                <i class="bi bi-clock-fill"></i>
+              </div>
+              <div class="benefit-content">
+                <h4>Flexible Learning</h4>
+                <p>Study at your own pace with 24/7 access to course materials</p>
+              </div>
+            </div>
+
+            <div class="benefit-item eb-item">
+              <div class="benefit-icon eb-icon eb-orange">
+                <i class="bi bi-award-fill"></i>
+              </div>
+              <div class="benefit-content">
+                <h4>Certification</h4>
+                <p>Earn industry-recognized certificates upon course completion</p>
+              </div>
+            </div>
+
+            <div class="benefit-item eb-item">
+              <div class="benefit-icon eb-icon eb-purple">
+                <i class="bi bi-people-fill"></i>
+              </div>
+              <div class="benefit-content">
+                <h4>Community Support</h4>
+                <p>Connect with fellow students and get help when you need it</p>
+              </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="enrollment-stats eb-stats">
+              <div class="stat-item">
+                <span class="stat-number">15,000+</span>
+                <span class="stat-label">Students Enrolled</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">98%</span>
+                <span class="stat-label">Completion Rate</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">4.9/5</span>
+                <span class="stat-label">Average Rating</span>
+              </div>
+            </div>
+
+            <!-- Guarantee Card -->
+            <div class="eb-guarantee">
+              <i class="bi bi-shield-fill-check"></i>
+              <div>
+                <strong>30-Day Money Back Guarantee</strong>
+                <span>Not satisfied? Get a full refund within 30 days</span>
+              </div>
+            </div>
+
+            <!-- Trusted By -->
+            <div class="eb-trusted">
+              <p class="eb-trusted-label">Trusted by students from</p>
+              <div class="eb-logos">
+                <span><i class="bi bi-google me-1"></i>Google</span>
+                <span><i class="bi bi-microsoft me-1"></i>Microsoft</span>
+                <span><i class="bi bi-amazon me-1"></i>Amazon</span>
+              </div>
+            </div>
+
+          </div>
+        </div><!-- End Benefits Column -->
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<style>
+/* ===== Enroll Header ===== */
+.enroll-header { text-align: center; margin-bottom: 36px; }
+.enroll-label {
+  display: inline-flex; align-items: center;
+  background: color-mix(in srgb, var(--accent-color), transparent 88%);
+  color: var(--accent-color); font-size: 13px; font-weight: 600;
+  padding: 6px 18px; border-radius: 20px; margin-bottom: 14px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.enroll-accent { color: var(--accent-color); }
+.enroll-header h2 { font-size: 30px; font-weight: 800; color: var(--heading-color); margin-bottom: 10px; }
+.enroll-header p  { font-size: 15px; color: color-mix(in srgb, var(--default-color), transparent 35%); max-width: 560px; margin: 0 auto 24px; }
+
+/* ===== Progress Steps ===== */
+.enroll-steps {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; flex-wrap: wrap; margin-bottom: 8px;
+}
+.estep {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 500;
+  color: color-mix(in srgb, var(--default-color), transparent 50%);
+}
+.estep-active { color: var(--accent-color); font-weight: 700; }
+.estep-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: color-mix(in srgb, var(--default-color), transparent 88%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.estep-active .estep-num { background: var(--accent-color); color: #fff; }
+.estep-line {
+  width: 60px; height: 2px;
+  background: color-mix(in srgb, var(--default-color), transparent 88%);
+  margin: 0 10px;
+}
+
+/* ===== Form Wrapper ===== */
+.enrollment-form-wrapper {
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
+  border-radius: 24px; padding: 40px 44px;
+  box-shadow: 0 12px 40px color-mix(in srgb, var(--default-color), transparent 90%);
+}
+@media (max-width: 768px) { .enrollment-form-wrapper { padding: 28px 20px; } }
+
+/* ===== Form Sections ===== */
+.ef-section { margin-bottom: 28px; }
+.ef-section-title {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 18px; padding-bottom: 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+}
+.ef-section-title h5 { font-size: 16px; font-weight: 700; color: var(--heading-color); margin: 0; }
+.ef-section-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: color-mix(in srgb, var(--accent-color), transparent 85%);
+  color: var(--accent-color);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.ef-icon-green  { background: color-mix(in srgb, #10b981, transparent 85%) !important; color: #10b981 !important; }
+.ef-icon-orange { background: color-mix(in srgb, #f97316, transparent 85%) !important; color: #f97316 !important; }
+.ef-icon-purple { background: color-mix(in srgb, #8b5cf6, transparent 85%) !important; color: #8b5cf6 !important; }
+
+/* ===== Form Fields ===== */
+.ef-label {
+  display: flex; align-items: center;
+  font-size: 13px; font-weight: 600; color: var(--heading-color);
+  margin-bottom: 7px; text-transform: uppercase; letter-spacing: 0.4px;
+}
+.ef-label i { color: var(--accent-color); }
+.req { color: #dc3545; margin-left: 2px; }
+.ef-input {
+  width: 100%; padding: 12px 16px;
+  border: 2px solid color-mix(in srgb, var(--default-color), transparent 82%);
+  border-radius: 12px; background: var(--background-color);
+  color: var(--default-color); font-size: 14px; transition: all 0.3s;
+}
+.ef-input:focus {
+  outline: none; border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color), transparent 88%);
+}
+.ef-input::placeholder { color: color-mix(in srgb, var(--default-color), transparent 55%); }
+.ef-select {
+  cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat; background-position: right 14px center;
+  background-size: 16px; padding-right: 40px;
+}
+.ef-textarea { resize: vertical; min-height: 120px; }
+
+/* ===== Schedule Grid ===== */
+.ef-schedule-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 576px) { .ef-schedule-grid { grid-template-columns: 1fr; } }
+.ef-schedule-item {
+  position: relative; cursor: pointer;
+  border: 2px solid color-mix(in srgb, var(--default-color), transparent 85%);
+  border-radius: 14px; padding: 16px 14px;
+  text-align: center; transition: all 0.3s;
+  display: block;
+}
+.ef-schedule-item:hover { border-color: var(--accent-color); }
+.ef-radio { position: absolute; opacity: 0; pointer-events: none; }
+.ef-radio:checked + .esi-content { color: var(--accent-color); }
+.ef-schedule-item:has(.ef-radio:checked) {
+  border-color: var(--accent-color);
+  background: color-mix(in srgb, var(--accent-color), transparent 92%);
+}
+.ef-schedule-item:has(.ef-radio:checked) .esi-check { opacity: 1; }
+.esi-content { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.esi-icon { font-size: 22px; color: var(--accent-color); }
+.esi-content strong { font-size: 13px; font-weight: 700; color: var(--heading-color); }
+.esi-content span   { font-size: 11px; color: color-mix(in srgb, var(--default-color), transparent 45%); }
+.esi-check {
+  position: absolute; top: 10px; right: 10px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--accent-color); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; opacity: 0; transition: opacity 0.2s;
+}
+
+/* ===== Agreement ===== */
+.ef-agreement { display: flex; flex-direction: column; gap: 12px; }
+.ef-check-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-radius: 12px; padding: 14px 16px;
+  cursor: pointer; transition: all 0.2s;
+}
+.ef-check-item:hover { border-color: var(--accent-color); }
+.ef-checkbox { display: none; }
+.efci-box {
+  width: 20px; height: 20px; border-radius: 6px;
+  border: 2px solid color-mix(in srgb, var(--default-color), transparent 70%);
+  flex-shrink: 0; margin-top: 1px; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.ef-checkbox:checked + .efci-box {
+  background: var(--accent-color); border-color: var(--accent-color);
+}
+.ef-checkbox:checked + .efci-box::after {
+  content: '\F26E'; font-family: 'bootstrap-icons';
+  color: #fff; font-size: 12px; font-weight: 700;
+}
+.ef-check-item span { font-size: 14px; color: var(--default-color); line-height: 1.5; }
+.ef-check-item a { color: var(--accent-color); font-weight: 600; }
+
+/* ===== Submit ===== */
+.ef-submit-section { text-align: center; padding-top: 8px; }
+.ef-submit-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color), blue 20%));
+  color: #fff; border: none; padding: 16px 48px;
+  border-radius: 25px; font-size: 16px; font-weight: 700;
+  cursor: pointer; transition: all 0.3s; gap: 6px;
+}
+.ef-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px color-mix(in srgb, var(--accent-color), transparent 55%); }
+.ef-privacy-note {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; color: color-mix(in srgb, var(--default-color), transparent 45%);
+  margin-top: 14px;
+}
+.ef-privacy-note i { color: #10b981; }
+
+/* ===== Benefits Sidebar ===== */
+.enrollment-benefits {
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
+  border-radius: 22px; padding: 28px 24px;
+  position: sticky; top: 90px;
+  box-shadow: 0 8px 30px color-mix(in srgb, var(--default-color), transparent 90%);
+}
+.eb-header { margin-bottom: 24px; }
+.eb-header h3 { font-size: 20px; font-weight: 700; color: var(--heading-color); margin: 8px 0 0; }
+.eb-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px; border-radius: 14px; margin-bottom: 10px;
+  background: color-mix(in srgb, var(--accent-color), transparent 96%);
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 88%);
+  transition: all 0.3s;
+}
+.eb-item:hover { transform: translateX(4px); border-color: var(--accent-color); }
+.eb-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.eb-blue   { background: color-mix(in srgb, #3b82f6, transparent 82%); color: #3b82f6; }
+.eb-green  { background: color-mix(in srgb, #10b981, transparent 82%); color: #10b981; }
+.eb-orange { background: color-mix(in srgb, #f97316, transparent 82%); color: #f97316; }
+.eb-purple { background: color-mix(in srgb, #8b5cf6, transparent 82%); color: #8b5cf6; }
+.eb-item h4 { font-size: 14px; font-weight: 700; color: var(--heading-color); margin-bottom: 3px; }
+.eb-item p  { font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 35%); margin: 0; line-height: 1.5; }
+
+/* ===== Stats ===== */
+.eb-stats {
+  background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color), blue 20%));
+  border-radius: 16px; padding: 20px; margin: 16px 0;
+  display: flex; justify-content: space-between;
+}
+.eb-stats .stat-item { text-align: center; flex: 1; }
+.eb-stats .stat-number { display: block; font-size: 18px; font-weight: 800; color: #fff; line-height: 1; }
+.eb-stats .stat-label  { font-size: 10px; color: rgba(255,255,255,0.78); margin-top: 4px; display: block; }
+
+/* ===== Guarantee Card ===== */
+.eb-guarantee {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: color-mix(in srgb, #10b981, transparent 90%);
+  border: 1px solid color-mix(in srgb, #10b981, transparent 70%);
+  border-radius: 14px; padding: 14px 16px; margin-bottom: 14px;
+}
+.eb-guarantee i { font-size: 24px; color: #10b981; flex-shrink: 0; }
+.eb-guarantee strong { display: block; font-size: 13px; font-weight: 700; color: var(--heading-color); margin-bottom: 2px; }
+.eb-guarantee span   { font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 35%); }
+
+/* ===== Trusted By ===== */
+.eb-trusted { text-align: center; }
+.eb-trusted-label { font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 50%); margin-bottom: 8px; }
+.eb-logos { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.eb-logos span {
+  font-size: 12px; font-weight: 600;
+  color: color-mix(in srgb, var(--default-color), transparent 40%);
+  display: flex; align-items: center;
+}
+</style>
+
+{% endblock content %}

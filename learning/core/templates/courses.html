@@ -1,0 +1,825 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<main class="main">
+
+<!-- Courses Section -->
+<section id="courses-2" class="courses-2 section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+    <!-- Page Header -->
+    <div class="courses-page-header" data-aos="fade-up" data-aos-delay="100">
+      <div class="cph-left">
+        <div class="about-label">
+          <i class="bi bi-collection-play me-2"></i>All Courses
+        </div>
+        <h2>Explore Our <span class="highlight-text">Top Courses</span></h2>
+        <p>Discover industry-relevant courses designed by expert instructors</p>
+      </div>
+      <div class="cph-right">
+        <div class="cph-stat">
+          <i class="bi bi-book-fill"></i>
+          <div>
+            <strong>{{ course_detail|length }}+</strong>
+            <span>Courses</span>
+          </div>
+        </div>
+        <div class="cph-stat">
+          <i class="bi bi-people-fill"></i>
+          <div>
+            <strong>50k+</strong>
+            <span>Students</span>
+          </div>
+        </div>
+        <div class="cph-stat">
+          <i class="bi bi-star-fill"></i>
+          <div>
+            <strong>4.9</strong>
+            <span>Rating</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+
+      <!-- ===== Sidebar Filters ===== -->
+      <div class="col-lg-3">
+        <div class="course-filters enhanced-filters" data-aos="fade-right" data-aos-delay="100">
+
+          <!-- Category Filter -->
+          <div class="filter-section">
+            <h5 class="filter-section-title">
+              <i class="bi bi-grid me-2"></i>Category
+            </h5>
+            <div class="filter-options-list">
+              <a href="?" class="filter-option-item {% if not request.GET.category %}active{% endif %}">
+                <span class="foi-dot"></span>
+                <span class="foi-label">All Categories</span>
+              </a>
+              {% for i in category %}
+              <a href="?category={{ i.id }}#course" class="filter-option-item {% if request.GET.category == i.id|stringformat:'s' %}active{% endif %}">
+                <span class="foi-dot"></span>
+                <span class="foi-label">{{ i.title }}</span>
+                <span class="foi-count">{{ i.num_of_courses }}</span>
+              </a>
+              {% empty %}
+              <p class="text-muted small">No categories available.</p>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Level Filter -->
+          <div class="filter-section">
+            <h5 class="filter-section-title">
+              <i class="bi bi-bar-chart me-2"></i>Level
+            </h5>
+            <div class="filter-options-list">
+              {% for i in level %}
+              <a href="?level={{ i.id }}#course" class="filter-option-item {% if request.GET.level == i.id|stringformat:'s' %}active{% endif %}">
+                <span class="foi-dot"></span>
+                <span class="foi-label">{{ i.title }}</span>
+                <span class="foi-count">{{ i.num_of_courses }}</span>
+              </a>
+              {% empty %}
+              <p class="text-muted small">No levels available.</p>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Price Filter -->
+          <div class="filter-section">
+            <h5 class="filter-section-title">
+              <i class="bi bi-tag me-2"></i>Price
+            </h5>
+            <div class="filter-options-list">
+              {% for i in price %}
+              <a href="?price={{ i.id }}#course" class="filter-option-item {% if request.GET.price == i.id|stringformat:'s' %}active{% endif %}">
+                <span class="foi-dot"></span>
+                <span class="foi-label">{{ i.title }}</span>
+                <span class="foi-count">{{ i.num_of_courses }}</span>
+              </a>
+              {% empty %}
+              <p class="text-muted small">No price options available.</p>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Popular Tags -->
+          <div class="filter-section">
+            <h5 class="filter-section-title">
+              <i class="bi bi-hash me-2"></i>Popular Tags
+            </h5>
+            <div class="filter-tags">
+              <span class="ftag">Python</span>
+              <span class="ftag">Django</span>
+              <span class="ftag">React</span>
+              <span class="ftag">Machine Learning</span>
+              <span class="ftag">Web Dev</span>
+              <span class="ftag">Data Science</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ===== Courses Main ===== -->
+      <div class="col-lg-9" id="course">
+
+        <!-- Header Bar -->
+        <div class="courses-toolbar" data-aos="fade-left" data-aos-delay="100">
+          <div class="toolbar-left">
+            <span class="results-count">
+              <strong>{{ course_detail|length }}</strong> courses found
+            </span>
+          </div>
+          <div class="toolbar-right">
+            <form action="{% url 'courses' %}" method="get" >
+            <div class="search-box enhanced-search">
+              <i class="bi bi-search"></i>
+              <input type="text" name="search" placeholder="Search courses...">
+              <button type="submit" style="display: none;">Submit</button>
+            </div>
+            </form>
+            <div class="sort-dropdown enhanced-sort">
+              <i class="bi bi-sort-down-alt"></i>
+              <select>
+                <option>Most Popular</option>
+                <option>Newest First</option>
+                <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
+                <option>Duration: Short to Long</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Courses Grid -->
+        <div class="courses-grid" id="coursesContainer" data-aos="fade-up" data-aos-delay="200">
+          <div class="row g-4">
+            {% for i in course_data %}
+            <div class="col-lg-6 col-md-6">
+              <div class="course-card enhanced-course-card">
+
+                <!-- Image -->
+                <div class="course-image">
+                  <a href="{% url 'course_detail' i.id %}">
+                    <img src="{{ i.course_image.url }}" alt="{{ i.course_title }}" class="img-fluid">
+                  </a>
+                  <div class="course-image-overlay">
+                    <a href="{% url 'course_detail' i.id %}" class="overlay-btn">
+                      <i class="bi bi-eye"></i> Preview
+                    </a>
+                  </div>
+                  <div class="course-price-badge">${{ i.price }}</div>
+                  {% if i.mark_price %}
+                  <div class="course-discount-badge">
+                    {{ i.discount_price }}% OFF
+                  </div>
+                  {% endif %}
+                  <div class="course-wishlist">
+                   <a href="{% url 'add_to_favorites' i.id %}"><i class="bi bi-heart"></i></a>
+                  </div>
+                </div>
+
+                <!-- Content -->
+                <div class="course-content">
+                  <div class="course-meta-row">
+                    <span class="cmeta-category">
+                      <i class="bi bi-grid me-1"></i>{{ i.category }}
+                    </span>
+                    <span class="cmeta-level cmeta-level-{{ i.level|lower }}">
+                      <i class="bi bi-bar-chart me-1"></i>{{ i.level }}
+                    </span>
+                  </div>
+
+                  <h3 class="course-title">
+                    <a href="{% url 'course_detail' i.id %}">{{ i.course_title }}</a>
+                  </h3>
+
+                  <p class="course-desc">{{ i.desc|truncatechars:90 }}</p>
+
+                  <div class="course-info-strip">
+                    <span><i class="bi bi-clock me-1"></i>{{ i.total_duration }}</span>
+                    <span><i class="bi bi-play-circle me-1"></i>24 Lessons</span>
+                    <span><i class="bi bi-people me-1"></i>1.2k Students</span>
+                  </div>
+                 
+
+                  <div class="course-card-footer">
+                    <div class="instructor-info enhanced-instructor">
+                      <img src="{{ i.instructor_image.url }}" alt="Instructor" class="instructor-avatar">
+                      <div>
+                        <span class="instructor-name">{{ i.instructor_name }}</span>
+                        <span class="instructor-role">Instructor</span>
+                      </div>
+                    </div>
+                    <a href="{% url 'course_detail' i.id %}" class="btn-view-course">
+                      View <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+              <div class="no-courses-found">
+                <i class="bi bi-search"></i>
+                <h4>No Courses Found</h4>
+                <p>Try adjusting your filters or search terms</p>
+                <a href="?" class="btn-explore">Clear Filters</a>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-wrapper enhanced-pagination" data-aos="fade-up" data-aos-delay="300">
+          <nav aria-label="Courses pagination">
+            <ul class="pagination justify-content-center">
+
+              {% if course_data.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ course_data.previous_page_number }}">
+                  <i class="bi bi-chevron-left"></i>
+                </a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <span class="page-link"><i class="bi bi-chevron-left"></i></span>
+              </li>
+              {% endif %}
+
+              {% for num in course_data.paginator.page_range %}
+              <li class="page-item {% if course_data.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+              </li>
+              {% endfor %}
+
+              {% if course_data.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ course_data.next_page_number }}">
+                  <i class="bi bi-chevron-right"></i>
+                </a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <span class="page-link"><i class="bi bi-chevron-right"></i></span>
+              </li>
+              {% endif %}
+
+            </ul>
+          </nav>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<style>
+/* ===== Page Header ===== */
+.courses-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.cph-left .about-label {
+  display: inline-flex;
+  align-items: center;
+  background: color-mix(in srgb, var(--accent-color), transparent 88%);
+  color: var(--accent-color);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.cph-left h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--heading-color);
+  margin-bottom: 6px;
+}
+.cph-left p {
+  font-size: 14px;
+  color: color-mix(in srgb, var(--default-color), transparent 40%);
+  margin: 0;
+}
+.highlight-text { color: var(--accent-color); }
+.cph-right {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.cph-stat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-radius: 14px;
+  padding: 12px 18px;
+}
+.cph-stat i { font-size: 22px; color: var(--accent-color); }
+.cph-stat strong { display: block; font-size: 16px; font-weight: 700; color: var(--heading-color); line-height: 1; }
+.cph-stat span   { font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 40%); }
+
+/* ===== Enhanced Filters ===== */
+.enhanced-filters {
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-radius: 20px;
+  padding: 24px;
+  position: sticky;
+  top: 100px;
+}
+.filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+}
+.filter-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--heading-color);
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+.filter-reset {
+  font-size: 12px;
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+.filter-search-box {
+  position: relative;
+  margin-bottom: 20px;
+}
+.filter-search-box i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: color-mix(in srgb, var(--default-color), transparent 50%);
+  font-size: 14px;
+}
+.filter-search-box input {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  border: 1.5px solid color-mix(in srgb, var(--default-color), transparent 85%);
+  border-radius: 10px;
+  background: var(--background-color);
+  color: var(--default-color);
+  font-size: 13px;
+  transition: all 0.3s;
+}
+.filter-search-box input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color), transparent 88%);
+}
+.filter-section { margin-bottom: 20px; }
+.filter-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--heading-color);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+}
+.filter-options-list { display: flex; flex-direction: column; gap: 4px; }
+.filter-option-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--default-color);
+  font-size: 14px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+.filter-option-item:hover {
+  background: color-mix(in srgb, var(--accent-color), transparent 92%);
+  color: var(--accent-color);
+  border-color: color-mix(in srgb, var(--accent-color), transparent 80%);
+}
+.filter-option-item.active {
+  background: color-mix(in srgb, var(--accent-color), transparent 88%);
+  color: var(--accent-color);
+  font-weight: 600;
+  border-color: color-mix(in srgb, var(--accent-color), transparent 70%);
+}
+.foi-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--default-color), transparent 70%);
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.filter-option-item.active .foi-dot,
+.filter-option-item:hover .foi-dot { background: var(--accent-color); }
+.foi-label { flex: 1; }
+.foi-count {
+  font-size: 11px;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--default-color), transparent 88%);
+  color: color-mix(in srgb, var(--default-color), transparent 20%);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+.filter-option-item.active .foi-count {
+  background: color-mix(in srgb, var(--accent-color), transparent 80%);
+  color: var(--accent-color);
+}
+.filter-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.ftag {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 12px;
+  background: color-mix(in srgb, var(--default-color), transparent 92%);
+  color: var(--default-color);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 85%);
+}
+.ftag:hover {
+  background: color-mix(in srgb, var(--accent-color), transparent 88%);
+  color: var(--accent-color);
+  border-color: color-mix(in srgb, var(--accent-color), transparent 70%);
+}
+
+/* ===== Toolbar ===== */
+.courses-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-radius: 14px;
+  padding: 14px 20px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.results-count { font-size: 14px; color: color-mix(in srgb, var(--default-color), transparent 30%); }
+.results-count strong { color: var(--heading-color); }
+.toolbar-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.enhanced-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.enhanced-search i {
+  position: absolute;
+  left: 12px;
+  color: color-mix(in srgb, var(--default-color), transparent 50%);
+  font-size: 14px;
+}
+.enhanced-search input {
+  padding: 9px 14px 9px 36px;
+  border: 1.5px solid color-mix(in srgb, var(--default-color), transparent 85%);
+  border-radius: 10px;
+  background: var(--background-color);
+  color: var(--default-color);
+  font-size: 13px;
+  width: 200px;
+  transition: all 0.3s;
+}
+.enhanced-search input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  width: 240px;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color), transparent 88%);
+}
+.enhanced-sort {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.enhanced-sort i {
+  position: absolute;
+  left: 12px;
+  color: color-mix(in srgb, var(--default-color), transparent 50%);
+  font-size: 14px;
+}
+.enhanced-sort select {
+  padding: 9px 14px 9px 34px;
+  border: 1.5px solid color-mix(in srgb, var(--default-color), transparent 85%);
+  border-radius: 10px;
+  background: var(--background-color);
+  color: var(--default-color);
+  font-size: 13px;
+  cursor: pointer;
+  appearance: none;
+  padding-right: 30px;
+}
+.enhanced-sort select:focus { outline: none; border-color: var(--accent-color); }
+.view-toggle { display: flex; gap: 4px; }
+.vtbtn {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  border: 1.5px solid color-mix(in srgb, var(--default-color), transparent 85%);
+  background: var(--background-color);
+  color: color-mix(in srgb, var(--default-color), transparent 40%);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+.vtbtn.active, .vtbtn:hover {
+  background: var(--accent-color);
+  color: #fff;
+  border-color: var(--accent-color);
+}
+
+/* ===== Enhanced Course Card ===== */
+.enhanced-course-card {
+  background: var(--surface-color);
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.enhanced-course-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px color-mix(in srgb, var(--default-color), transparent 82%);
+  border-color: color-mix(in srgb, var(--accent-color), transparent 70%);
+}
+
+/* Card Image */
+.enhanced-course-card .course-image {
+  position: relative;
+  overflow: hidden;
+  height: 200px;
+}
+.enhanced-course-card .course-image img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.enhanced-course-card:hover .course-image img { transform: scale(1.08); }
+.course-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.enhanced-course-card:hover .course-image-overlay { opacity: 1; }
+.overlay-btn {
+  background: #fff;
+  color: var(--accent-color);
+  padding: 10px 22px;
+  border-radius: 25px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+.overlay-btn:hover { background: var(--accent-color); color: #fff; }
+.course-price-badge {
+  position: absolute;
+  top: 14px; right: 14px;
+  background: var(--accent-color);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color), transparent 55%);
+}
+.course-discount-badge {
+  position: absolute;
+  top: 14px; left: 14px;
+  background: #dc3545;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.course-wishlist {
+  position: absolute;
+  bottom: 14px; right: 14px;
+  width: 34px; height: 34px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #dc3545;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  opacity: 0;
+}
+.enhanced-course-card:hover .course-wishlist { opacity: 1; }
+.course-wishlist:hover { background: #dc3545; color: #fff; }
+
+/* Card Content */
+.enhanced-course-card .course-content {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.course-meta-row { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.cmeta-category {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--accent-color), transparent 88%);
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  display: flex; align-items: center;
+}
+.cmeta-level {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 12px;
+  display: flex; align-items: center;
+}
+.cmeta-level-beginner { background: color-mix(in srgb, #10b981, transparent 85%); color: #10b981; }
+.cmeta-level-intermediate { background: color-mix(in srgb, #f59e0b, transparent 85%); color: #f59e0b; }
+.cmeta-level-advanced { background: color-mix(in srgb, #dc3545, transparent 85%); color: #dc3545; }
+.cmeta-level-all { background: color-mix(in srgb, #8b5cf6, transparent 85%); color: #8b5cf6; }
+
+.course-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--heading-color);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.course-title a { color: inherit; text-decoration: none; transition: color 0.2s; }
+.course-title a:hover { color: var(--accent-color); }
+.course-desc {
+  font-size: 13px;
+  color: color-mix(in srgb, var(--default-color), transparent 30%);
+  line-height: 1.6;
+  margin-bottom: 14px;
+  flex-grow: 0;
+}
+.course-info-strip {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  background: color-mix(in srgb, var(--background-color), transparent 30%);
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
+}
+.course-info-strip span {
+  display: flex; align-items: center;
+  font-size: 12px;
+  color: color-mix(in srgb, var(--default-color), transparent 35%);
+  font-weight: 500;
+}
+.course-info-strip i { color: var(--accent-color); }
+.course-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.star-row { display: flex; gap: 2px; }
+.star-row i { font-size: 13px; color: #ffc107; }
+.rating-val { font-size: 14px; font-weight: 700; color: var(--heading-color); }
+.rating-count { font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 45%); }
+
+/* Card Footer */
+.course-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
+  margin-top: auto;
+}
+.enhanced-instructor { display: flex; align-items: center; gap: 10px; }
+.enhanced-instructor .instructor-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid color-mix(in srgb, var(--accent-color), transparent 70%);
+}
+.enhanced-instructor .instructor-name {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--heading-color);
+  line-height: 1.2;
+}
+.enhanced-instructor .instructor-role {
+  display: block;
+  font-size: 11px;
+  color: color-mix(in srgb, var(--default-color), transparent 45%);
+}
+.btn-view-course {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent-color);
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.btn-view-course:hover {
+  background: color-mix(in srgb, var(--accent-color), black 12%);
+  transform: translateX(3px);
+  color: #fff;
+}
+
+/* ===== No Courses Found ===== */
+.no-courses-found {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--surface-color);
+  border-radius: 20px;
+  border: 2px dashed color-mix(in srgb, var(--default-color), transparent 80%);
+}
+.no-courses-found i { font-size: 48px; color: color-mix(in srgb, var(--default-color), transparent 60%); margin-bottom: 16px; display: block; }
+.no-courses-found h4 { font-size: 20px; font-weight: 600; color: var(--heading-color); margin-bottom: 8px; }
+.no-courses-found p  { font-size: 14px; color: color-mix(in srgb, var(--default-color), transparent 40%); margin-bottom: 20px; }
+.btn-explore {
+  display: inline-flex; align-items: center;
+  background: var(--accent-color); color: #fff;
+  padding: 10px 24px; border-radius: 20px;
+  font-size: 14px; font-weight: 600;
+  text-decoration: none; transition: all 0.3s;
+}
+.btn-explore:hover { background: color-mix(in srgb, var(--accent-color), black 12%); color: #fff; }
+
+/* ===== Enhanced Pagination ===== */
+.enhanced-pagination { margin-top: 36px; }
+.enhanced-pagination .page-link {
+  border-radius: 10px !important;
+  margin: 0 3px;
+  padding: 10px 16px;
+  font-weight: 500;
+  border: 1.5px solid color-mix(in srgb, var(--default-color), transparent 85%);
+  color: var(--default-color);
+  background: var(--surface-color);
+  transition: all 0.2s;
+}
+.enhanced-pagination .page-item.active .page-link {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #fff;
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent-color), transparent 60%);
+}
+.enhanced-pagination .page-link:hover:not(.active) {
+  background: color-mix(in srgb, var(--accent-color), transparent 88%);
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .courses-page-header { flex-direction: column; }
+  .cph-right { justify-content: flex-start; }
+  .courses-toolbar { flex-direction: column; align-items: flex-start; }
+  .toolbar-right { width: 100%; flex-wrap: wrap; }
+  .enhanced-search input { width: 100%; }
+  .enhanced-sort select { width: 100%; }
+  .enhanced-filters { position: static; margin-bottom: 20px; }
+}
+</style>
+
+{% endblock content %}

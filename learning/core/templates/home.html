@@ -1,0 +1,442 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<main class="main">
+
+  <!-- Hero Section -->
+  <section id="courses-hero" class="courses-hero section light-background">
+
+    <div class="hero-content">
+      <div class="container">
+        <div class="row align-items-center g-5">
+
+          <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+            <div class="hero-text">
+
+              <div class="hero-top-badge">
+                <i class="bi bi-stars me-2"></i>#1 Rated Online Learning Platform
+              </div>
+
+              <h1>Transform Your Future with <span class="hero-accent">Expert-Led</span> Online Courses</h1>
+
+              <p>Discover thousands of high-quality courses designed by industry professionals. Learn at your own pace, gain in-demand skills, and advance your career from anywhere in the world.</p>
+
+              <div class="hero-stats">
+                <div class="stat-item">
+                  <span class="number purecounter" data-purecounter-start="0" data-purecounter-end="50000" data-purecounter-duration="2">50000</span>
+                  <span class="label">Students Enrolled</span>
+                </div>
+                <div class="hero-stat-div"></div>
+                <div class="stat-item">
+                  <span class="number purecounter" data-purecounter-start="0" data-purecounter-end="1200" data-purecounter-duration="2">1200</span>
+                  <span class="label">Expert Courses</span>
+                </div>
+                <div class="hero-stat-div"></div>
+                <div class="stat-item">
+                  <span class="number purecounter" data-purecounter-start="0" data-purecounter-end="98" data-purecounter-duration="2">98</span>
+                  <span class="label">Success Rate %</span>
+                </div>
+              </div>
+
+              <div class="hero-buttons">
+                <a href="{% url 'courses' %}" class="hbtn-primary">
+                  <i class="bi bi-collection-play me-2"></i>Browse Courses
+                </a>
+                <a href="{% url 'about' %}" class="hbtn-outline">
+                  <i class="bi bi-play-circle me-2"></i>Learn More
+                </a>
+              </div>
+
+              <div class="hero-features">
+                <div class="feature">
+                  <i class="bi bi-shield-check"></i>
+                  <span>Certified Programs</span>
+                </div>
+                <div class="feature">
+                  <i class="bi bi-infinity"></i>
+                  <span>Lifetime Access</span>
+                </div>
+                <div class="feature">
+                  <i class="bi bi-people"></i>
+                  <span>Expert Instructors</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+            <div class="hero-image">
+              <div class="main-image">
+                <img src="{% static 'image/education/courses-13.webp' %}" alt="Online Learning" class="img-fluid">
+              </div>
+              <div class="floating-cards">
+                <div class="course-card" data-aos="fade-right" data-aos-delay="400">
+                  <div class="card-icon"><i class="bi bi-code-slash"></i></div>
+                  <div class="card-content">
+                    <h6>Web Development</h6>
+                    <span>2,450 Students</span>
+                  </div>
+                </div>
+                <div class="course-card" data-aos="fade-left" data-aos-delay="500">
+                  <div class="card-icon"><i class="bi bi-palette"></i></div>
+                  <div class="card-content">
+                    <h6>UI/UX Design</h6>
+                    <span>1,890 Students</span>
+                  </div>
+                </div>
+                <div class="course-card" data-aos="fade-up" data-aos-delay="600">
+                  <div class="card-icon"><i class="bi bi-graph-up"></i></div>
+                  <div class="card-content">
+                    <h6>Digital Marketing</h6>
+                    <span>3,200 Students</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-background">
+      <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
+
+  </section><!-- End Hero -->
+
+  <!-- Featured Courses Section -->
+  <section id="featured-courses" class="featured-courses section">
+
+    <div class="container" data-aos="fade-up">
+      <div class="featured-header">
+        <div class="fh-left">
+          <div class="fh-label"><i class="bi bi-fire me-2"></i>Featured</div>
+          <h2>Our Most Popular <span class="hero-accent">Courses</span></h2>
+          <p>Hand-picked courses from our top instructors</p>
+        </div>
+        <a href="{% url 'courses' %}" class="fh-link">
+          View All <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="row gy-4">
+        {% for i in feature %}
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="course-card featured-course-card">
+            <div class="course-image">
+              <a href="{% url 'course_detail' i.id %}">
+                <img src="{{ i.course_image.url }}" alt="{{ i.course_title }}" class="img-fluid">
+              </a>
+              <div class="fcc-overlay">
+                <a href="{% url 'course_detail' i.id %}" class="fcc-preview">
+                  <i class="bi bi-eye me-1"></i>Preview
+                </a>
+              </div>
+              <div class="price-badge">${{ i.price }}</div>
+              <div class="fcc-wishlist"><i class="bi bi-heart"></i></div>
+            </div>
+            <div class="course-content">
+              <div class="course-meta">
+                <span class="level fcc-level"><i class="bi bi-bar-chart me-1"></i>{{ i.level }}</span>
+                <span class="duration"><i class="bi bi-clock me-1"></i>{{ i.total_duration }}</span>
+              </div>
+              <h3><a href="{% url 'course_detail' i.id %}">{{ i.course_title }}</a></h3>
+              <p>{{ i.desc|truncatechars:90 }}</p>
+              <div class="instructor">
+                <img src="{{ i.instructor_image.url }}" alt="Instructor" class="instructor-img">
+                <div class="instructor-info">
+                  <h6>{{ i.instructor_name }}</h6>
+                  <small>Instructor</small>
+                </div>
+                <a href="{% url 'course_detail' i.id %}" class="btn-course ms-auto">
+                  View <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="more-courses text-center mt-5" data-aos="fade-up" data-aos-delay="400">
+        <a href="{% url 'courses' %}" class="btn-more">
+          <i class="bi bi-grid me-2"></i>View All Courses
+        </a>
+      </div>
+
+    </div>
+  </section><!-- End Featured Courses -->
+
+  <!-- CTA Section -->
+  <section id="cta" class="cta section light-background">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="row align-items-center g-5">
+
+        <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
+          <div class="cta-content">
+
+            <div class="fh-label"><i class="bi bi-rocket-takeoff me-2"></i>Why Choose Us</div>
+            <h2>Transform Your Future with <span class="hero-accent">Expert-Led</span> Online Courses</h2>
+            <p>Join thousands of successful learners who have advanced their careers through our comprehensive online education platform.</p>
+
+            <div class="features-list">
+              <div class="feature-item" data-aos="fade-up" data-aos-delay="300">
+                <div class="fi-icon"><i class="bi bi-person-workspace"></i></div>
+                <span>20+ Expert instructors with industry experience</span>
+              </div>
+              <div class="feature-item" data-aos="fade-up" data-aos-delay="350">
+                <div class="fi-icon fi-green"><i class="bi bi-award-fill"></i></div>
+                <span>Certificate of completion for every course</span>
+              </div>
+              <div class="feature-item" data-aos="fade-up" data-aos-delay="400">
+                <div class="fi-icon fi-orange"><i class="bi bi-clock-history"></i></div>
+                <span>24/7 access to course materials and resources</span>
+              </div>
+              <div class="feature-item" data-aos="fade-up" data-aos-delay="450">
+                <div class="fi-icon fi-purple"><i class="bi bi-laptop"></i></div>
+                <span>Interactive assignments and real-world projects</span>
+              </div>
+            </div>
+
+            <div class="cta-actions" data-aos="fade-up" data-aos-delay="500">
+              <a href="{% url 'courses' %}" class="hbtn-primary">
+                <i class="bi bi-collection-play me-2"></i>Browse Courses
+              </a>
+              <a href="{% url 'enroll' %}" class="hbtn-outline">
+                <i class="bi bi-pencil-square me-2"></i>Enroll Now
+              </a>
+            </div>
+
+            <div class="stats-row" data-aos="fade-up" data-aos-delay="400">
+              <div class="stat-item">
+                <h3>
+                  <span data-purecounter-start="0" data-purecounter-end="15000" data-purecounter-duration="2" class="purecounter">15000</span>+
+                </h3>
+                <p>Students Enrolled</p>
+              </div>
+              <div class="stat-item">
+                <h3>
+                  <span data-purecounter-start="0" data-purecounter-end="150" data-purecounter-duration="2" class="purecounter">150</span>+
+                </h3>
+                <p>Courses Available</p>
+              </div>
+              <div class="stat-item">
+                <h3>
+                  <span data-purecounter-start="0" data-purecounter-end="98" data-purecounter-duration="2" class="purecounter">98</span>%
+                </h3>
+                <p>Success Rate</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300">
+          <div class="cta-image">
+            <img src="{% static 'image/education/courses-4.webp' %}" alt="Online Learning Platform" class="img-fluid cta-main-img">
+            <div class="floating-element student-card" data-aos="zoom-in" data-aos-delay="600">
+              <div class="card-content">
+                <i class="bi bi-person-check-fill"></i>
+                <div class="text">
+                  <span class="number">2,450</span>
+                  <span class="label">New Students This Month</span>
+                </div>
+              </div>
+            </div>
+            <div class="floating-element course-card" data-aos="zoom-in" data-aos-delay="700">
+              <div class="card-content">
+                <i class="bi bi-play-circle-fill"></i>
+                <div class="text">
+                  <span class="number">50+</span>
+                  <span class="label">Hours of Content</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section><!-- End CTA -->
+
+</main>
+
+<style>
+/* ===== Hero Badge ===== */
+.hero-top-badge {
+  display: inline-flex; align-items: center;
+  background: color-mix(in srgb, var(--accent-color), transparent 88%);
+  color: var(--accent-color); font-size: 13px; font-weight: 600;
+  padding: 7px 18px; border-radius: 20px;
+  margin-bottom: 18px; letter-spacing: 0.4px;
+}
+.hero-accent { color: var(--accent-color); }
+
+/* ===== Hero Stats ===== */
+.hero-stats {
+  display: flex; align-items: center;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-radius: 16px; padding: 16px 20px;
+  margin-bottom: 24px; flex-wrap: wrap; gap: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+.hero-stats .stat-item { flex: 1; text-align: center; min-width: 80px; }
+.hero-stats .number { display: block; font-size: 22px; font-weight: 800; color: var(--accent-color); line-height: 1; }
+.hero-stats .label  { font-size: 11px; color: color-mix(in srgb, var(--default-color), transparent 40%); }
+.hero-stat-div { width: 1px; height: 36px; background: color-mix(in srgb, var(--default-color), transparent 88%); }
+
+/* ===== Hero Buttons ===== */
+.hero-buttons { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+.hbtn-primary {
+  display: inline-flex; align-items: center;
+  background: var(--accent-color); color: #fff;
+  padding: 13px 28px; border-radius: 25px;
+  font-size: 14px; font-weight: 700; text-decoration: none;
+  transition: all 0.3s; gap: 4px;
+}
+.hbtn-primary:hover {
+  background: color-mix(in srgb, var(--accent-color), black 12%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-color), transparent 60%);
+  color: #fff;
+}
+.hbtn-outline {
+  display: inline-flex; align-items: center;
+  background: transparent; color: var(--accent-color);
+  border: 2px solid var(--accent-color);
+  padding: 13px 24px; border-radius: 25px;
+  font-size: 14px; font-weight: 600; text-decoration: none;
+  transition: all 0.3s; gap: 4px;
+}
+.hbtn-outline:hover { background: var(--accent-color); color: #fff; transform: translateY(-2px); }
+
+/* ===== Featured Header ===== */
+.featured-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 36px; flex-wrap: wrap; gap: 16px;
+}
+.fh-label {
+  display: inline-flex; align-items: center;
+  background: color-mix(in srgb, var(--accent-color), transparent 88%);
+  color: var(--accent-color); font-size: 12px; font-weight: 600;
+  padding: 5px 14px; border-radius: 16px; margin-bottom: 10px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.fh-left h2 { font-size: 28px; font-weight: 800; color: var(--heading-color); margin-bottom: 6px; }
+.fh-left p  { font-size: 14px; color: color-mix(in srgb, var(--default-color), transparent 40%); margin: 0; }
+.fh-link {
+  display: inline-flex; align-items: center; color: var(--accent-color);
+  font-weight: 600; font-size: 14px; text-decoration: none; gap: 4px; transition: gap 0.2s;
+}
+.fh-link:hover { gap: 8px; }
+
+/* ===== Featured Course Card Enhancements ===== */
+.featured-course-card {
+  border-radius: 18px !important;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  transition: all 0.3s ease;
+}
+.featured-course-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px color-mix(in srgb, var(--default-color), transparent 82%);
+  border-color: color-mix(in srgb, var(--accent-color), transparent 70%);
+}
+.featured-course-card .course-image { position: relative; overflow: hidden; height: 210px; }
+.featured-course-card .course-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.featured-course-card:hover .course-image img { transform: scale(1.08); }
+.fcc-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.42);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.3s;
+}
+.featured-course-card:hover .fcc-overlay { opacity: 1; }
+.fcc-preview {
+  background: #fff; color: var(--accent-color);
+  padding: 10px 22px; border-radius: 25px;
+  text-decoration: none; font-size: 13px; font-weight: 600;
+  display: flex; align-items: center;
+}
+.fcc-wishlist {
+  position: absolute; top: 14px; left: 14px;
+  width: 34px; height: 34px; background: rgba(255,255,255,0.9);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  color: #dc3545; font-size: 16px; cursor: pointer;
+  opacity: 0; transition: opacity 0.3s;
+}
+.featured-course-card:hover .fcc-wishlist { opacity: 1; }
+.fcc-level { display: inline-flex; align-items: center; }
+.fcc-rating { display: flex; align-items: center; gap: 3px; margin-bottom: 14px; }
+.fcc-rating i { font-size: 13px; color: #ffc107; }
+.fcc-rval   { font-size: 14px; font-weight: 700; color: var(--heading-color); margin-left: 4px; }
+.fcc-rcount { font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 45%); }
+.featured-course-card .instructor {
+  display: flex; align-items: center; gap: 10px;
+  padding-top: 14px; border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
+}
+.featured-course-card .instructor small {
+  display: block; font-size: 11px;
+  color: color-mix(in srgb, var(--default-color), transparent 45%);
+}
+.featured-course-card .btn-course {
+  display: inline-flex; align-items: center;
+  background: color-mix(in srgb, var(--accent-color), transparent 88%);
+  color: var(--accent-color); padding: 7px 16px;
+  border-radius: 20px; font-size: 12px; font-weight: 600;
+  text-decoration: none; transition: all 0.2s; white-space: nowrap;
+}
+.featured-course-card .btn-course:hover { background: var(--accent-color); color: #fff; }
+.btn-more {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; color: var(--accent-color);
+  border: 2px solid var(--accent-color);
+  padding: 13px 32px; border-radius: 25px;
+  font-size: 14px; font-weight: 600; text-decoration: none;
+  transition: all 0.3s;
+}
+.btn-more:hover { background: var(--accent-color); color: #fff; transform: translateY(-2px); }
+
+/* ===== CTA Feature Items ===== */
+.features-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+.feature-item {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-radius: 12px; padding: 13px 16px;
+  transition: all 0.3s;
+}
+.feature-item:hover { border-color: var(--accent-color); transform: translateX(4px); }
+.fi-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: color-mix(in srgb, var(--accent-color), transparent 85%);
+  color: var(--accent-color);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.fi-green  { background: color-mix(in srgb, #10b981, transparent 85%) !important; color: #10b981 !important; }
+.fi-orange { background: color-mix(in srgb, #f97316, transparent 85%) !important; color: #f97316 !important; }
+.fi-purple { background: color-mix(in srgb, #8b5cf6, transparent 85%) !important; color: #8b5cf6 !important; }
+.feature-item span { font-size: 14px; font-weight: 500; color: var(--default-color); }
+.cta-actions { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+.cta-main-img { border-radius: 22px; box-shadow: 0 16px 50px rgba(0,0,0,0.1); }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .featured-header { flex-direction: column; align-items: flex-start; }
+  .hero-buttons { flex-direction: column; }
+  .cta-actions { flex-direction: column; }
+  .hero-stat-div { display: none; }
+}
+</style>
+
+{% endblock content %}

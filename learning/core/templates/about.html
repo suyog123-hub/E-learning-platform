@@ -1,0 +1,653 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<main class="main">
+
+<!-- About Section -->
+<section id="about" class="about section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+    <!-- ===== Hero Row ===== -->
+    <div class="row align-items-center g-5">
+
+      <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
+        <div class="about-img-wrapper">
+          <img src="{% static 'image/about1.png' %}" alt="About Us" class="img-fluid main-about-img">
+          <!-- Floating card 1 -->
+          <div class="about-float-card about-float-1">
+            <div class="afc-icon"><i class="bi bi-people-fill"></i></div>
+            <div class="afc-text">
+              <span class="afc-number">50k+</span>
+              <span class="afc-label">Students</span>
+            </div>
+          </div>
+          <!-- Floating card 2 -->
+          <div class="about-float-card about-float-2">
+            <div class="afc-icon afc-green"><i class="bi bi-award-fill"></i></div>
+            <div class="afc-text">
+              <span class="afc-number">15+</span>
+              <span class="afc-label">Years Exp.</span>
+            </div>
+          </div>
+          <!-- Badge -->
+          <div class="about-badge">
+            <i class="bi bi-patch-check-fill"></i>
+            <span>Trusted Institute</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300">
+        <div class="about-content">
+          <div class="about-label">
+            <i class="bi bi-info-circle me-2"></i>About Us
+          </div>
+          <h2>Empowering Future Leaders Through <span class="highlight-text">Quality Education</span></h2>
+          <p class="about-lead">We are a dedicated IT institute committed to delivering quality education and practical training in the field of information technology.</p>
+          <p class="about-body">Our goal is to empower students with modern technical skills, innovative thinking, and real-world experience to succeed in today's digital era. We offer industry-relevant courses designed to meet current market demands, guided by experienced instructors who focus on hands-on learning and professional development.</p>
+
+          <!-- Feature Points -->
+          <div class="about-features">
+            <div class="about-feature-item">
+              <div class="afi-icon afi-blue"><i class="bi bi-laptop"></i></div>
+              <div>
+                <h6>Modern Curriculum</h6>
+                <p>Industry-relevant and regularly updated</p>
+              </div>
+            </div>
+            <div class="about-feature-item">
+              <div class="afi-icon afi-green"><i class="bi bi-person-workspace"></i></div>
+              <div>
+                <h6>Expert Instructors</h6>
+                <p>200+ experienced professionals</p>
+              </div>
+            </div>
+            <div class="about-feature-item">
+              <div class="afi-icon afi-orange"><i class="bi bi-briefcase"></i></div>
+              <div>
+                <h6>Career Support</h6>
+                <p>Placement & internship guidance</p>
+              </div>
+            </div>
+            <div class="about-feature-item">
+              <div class="afi-icon afi-purple"><i class="bi bi-mortarboard"></i></div>
+              <div>
+                <h6>Certified Courses</h6>
+                <p>Recognized certificates on completion</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats Row -->
+          <div class="about-stats-row">
+            <div class="about-stat">
+              <span class="astat-number">15</span>
+              <span class="astat-label">Years Experience</span>
+            </div>
+            <div class="about-stat-divider"></div>
+            <div class="about-stat">
+              <span class="astat-number">200+</span>
+              <span class="astat-label">Expert Instructors</span>
+            </div>
+            <div class="about-stat-divider"></div>
+            <div class="about-stat">
+              <span class="astat-number">50k+</span>
+              <span class="astat-label">Students Worldwide</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===== Mission Vision Values ===== -->
+    <div class="row g-4 mt-5 pt-2">
+
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="mvv-card mvv-blue">
+          <div class="mvv-icon-wrap">
+            <i class="bi bi-bullseye"></i>
+          </div>
+          <div class="mvv-number">01</div>
+          <h3>Our Mission</h3>
+          <p>To provide quality education and practical training in information technology, preparing students with technical skills, innovation, and professional values needed to succeed in the digital world.</p>
+          <div class="mvv-bottom-line"></div>
+        </div>
+      </div>
+
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="mvv-card mvv-green mvv-featured">
+          <div class="mvv-featured-badge">Featured</div>
+          <div class="mvv-icon-wrap">
+            <i class="bi bi-eye"></i>
+          </div>
+          <div class="mvv-number">02</div>
+          <h3>Our Vision</h3>
+          <p>To become a leading center of excellence in information technology education, innovation, and research, producing skilled professionals who contribute to the digital world.</p>
+          <div class="mvv-bottom-line"></div>
+        </div>
+      </div>
+
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="400">
+        <div class="mvv-card mvv-orange">
+          <div class="mvv-icon-wrap">
+            <i class="bi bi-award"></i>
+          </div>
+          <div class="mvv-number">03</div>
+          <h3>Our Values</h3>
+          <p>Our values define our principles, culture, and commitment to students, staff, and society — built on integrity, excellence, collaboration, and continuous innovation.</p>
+          <div class="mvv-bottom-line"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===== Why Choose Us ===== -->
+    <div class="row mt-5 pt-4 align-items-center g-5">
+
+      <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
+        <div class="why-img-wrapper">
+          <img src="{% static 'image/about4.png' %}" alt="Why Choose Us" class="img-fluid why-main-img">
+          <!-- Overlay stat card -->
+          <div class="why-overlay-card">
+            <div class="woc-row">
+              <div class="woc-item">
+                <i class="bi bi-star-fill text-warning"></i>
+                <div>
+                  <strong>4.9/5</strong>
+                  <small>Rating</small>
+                </div>
+              </div>
+              <div class="woc-divider"></div>
+              <div class="woc-item">
+                <i class="bi bi-trophy-fill text-warning"></i>
+                <div>
+                  <strong>Top Rated</strong>
+                  <small>Institute 2026</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300">
+        <div class="why-content">
+          <div class="about-label">
+            <i class="bi bi-question-circle me-2"></i>Why Choose Us
+          </div>
+          <h2>Transforming Education for a <span class="highlight-text">Better Tomorrow</span></h2>
+          <p class="about-body">We combine experienced instructors, practical hands-on training, and industry-relevant courses to equip students with real-world skills. Our programs include live projects, updated technologies, and a supportive student-focused learning environment.</p>
+
+          <ul class="why-list">
+            <li>
+              <div class="wl-icon"><i class="bi bi-check-lg"></i></div>
+              <div class="wl-text">
+                <strong>Flexible Learning Options</strong>
+                <span>Study at your own pace with flexible schedules</span>
+              </div>
+            </li>
+            <li>
+              <div class="wl-icon"><i class="bi bi-check-lg"></i></div>
+              <div class="wl-text">
+                <strong>Industry-Experienced Instructors</strong>
+                <span>Learn from professionals with real-world expertise</span>
+              </div>
+            </li>
+            <li>
+              <div class="wl-icon"><i class="bi bi-check-lg"></i></div>
+              <div class="wl-text">
+                <strong>Interactive Course Content</strong>
+                <span>Engaging lessons with hands-on projects</span>
+              </div>
+            </li>
+            <li>
+              <div class="wl-icon"><i class="bi bi-check-lg"></i></div>
+              <div class="wl-text">
+                <strong>Career Guidance & Placement</strong>
+                <span>Full support from internship to job placement</span>
+              </div>
+            </li>
+            <li>
+              <div class="wl-icon"><i class="bi bi-check-lg"></i></div>
+              <div class="wl-text">
+                <strong>State-of-the-Art Platform</strong>
+                <span>Modern online learning tools and resources</span>
+              </div>
+            </li>
+          </ul>
+
+          <div class="why-actions">
+            <a href="#" class="btn-explore">
+              Discover More <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+            <a href="#" class="btn-explore-outline">
+              <i class="bi bi-play-circle me-1"></i> Watch Video
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===== Bottom CTA Strip ===== -->
+    <div class="about-cta-strip" data-aos="fade-up" data-aos-delay="200">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <h4><i class="bi bi-mortarboard-fill me-2"></i>Ready to Start Your IT Career Journey?</h4>
+          <p>Join thousands of students already learning with us. Enroll today and take the first step.</p>
+        </div>
+        <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+          <a href="#" class="btn-cta-white">
+            <i class="bi bi-rocket-takeoff me-2"></i>Get Started Now
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<style>
+/* ===== Label ===== */
+.about-label {
+  display: inline-flex;
+  align-items: center;
+  background: color-mix(in srgb, var(--accent-color), transparent 88%);
+  color: var(--accent-color);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ===== Highlight text ===== */
+.highlight-text {
+  color: var(--accent-color);
+  position: relative;
+}
+
+/* ===== About Lead ===== */
+.about-lead {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--heading-color);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.about-body {
+  font-size: 15px;
+  line-height: 1.8;
+  color: color-mix(in srgb, var(--default-color), transparent 20%);
+  margin-bottom: 24px;
+}
+
+/* ===== About Image Wrapper ===== */
+.about-img-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+.main-about-img {
+  border-radius: 24px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+}
+
+/* Floating Cards */
+.about-float-card {
+  position: absolute;
+  background: var(--surface-color);
+  border-radius: 16px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  animation: floatUpDown 4s ease-in-out infinite;
+}
+.about-float-1 { bottom: 30px; left: -20px; }
+.about-float-2 { top: 30px; right: -20px; animation-delay: 2s; }
+@keyframes floatUpDown {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+.afc-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--accent-color), transparent 85%);
+  color: var(--accent-color);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+}
+.afc-green { background: color-mix(in srgb, #10b981, transparent 85%) !important; color: #10b981 !important; }
+.afc-text { display: flex; flex-direction: column; }
+.afc-number { font-size: 18px; font-weight: 700; color: var(--heading-color); line-height: 1; }
+.afc-label  { font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 40%); }
+
+/* Badge */
+.about-badge {
+  position: absolute;
+  top: 20px; left: 20px;
+  background: var(--accent-color);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 5px 15px color-mix(in srgb, var(--accent-color), transparent 60%);
+}
+
+/* ===== About Features ===== */
+.about-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.about-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-radius: 14px;
+  padding: 14px;
+  transition: all 0.3s ease;
+}
+.about-feature-item:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-color);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-color), transparent 88%);
+}
+.afi-icon {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.afi-blue   { background: color-mix(in srgb, #3b82f6, transparent 85%); color: #3b82f6; }
+.afi-green  { background: color-mix(in srgb, #10b981, transparent 85%); color: #10b981; }
+.afi-orange { background: color-mix(in srgb, #f97316, transparent 85%); color: #f97316; }
+.afi-purple { background: color-mix(in srgb, #8b5cf6, transparent 85%); color: #8b5cf6; }
+.about-feature-item h6 { font-size: 14px; font-weight: 600; color: var(--heading-color); margin: 0 0 3px; }
+.about-feature-item p  { font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 40%); margin: 0; }
+
+/* ===== Stats Row ===== */
+.about-stats-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
+  border-radius: 16px;
+  padding: 20px 24px;
+}
+.about-stat { flex: 1; text-align: center; }
+.astat-number {
+  display: block;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--accent-color);
+  line-height: 1;
+  margin-bottom: 5px;
+}
+.astat-label { font-size: 13px; color: color-mix(in srgb, var(--default-color), transparent 35%); font-weight: 500; }
+.about-stat-divider {
+  width: 1px;
+  height: 50px;
+  background: color-mix(in srgb, var(--default-color), transparent 85%);
+}
+
+/* ===== Mission Vision Values ===== */
+.mvv-card {
+  border-radius: 20px;
+  padding: 36px 28px;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  background: var(--surface-color);
+  transition: all 0.3s ease;
+}
+.mvv-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+}
+.mvv-card h3 { font-size: 20px; font-weight: 700; color: var(--heading-color); margin-bottom: 14px; }
+.mvv-card p  { font-size: 14px; line-height: 1.7; color: color-mix(in srgb, var(--default-color), transparent 25%); margin: 0; }
+
+.mvv-icon-wrap {
+  width: 64px; height: 64px;
+  border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+.mvv-blue .mvv-icon-wrap   { background: color-mix(in srgb, #3b82f6, transparent 85%); color: #3b82f6; }
+.mvv-green .mvv-icon-wrap  { background: color-mix(in srgb, #10b981, transparent 85%); color: #10b981; }
+.mvv-orange .mvv-icon-wrap { background: color-mix(in srgb, #f97316, transparent 85%); color: #f97316; }
+
+.mvv-number {
+  position: absolute;
+  top: 20px; right: 24px;
+  font-size: 48px;
+  font-weight: 900;
+  color: color-mix(in srgb, var(--default-color), transparent 92%);
+  line-height: 1;
+}
+.mvv-bottom-line {
+  height: 4px;
+  border-radius: 2px;
+  margin-top: 24px;
+}
+.mvv-blue .mvv-bottom-line   { background: linear-gradient(90deg, #3b82f6, transparent); }
+.mvv-green .mvv-bottom-line  { background: linear-gradient(90deg, #10b981, transparent); }
+.mvv-orange .mvv-bottom-line { background: linear-gradient(90deg, #f97316, transparent); }
+
+/* Featured card */
+.mvv-featured {
+  border-color: #10b981 !important;
+  box-shadow: 0 10px 35px color-mix(in srgb, #10b981, transparent 80%);
+}
+.mvv-featured-badge {
+  position: absolute;
+  top: 20px; right: 20px;
+  background: #10b981;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Why Image Wrapper ===== */
+.why-img-wrapper { position: relative; }
+.why-main-img {
+  border-radius: 24px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+}
+.why-overlay-card {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface-color);
+  border-radius: 16px;
+  padding: 16px 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  min-width: 240px;
+}
+.woc-row { display: flex; align-items: center; gap: 16px; }
+.woc-item { display: flex; align-items: center; gap: 10px; flex: 1; }
+.woc-item i { font-size: 24px; }
+.woc-item strong { display: block; font-size: 15px; font-weight: 700; color: var(--heading-color); }
+.woc-item small  { font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 40%); }
+.woc-divider { width: 1px; height: 36px; background: color-mix(in srgb, var(--default-color), transparent 85%); }
+
+/* ===== Why List ===== */
+.why-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.why-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-radius: 12px;
+  padding: 14px 16px;
+  transition: all 0.3s ease;
+}
+.why-list li:hover {
+  border-color: var(--accent-color);
+  transform: translateX(5px);
+  box-shadow: 0 5px 20px color-mix(in srgb, var(--accent-color), transparent 90%);
+}
+.wl-icon {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent-color), transparent 85%);
+  color: var(--accent-color);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.wl-text strong { display: block; font-size: 14px; font-weight: 600; color: var(--heading-color); margin-bottom: 2px; }
+.wl-text span   { font-size: 13px; color: color-mix(in srgb, var(--default-color), transparent 35%); }
+
+/* ===== Why Actions ===== */
+.why-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-explore {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent-color);
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  gap: 6px;
+}
+.btn-explore:hover {
+  background: color-mix(in srgb, var(--accent-color), black 12%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-color), transparent 60%);
+  color: #fff;
+}
+.btn-explore-outline {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  color: var(--accent-color);
+  border: 2px solid var(--accent-color);
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  gap: 6px;
+}
+.btn-explore-outline:hover {
+  background: var(--accent-color);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* ===== CTA Strip ===== */
+.about-cta-strip {
+  margin-top: 60px;
+  background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color), blue 20%));
+  border-radius: 24px;
+  padding: 40px 48px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.about-cta-strip::before {
+  content: '';
+  position: absolute;
+  width: 300px; height: 300px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 50%;
+  top: -100px; right: -60px;
+}
+.about-cta-strip::after {
+  content: '';
+  position: absolute;
+  width: 200px; height: 200px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 50%;
+  bottom: -80px; left: 40px;
+}
+.about-cta-strip h4 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.about-cta-strip p {
+  font-size: 15px;
+  opacity: 0.88;
+  margin: 0;
+}
+.btn-cta-white {
+  display: inline-flex;
+  align-items: center;
+  background: #fff;
+  color: var(--accent-color);
+  padding: 14px 30px;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  gap: 8px;
+  position: relative;
+  z-index: 2;
+}
+.btn-cta-white:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  color: var(--accent-color);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .about-features { grid-template-columns: 1fr; }
+  .about-float-1, .about-float-2 { display: none; }
+  .about-badge { top: 12px; left: 12px; font-size: 11px; }
+  .about-cta-strip { padding: 28px 24px; }
+  .about-stats-row { flex-wrap: wrap; gap: 16px; }
+  .about-stat-divider { display: none; }
+  .about-stat { flex: 0 0 45%; }
+  .why-overlay-card { position: static; transform: none; margin-top: 16px; }
+}
+</style>
+
+{% endblock content %}

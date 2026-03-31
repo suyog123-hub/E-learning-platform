@@ -1,0 +1,5 @@
+db.sqlite3
+.env
+db_backup_utf8.json
+db_backup.json
+handel.py

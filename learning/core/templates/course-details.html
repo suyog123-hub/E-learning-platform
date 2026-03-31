@@ -1,0 +1,979 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<main class="main">
+
+<!-- Course Details Section -->
+<section id="course-details" class="course-details section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row g-4">
+
+      <!-- ===== LEFT COLUMN ===== -->
+      <div class="col-lg-8">
+
+        <!-- Course Hero -->
+        <div class="cd-hero" data-aos="fade-up" data-aos-delay="200">
+
+          <!-- Breadcrumb -->
+          <div class="cd-breadcrumb">
+            <a href="{% url 'courses' %}"><i class="bi bi-house me-1"></i>Courses</a>
+            <i class="bi bi-chevron-right"></i>
+            <span>{{ course_detail.course_title|truncatechars:40 }}</span>
+          </div>
+
+          <!-- Badge Row -->
+          <div class="cd-badge-row">
+            <span class="cd-badge cd-badge-level">
+              <i class="bi bi-bar-chart me-1"></i>{{ course_detail.level1 }}
+            </span>
+            <span class="cd-badge cd-badge-category">
+              <i class="bi bi-grid me-1"></i>{{ course_detail.category }}
+            </span>
+            <span class="cd-badge cd-badge-updated">
+              <i class="bi bi-arrow-clockwise me-1"></i>Updated {{ course_detail.updated_at|date:"M Y" }}
+            </span>
+          </div>
+
+          <h1 class="cd-title">{{ course_detail.course_title }}</h1>
+          <p class="cd-subtitle">{{ course_detail.desc }}</p>
+
+
+          <!-- Instructor Strip -->
+          <div class="cd-instructor-strip">
+            <img src="{% static 'image/person/person-m-8.webp' %}" alt="Instructor" class="cis-avatar">
+            <div class="cis-info">
+              <span class="cis-name">Prof. {{ course_detail.instructor_name }}</span>
+              <span class="cis-role">{{ course_detail.instructor_experience }}</span>
+            </div>
+            <div class="cis-badges">
+              <span class="cis-badge"><i class="bi bi-patch-check-fill me-1"></i>Verified Instructor</span>
+            </div>
+          </div>
+
+          <!-- Video -->
+          <div class="cd-video-wrapper">
+            <div class="ratio ratio-16x9">
+              <video controls class="cd-video">
+                <source src="{{ course_detail.intro_video.url }}" type="video/mp4">
+              </video>
+            </div>
+            <div class="cd-video-label">
+              <i class="bi bi-play-circle-fill me-2"></i>Course Preview
+            </div>
+          </div>
+
+        </div><!-- End Course Hero -->
+
+        <!-- Navigation Tabs -->
+        <div class="cd-tabs" data-aos="fade-up" data-aos-delay="300">
+          <ul class="nav nav-tabs cd-nav-tabs" id="course-detailsCourseTab" role="tablist">
+            <li class="nav-item">
+              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#course-detailsoverview" type="button" role="tab">
+                <i class="bi bi-layout-text-window-reverse me-2"></i>Overview
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#course-detailscurriculum" type="button" role="tab">
+                <i class="bi bi-list-ul me-2"></i>Curriculum
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#course-detailsreviews" type="button" role="tab">
+                <i class="bi bi-star me-2"></i>Reviews
+                <span class="tab-badge">{{ total_review }}</span>
+              </button>
+            </li>
+          </ul>
+
+          <div class="tab-content cd-tab-content" id="course-detailsCourseTabContent">
+
+            <!-- ===== Overview Tab ===== -->
+            <div class="tab-pane fade show active" id="course-detailsoverview" role="tabpanel">
+
+              <!-- Skills -->
+              <div class="cd-section">
+                <div class="cd-section-header">
+                  <div class="cd-section-icon"><i class="bi bi-lightning-charge-fill"></i></div>
+                  <h3>Skills You'll Gain</h3>
+                </div>
+                <div class="row g-3">
+                  {% for i in course_detail.skills.all %}
+                  <div class="col-md-6">
+                    <div class="skill-card">
+                      <div class="skill-card-icon">
+                        <i class="{{ i.icon }}"></i>
+                      </div>
+                      <div class="skill-card-content">
+                        <h5>{{ i.skill_name }}</h5>
+                        <p>{{ i.skill_desc }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <!-- Requirements -->
+              <div class="cd-section">
+                <div class="cd-section-header">
+                  <div class="cd-section-icon cd-section-icon-green"><i class="bi bi-check-circle-fill"></i></div>
+                  <h3>Requirements</h3>
+                </div>
+                <ul class="cd-req-list">
+                  {% for i in course_detail.requirements.all %}
+                  <li>
+                    <div class="req-icon"><i class="bi bi-check-lg"></i></div>
+                    <span>{{ i.requirement_name }}</span>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+
+            </div><!-- End Overview Tab -->
+
+            <!-- ===== Curriculum Tab ===== -->
+            <div class="tab-pane fade" id="course-detailscurriculum" role="tabpanel">
+
+              <!-- Stats Bar -->
+              <div class="curriculum-stats-bar">
+                <div class="csb-item">
+                  <i class="bi bi-collection-play-fill"></i>
+                  <div>
+                    <strong>12</strong>
+                    <span>Sections</span>
+                  </div>
+                </div>
+                <div class="csb-divider"></div>
+                <div class="csb-item">
+                  <i class="bi bi-play-circle-fill"></i>
+                  <div>
+                    <strong>89</strong>
+                    <span>Lectures</span>
+                  </div>
+                </div>
+                <div class="csb-divider"></div>
+                <div class="csb-item">
+                  <i class="bi bi-clock-fill"></i>
+                  <div>
+                    <strong>45h 32m</strong>
+                    <span>Total Length</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion cd-accordion" id="curriculumAccordion">
+                {% for i in course_detail.curriculums.all %}
+                <div class="accordion-item cd-accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button cd-accordion-btn" type="button"
+                      data-bs-toggle="collapse" data-bs-target="#module-{{ i.id }}">
+                      <div class="cd-module-info">
+                        <div class="cd-module-num">{{ forloop.counter }}</div>
+                        <div>
+                          <span class="cd-module-title">{{ i.title }}</span>
+                          <span class="cd-module-meta">8 lessons • 4h 15m</span>
+                        </div>
+                      </div>
+                    </button>
+                  </h2>
+                  <div id="module-{{ i.id }}" class="accordion-collapse collapse show" data-bs-parent="#curriculumAccordion">
+                    <div class="accordion-body cd-accordion-body">
+                      <ul class="cd-lesson-list">
+                        {% for topic in i.topics.all %}
+                        <li class="cd-lesson-item">
+                          <div class="cdli-left">
+                            <div class="cdli-icon"><i class="bi bi-play-circle-fill"></i></div>
+                            <span>{{ topic.title }}</span>
+                          </div>
+                          <div class="cdli-right">
+                            <span class="cdli-time">5:30</span>
+                            <span class="cdli-free">Free</span>
+                          </div>
+                        </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+
+            </div><!-- End Curriculum Tab -->
+
+            <!-- ===== Reviews Tab ===== -->
+            <div class="tab-pane fade" id="course-detailsreviews" role="tabpanel">
+
+              <!-- Rating Overview -->
+              <div class="cd-rating-overview">
+                <div class="cro-left">
+                  <div class="cro-big-number">{{ avg_review }}</div>
+                  <div class="cro-stars">
+                    {% for i in range %}
+                    <i class="fa {% if avg_review >= i %}fa-star{% else %}fa-star-o{% endif %}"></i>
+                    {% endfor %}
+                  </div>
+                  <div class="cro-count"> Average  Course Rating</div>
+                </div>
+              </div>
+
+              <!-- Add Review Button -->
+              <div class="cd-review-action">
+                {% if request.user.is_authenticated %}
+                <button type="button" class="cd-btn-review" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                  <i class="bi bi-pencil-square me-2"></i>Write a Review
+                </button>
+                {% else %}
+                <div class="cd-login-prompt">
+                  <i class="bi bi-lock-fill me-2"></i>
+                  Please <a href="{% url 'signin' %}">login</a> to write a review
+                </div>
+                {% endif %}
+              </div>
+
+              <!-- Reviews List -->
+              <div class="cd-reviews-list">
+                {% for review in good_review %}
+                <div class="cd-review-card">
+                  <div class="cd-review-header">
+                    {% if review.user.profile_image %}
+                    <img src="{{ review.user.profile_image.url }}" alt="Reviewer" class="cd-reviewer-avatar">
+                    {% else %}
+                    <img src="{% static 'image/person/person-m-8.webp' %}" alt="Reviewer" class="cd-reviewer-avatar">
+                    {% endif %}
+                    <div class="cd-reviewer-info">
+                      <h6>{{ review.user.user.first_name }} {{ review.user.user.last_name }}</h6>
+                      <div class="cd-review-stars">
+                        {% for i in range %}
+                        <i class="fa {% if review.rating >= i %}fa-star{% else %}fa-star-o{% endif %}"></i>
+                        {% endfor %}
+                      </div>
+                    </div>
+                    <span class="cd-review-date">
+                      <i class="bi bi-calendar me-1"></i>{{ review.created_at|date:"M d, Y" }}
+                    </span>
+                  </div>
+                  <p class="cd-review-text">{{ review.feedback }}</p>
+                </div>
+                {% empty %}
+                <div class="cd-no-reviews">
+                  <i class="bi bi-chat-square-text"></i>
+                  <h5>No Reviews Yet</h5>
+                  <p>Be the first to share your experience!</p>
+                </div>
+                {% endfor %}
+              </div>
+
+            </div><!-- End Reviews Tab -->
+
+          </div>
+        </div><!-- End Tabs -->
+
+      </div><!-- end col-lg-8 -->
+
+      <!-- ===== RIGHT SIDEBAR ===== -->
+      <div class="col-lg-4">
+
+        <!-- Enrollment Card -->
+        <div class="cd-enrollment-card" data-aos="fade-up" data-aos-delay="200">
+
+          <!-- Price Section -->
+          <div class="cd-price-section">
+            <div class="cd-price-row">
+              <span class="cd-current-price">${{ course_detail.price }}</span>
+              <span class="cd-original-price">${{ course_detail.mark_price }}</span>
+              <span class="cd-discount-tag">{{ course_detail.discount_price }}% OFF</span>
+            </div>
+            <div class="cd-timer">
+              <i class="bi bi-alarm-fill me-1"></i>
+              <span class="cd-timer-text">Limited time offer!</span>
+            </div>
+          </div>
+
+          <!-- Features List -->
+          <div class="cd-course-features">
+            <div class="cd-feature-item">
+              <i class="bi bi-people-fill"></i>
+              <span>3,892 students enrolled</span>
+            </div>
+            <div class="cd-feature-item">
+              <i class="bi bi-clock-fill"></i>
+              <span>{{ course_detail.total_duration }} on-demand video</span>
+            </div>
+            <div class="cd-feature-item">
+              <i class="bi bi-trophy-fill"></i>
+              <span>Certificate of completion</span>
+            </div>
+            <div class="cd-feature-item">
+              <i class="bi bi-infinity"></i>
+              <span>Full lifetime access</span>
+            </div>
+            <div class="cd-feature-item">
+              <i class="bi bi-phone-fill"></i>
+              <span>Access on mobile & desktop</span>
+            </div>
+            <div class="cd-feature-item">
+              <i class="bi bi-arrow-repeat"></i>
+              <span>Free updates included</span>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="cd-action-btns">
+            <a href="{% url 'enroll' %}" class="cd-btn-enroll">
+              <i class="bi bi-rocket-takeoff-fill me-2"></i>Add to Favorites
+            </a>
+            <button class="cd-btn-wishlist">
+             <a href="{% url 'cart_add' course_detail.id  %}"><i class="bi bi-heart me-2"></i>Add to Cart</a> 
+            </button>
+          </div>
+
+          <!-- Guarantee -->
+          <div class="cd-guarantee">
+            <i class="bi bi-shield-check-fill"></i>
+            <span>30-day money-back guarantee</span>
+          </div>
+
+        </div><!-- End Enrollment Card -->
+
+        <!-- Course Details Card -->
+        <div class="cd-details-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="cd-details-header">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            <h4>Course Details</h4>
+          </div>
+          <div class="cd-details-list">
+            <div class="cd-detail-item">
+              <div class="cdi-icon cdi-blue"><i class="bi bi-clock"></i></div>
+              <div class="cdi-info">
+                <span class="cdi-label">Duration</span>
+                <span class="cdi-value">{{ course_detail.total_duration }}</span>
+              </div>
+            </div>
+            <div class="cd-detail-item">
+              <div class="cdi-icon cdi-green"><i class="bi bi-bar-chart"></i></div>
+              <div class="cdi-info">
+                <span class="cdi-label">Skill Level</span>
+                <span class="cdi-value">{{ course_detail.level1 }}</span>
+              </div>
+            </div>
+            <div class="cd-detail-item">
+              <div class="cdi-icon cdi-orange"><i class="bi bi-translate"></i></div>
+              <div class="cdi-info">
+                <span class="cdi-label">Language</span>
+                <span class="cdi-value">English</span>
+              </div>
+            </div>
+            <div class="cd-detail-item">
+              <div class="cdi-icon cdi-purple"><i class="bi bi-patch-question"></i></div>
+              <div class="cdi-info">
+                <span class="cdi-label">Quizzes</span>
+                <span class="cdi-value">24</span>
+              </div>
+            </div>
+            <div class="cd-detail-item">
+              <div class="cdi-icon cdi-red"><i class="bi bi-file-earmark-text"></i></div>
+              <div class="cdi-info">
+                <span class="cdi-label">Assignments</span>
+                <span class="cdi-value">8 projects</span>
+              </div>
+            </div>
+            <div class="cd-detail-item">
+              <div class="cdi-icon cdi-teal"><i class="bi bi-calendar-check"></i></div>
+              <div class="cdi-info">
+                <span class="cdi-label">Last Updated</span>
+                <span class="cdi-value">{{ course_detail.updated_at|date:"M d, Y" }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Share Card -->
+        <div class="cd-share-card" data-aos="fade-up" data-aos-delay="400">
+          <div class="cd-details-header">
+            <i class="bi bi-share-fill me-2"></i>
+            <h4>Share This Course</h4>
+          </div>
+          <div class="cd-share-links">
+            <a href="#" class="cd-share-btn cd-share-fb">
+              <i class="bi bi-facebook"></i>
+              <span>Facebook</span>
+            </a>
+            <a href="#" class="cd-share-btn cd-share-tw">
+              <i class="bi bi-twitter"></i>
+              <span>Twitter</span>
+            </a>
+            <a href="#" class="cd-share-btn cd-share-li">
+              <i class="bi bi-linkedin"></i>
+              <span>LinkedIn</span>
+            </a>
+            <a href="#" class="cd-share-btn cd-share-em">
+              <i class="bi bi-envelope-fill"></i>
+              <span>Email</span>
+            </a>
+          </div>
+          <!-- Copy Link -->
+          <div class="cd-copy-link">
+            <input type="text" value="{{ request.build_absolute_uri }}" id="courseLink" readonly>
+            <button onclick="copyLink()" class="cd-copy-btn" id="copyBtn">
+              <i class="bi bi-clipboard"></i>
+            </button>
+          </div>
+        </div>
+
+      </div><!-- end col-lg-4 -->
+
+    </div><!-- end row -->
+  </div><!-- end container -->
+</section>
+
+</main>
+
+<!-- ===== Review Modal ===== -->
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content cd-modal">
+
+      <div class="modal-header cd-modal-header">
+        <div>
+          <h5 class="modal-title mb-1" id="reviewModalLabel">
+            <i class="bi bi-star-fill me-2" style="color:#ffc107"></i>Write a Review
+          </h5>
+          <small class="text-muted">Share your honest experience with this course</small>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body cd-modal-body">
+        {% if request.user.is_authenticated %}
+        <form method="post" class="cd-review-form">
+          {% csrf_token %}
+
+          <!-- Star Rating -->
+          <div class="cd-modal-rating">
+            <label class="cd-modal-label">Your Rating</label>
+            <div class="cd-star-picker" id="star-container">
+              <i class="fa fa-star star" data-value="1"></i>
+              <i class="fa fa-star star" data-value="2"></i>
+              <i class="fa fa-star star" data-value="3"></i>
+              <i class="fa fa-star star" data-value="4"></i>
+              <i class="fa fa-star star" data-value="5"></i>
+            </div>
+            <span class="cd-rating-label-text" id="ratingLabelText"></span>
+            <input type="hidden" name="rating" id="rating-value" required>
+          </div>
+
+          <!-- Feedback -->
+          <div class="cd-modal-field">
+            <label class="cd-modal-label">Your Review</label>
+            <textarea name="feedback" class="cd-modal-textarea" rows="5"
+              placeholder="What did you like or dislike? How was the instructor? What did you learn?"></textarea>
+          </div>
+
+          <button type="submit" class="cd-modal-submit">
+            <i class="bi bi-send-fill me-2"></i>Submit Review
+          </button>
+        </form>
+        {% else %}
+        <div class="cd-modal-login">
+          <i class="bi bi-lock-fill"></i>
+          <p>Please <a href="{% url 'signin' %}">login</a> to write a review.</p>
+        </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+/* ===== Breadcrumb ===== */
+.cd-breadcrumb {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; margin-bottom: 16px;
+  color: color-mix(in srgb, var(--default-color), transparent 40%);
+}
+.cd-breadcrumb a { color: var(--accent-color); text-decoration: none; }
+.cd-breadcrumb i { font-size: 11px; }
+
+/* ===== Badge Row ===== */
+.cd-badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.cd-badge {
+  display: inline-flex; align-items: center;
+  font-size: 12px; font-weight: 600;
+  padding: 5px 14px; border-radius: 20px;
+}
+.cd-badge-level    { background: color-mix(in srgb, #8b5cf6, transparent 85%); color: #8b5cf6; }
+.cd-badge-category { background: color-mix(in srgb, var(--accent-color), transparent 85%); color: var(--accent-color); }
+.cd-badge-updated  { background: color-mix(in srgb, #10b981, transparent 85%); color: #10b981; }
+
+/* ===== Title ===== */
+.cd-title {
+  font-size: 32px; font-weight: 800;
+  color: var(--heading-color); line-height: 1.25;
+  margin-bottom: 14px;
+}
+@media (max-width: 768px) { .cd-title { font-size: 24px; } }
+.cd-subtitle {
+  font-size: 16px; line-height: 1.7;
+  color: color-mix(in srgb, var(--default-color), transparent 20%);
+  margin-bottom: 20px;
+}
+
+/* ===== Meta Strip ===== */
+.cd-meta-strip {
+  display: flex; align-items: center; gap: 0;
+  flex-wrap: wrap;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-radius: 14px;
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  gap: 8px;
+}
+.cd-meta-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 14px; font-weight: 500;
+  color: var(--default-color);
+}
+.cd-meta-item i { color: var(--accent-color); font-size: 15px; }
+.cmi-stars { display: flex; gap: 2px; }
+.cmi-stars i { font-size: 13px; color: #ffc107; }
+.cmi-val { font-weight: 700; color: var(--heading-color); }
+.cmi-sub { font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 45%); }
+.cd-meta-divider {
+  width: 1px; height: 20px;
+  background: color-mix(in srgb, var(--default-color), transparent 85%);
+  margin: 0 4px;
+}
+
+/* ===== Instructor Strip ===== */
+.cd-instructor-strip {
+  display: flex; align-items: center; gap: 14px;
+  background: color-mix(in srgb, var(--accent-color), transparent 95%);
+  border: 1px solid color-mix(in srgb, var(--accent-color), transparent 80%);
+  border-radius: 14px; padding: 14px 18px;
+  margin-bottom: 24px; flex-wrap: wrap;
+}
+.cis-avatar { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); }
+.cis-info { flex: 1; }
+.cis-name { display: block; font-size: 15px; font-weight: 700; color: var(--heading-color); }
+.cis-role { display: block; font-size: 13px; color: color-mix(in srgb, var(--default-color), transparent 35%); }
+.cis-badge {
+  font-size: 12px; font-weight: 600;
+  background: var(--accent-color); color: #fff;
+  padding: 5px 14px; border-radius: 20px;
+  display: flex; align-items: center;
+}
+
+/* ===== Video ===== */
+.cd-video-wrapper {
+  border-radius: 18px; overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+  margin-bottom: 30px; position: relative;
+}
+.cd-video { border-radius: 18px; }
+.cd-video-label {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(0deg, rgba(0,0,0,0.6), transparent);
+  color: #fff; padding: 16px 20px;
+  font-size: 14px; font-weight: 600;
+  display: flex; align-items: center;
+}
+
+/* ===== Nav Tabs ===== */
+.cd-nav-tabs {
+  border: none;
+  background: var(--surface-color);
+  border-radius: 14px;
+  padding: 8px;
+  margin-bottom: 28px;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--default-color), transparent 92%);
+  gap: 4px;
+}
+.cd-nav-tabs .nav-item { flex: 1; }
+.cd-nav-tabs .nav-link {
+  border: none; border-radius: 10px;
+  padding: 12px 16px; text-align: center;
+  color: color-mix(in srgb, var(--default-color), transparent 35%);
+  font-weight: 500; font-size: 14px;
+  transition: all 0.3s; width: 100%;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.cd-nav-tabs .nav-link.active {
+  background: var(--accent-color); color: #fff;
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent-color), transparent 60%);
+}
+.cd-nav-tabs .nav-link:hover:not(.active) {
+  background: color-mix(in srgb, var(--accent-color), transparent 90%);
+  color: var(--accent-color);
+}
+.tab-badge {
+  background: rgba(255,255,255,0.25);
+  font-size: 11px; font-weight: 700;
+  padding: 2px 8px; border-radius: 10px;
+}
+.cd-nav-tabs .nav-link:not(.active) .tab-badge {
+  background: color-mix(in srgb, var(--accent-color), transparent 85%);
+  color: var(--accent-color);
+}
+
+/* ===== Tab Content ===== */
+.cd-tab-content { padding: 4px 0; }
+
+/* ===== CD Section ===== */
+.cd-section { margin-bottom: 36px; }
+.cd-section-header {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+}
+.cd-section-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: color-mix(in srgb, var(--accent-color), transparent 85%);
+  color: var(--accent-color);
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+}
+.cd-section-icon-green {
+  background: color-mix(in srgb, #10b981, transparent 85%);
+  color: #10b981;
+}
+.cd-section-header h3 { font-size: 20px; font-weight: 700; color: var(--heading-color); margin: 0; }
+
+/* ===== Skill Cards ===== */
+.skill-card {
+  display: flex; align-items: flex-start; gap: 14px;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-radius: 14px; padding: 18px;
+  transition: all 0.3s ease; height: 100%;
+}
+.skill-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-color);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--accent-color), transparent 88%);
+}
+.skill-card-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color), blue 20%));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; color: #fff; flex-shrink: 0;
+}
+.skill-card-content h5 { font-size: 15px; font-weight: 600; color: var(--heading-color); margin-bottom: 5px; }
+.skill-card-content p  { font-size: 13px; color: color-mix(in srgb, var(--default-color), transparent 35%); margin: 0; }
+
+/* ===== Requirements ===== */
+.cd-req-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.cd-req-list li {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-radius: 12px; padding: 13px 16px;
+  font-size: 14px; transition: all 0.2s ease;
+}
+.cd-req-list li:hover { border-color: #10b981; transform: translateX(4px); }
+.req-icon {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: color-mix(in srgb, #10b981, transparent 85%); color: #10b981;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; flex-shrink: 0;
+}
+
+/* ===== Curriculum Stats Bar ===== */
+.curriculum-stats-bar {
+  display: flex; align-items: center; gap: 0;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-radius: 14px; padding: 18px 24px; margin-bottom: 24px;
+}
+.csb-item {
+  flex: 1; display: flex; align-items: center; gap: 12px; justify-content: center;
+}
+.csb-item i { font-size: 24px; color: var(--accent-color); }
+.csb-item strong { display: block; font-size: 18px; font-weight: 800; color: var(--heading-color); line-height: 1; }
+.csb-item span   { font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 45%); }
+.csb-divider { width: 1px; height: 40px; background: color-mix(in srgb, var(--default-color), transparent 88%); margin: 0 12px; }
+
+/* ===== Accordion ===== */
+.cd-accordion { display: flex; flex-direction: column; gap: 10px; }
+.cd-accordion-item {
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 88%) !important;
+  border-radius: 14px !important; overflow: hidden;
+}
+.cd-accordion-btn {
+  background: var(--surface-color) !important;
+  color: var(--default-color) !important;
+  padding: 18px 22px !important;
+  box-shadow: none !important;
+}
+.cd-accordion-btn:not(.collapsed) {
+  background: color-mix(in srgb, var(--accent-color), transparent 94%) !important;
+  color: var(--heading-color) !important;
+}
+.cd-module-info { display: flex; align-items: center; gap: 14px; }
+.cd-module-num {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: color-mix(in srgb, var(--accent-color), transparent 85%);
+  color: var(--accent-color); font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.cd-accordion-btn:not(.collapsed) .cd-module-num { background: var(--accent-color); color: #fff; }
+.cd-module-title { display: block; font-size: 15px; font-weight: 600; }
+.cd-module-meta  { display: block; font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 45%); }
+.cd-accordion-body { padding: 0 !important; }
+.cd-lesson-list { list-style: none; padding: 0; margin: 0; }
+.cd-lesson-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 22px;
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 93%);
+  transition: background 0.2s;
+}
+.cd-lesson-item:last-child { border-bottom: none; }
+.cd-lesson-item:hover { background: color-mix(in srgb, var(--accent-color), transparent 96%); }
+.cdli-left { display: flex; align-items: center; gap: 12px; }
+.cdli-icon { font-size: 16px; color: var(--accent-color); }
+.cdli-left span { font-size: 14px; color: var(--default-color); }
+.cdli-right { display: flex; align-items: center; gap: 10px; }
+.cdli-time { font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 45%); }
+.cdli-free { font-size: 11px; font-weight: 600; color: #10b981; background: color-mix(in srgb, #10b981, transparent 85%); padding: 2px 10px; border-radius: 10px; }
+
+/* ===== Rating Overview ===== */
+.cd-rating-overview {
+  display: center;
+  align-items: center;
+  gap: 30px;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-radius: 18px;
+  padding: 28px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.cro-left { text-align: center; flex-shrink: 0; }
+.cro-big-number { font-size: 60px; font-weight: 900; color: var(--accent-color); line-height: 1; }
+.cro-stars i { font-size: 20px; color: #ffc107; margin: 0 2px; }
+.cro-count { font-size: 13px; color: color-mix(in srgb, var(--default-color), transparent 40%); margin-top: 4px; }
+.cro-right { flex: 1; display: flex; flex-direction: column; gap: 10px; min-width: 200px; }
+.cro-bar-row { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+.cro-bar-row span:first-child { width: 32px; text-align: right; color: color-mix(in srgb, var(--default-color), transparent 30%); }
+.cro-bar-row span:first-child i { color: #ffc107; font-size: 11px; }
+.cro-bar { flex: 1; height: 8px; background: color-mix(in srgb, var(--default-color), transparent 90%); border-radius: 4px; overflow: hidden; }
+.cro-bar-fill { height: 100%; background: #ffc107; border-radius: 4px; }
+.cro-pct { width: 36px; font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 40%); }
+
+/* ===== Review Action ===== */
+.cd-review-action { margin-bottom: 24px; }
+.cd-btn-review {
+  display: center !important ;
+  align-items: center;
+  background: var(--accent-color);
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-left: 290px;
+}
+.cd-btn-review:hover { background: color-mix(in srgb, var(--accent-color), black 12%); transform: translateY(-2px); box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-color), transparent 60%); }
+.cd-login-prompt {
+  display: inline-flex; align-items: center;
+  background: color-mix(in srgb, var(--default-color), transparent 94%);
+  border-radius: 12px; padding: 12px 20px; font-size: 14px;
+}
+.cd-login-prompt a { color: var(--accent-color); font-weight: 600; }
+
+/* ===== Review Cards ===== */
+.cd-reviews-list { display: flex; flex-direction: column; gap: 16px; }
+.cd-review-card {
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-radius: 16px; padding: 22px;
+  transition: all 0.3s ease;
+}
+.cd-review-card:hover { box-shadow: 0 8px 25px color-mix(in srgb, var(--default-color), transparent 88%); transform: translateY(-2px); }
+.cd-review-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
+.cd-reviewer-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid color-mix(in srgb, var(--accent-color), transparent 70%); }
+.cd-reviewer-info { flex: 1; }
+.cd-reviewer-info h6 { font-size: 15px; font-weight: 600; color: var(--heading-color); margin-bottom: 4px; }
+.cd-review-stars i { font-size: 13px; color: #ffc107; margin-right: 1px; }
+.cd-review-date { font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 45%); display: flex; align-items: center; }
+.cd-review-text { font-size: 14px; line-height: 1.7; color: color-mix(in srgb, var(--default-color), transparent 20%); margin: 0; }
+.cd-no-reviews { text-align: center; padding: 48px 20px; background: var(--surface-color); border-radius: 16px; border: 2px dashed color-mix(in srgb, var(--default-color), transparent 82%); }
+.cd-no-reviews i { font-size: 40px; color: color-mix(in srgb, var(--default-color), transparent 60%); display: block; margin-bottom: 12px; }
+.cd-no-reviews h5 { font-size: 18px; font-weight: 600; color: var(--heading-color); margin-bottom: 6px; }
+.cd-no-reviews p  { font-size: 14px; color: color-mix(in srgb, var(--default-color), transparent 40%); margin: 0; }
+
+/* ===== Enrollment Card ===== */
+.cd-enrollment-card {
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
+  border-radius: 22px; overflow: hidden;
+  box-shadow: 0 12px 40px color-mix(in srgb, var(--default-color), transparent 88%);
+  margin-bottom: 20px; position: sticky; top: 90px;
+}
+.cd-price-section {
+  background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color), blue 20%));
+  padding: 24px 28px;
+}
+.cd-price-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
+.cd-current-price { font-size: 36px; font-weight: 900; color: #fff; }
+.cd-original-price { font-size: 18px; color: rgba(255,255,255,0.65); text-decoration: line-through; }
+.cd-discount-tag { background: rgba(255,255,255,0.2); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 12px; }
+.cd-timer { display: flex; align-items: center; color: rgba(255,255,255,0.85); font-size: 13px; }
+.cd-course-features { padding: 20px 28px; border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 92%); display: flex; flex-direction: column; gap: 12px; }
+.cd-feature-item { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+.cd-feature-item i { font-size: 16px; color: var(--accent-color); width: 20px; }
+.cd-action-btns { padding: 20px 28px; display: flex; flex-direction: column; gap: 10px; }
+.cd-btn-enroll {
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color), blue 20%));
+  color: #fff; padding: 16px; border-radius: 14px;
+  font-size: 16px; font-weight: 700; text-decoration: none;
+  transition: all 0.3s; gap: 8px;
+}
+.cd-btn-enroll:hover { transform: translateY(-2px); box-shadow: 0 10px 25px color-mix(in srgb, var(--accent-color), transparent 55%); color: #fff; }
+.cd-btn-wishlist {
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; color: var(--accent-color);
+  border: 2px solid var(--accent-color);
+  padding: 14px; border-radius: 14px;
+  font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.3s; gap: 8px;
+}
+.cd-btn-wishlist:hover { background: var(--accent-color); color: #fff; }
+.cd-guarantee {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 28px; font-size: 13px;
+  color: color-mix(in srgb, var(--default-color), transparent 35%);
+  border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
+}
+.cd-guarantee i { color: #10b981; font-size: 16px; }
+
+/* ===== Details Card ===== */
+.cd-details-card, .cd-share-card {
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-radius: 18px; padding: 22px 24px; margin-bottom: 20px;
+}
+.cd-details-header { display: flex; align-items: center; margin-bottom: 18px; }
+.cd-details-header h4 { font-size: 17px; font-weight: 700; color: var(--heading-color); margin: 0; }
+.cd-details-header i { color: var(--accent-color); font-size: 18px; }
+.cd-details-list { display: flex; flex-direction: column; gap: 10px; }
+.cd-detail-item { display: flex; align-items: center; gap: 14px; padding: 10px 0; border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 93%); }
+.cd-detail-item:last-child { border-bottom: none; }
+.cdi-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.cdi-blue   { background: color-mix(in srgb, #3b82f6, transparent 85%); color: #3b82f6; }
+.cdi-green  { background: color-mix(in srgb, #10b981, transparent 85%); color: #10b981; }
+.cdi-orange { background: color-mix(in srgb, #f97316, transparent 85%); color: #f97316; }
+.cdi-purple { background: color-mix(in srgb, #8b5cf6, transparent 85%); color: #8b5cf6; }
+.cdi-red    { background: color-mix(in srgb, #dc3545, transparent 85%); color: #dc3545; }
+.cdi-teal   { background: color-mix(in srgb, #14b8a6, transparent 85%); color: #14b8a6; }
+.cdi-info { display: flex; flex-direction: column; }
+.cdi-label { font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 45%); }
+.cdi-value { font-size: 14px; font-weight: 600; color: var(--heading-color); }
+
+/* ===== Share Card ===== */
+.cd-share-links { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.cd-share-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px; border-radius: 10px;
+  text-decoration: none; font-size: 13px; font-weight: 600;
+  transition: all 0.2s; color: #fff;
+}
+.cd-share-fb { background: #1877f2; }
+.cd-share-tw { background: #1da1f2; }
+.cd-share-li { background: #0077b5; }
+.cd-share-em { background: var(--accent-color); }
+.cd-share-btn:hover { opacity: 0.88; transform: translateY(-2px); color: #fff; }
+.cd-copy-link { display: flex; gap: 8px; }
+.cd-copy-link input {
+  flex: 1; padding: 9px 14px; border-radius: 10px;
+  border: 1.5px solid color-mix(in srgb, var(--default-color), transparent 85%);
+  background: var(--background-color); color: var(--default-color);
+  font-size: 12px;
+}
+.cd-copy-btn {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--accent-color); color: #fff;
+  border: none; cursor: pointer; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; flex-shrink: 0;
+}
+.cd-copy-btn:hover { background: color-mix(in srgb, var(--accent-color), black 12%); }
+
+/* ===== Modal ===== */
+.cd-modal { border-radius: 20px; overflow: hidden; }
+.cd-modal-header { padding: 22px 26px; border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 90%); }
+.cd-modal-body { padding: 24px 26px; }
+.cd-modal-label { display: block; font-size: 13px; font-weight: 600; color: var(--heading-color); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+.cd-modal-rating { margin-bottom: 22px; }
+.cd-star-picker { display: flex; gap: 6px; margin-bottom: 8px; }
+.cd-star-picker .star { font-size: 30px; color: #ccc; cursor: pointer; transition: color 0.15s, transform 0.15s; }
+.cd-star-picker .star:hover, .cd-star-picker .star.active { color: #ffc107; transform: scale(1.2); }
+.cd-rating-label-text { font-size: 13px; font-weight: 500; color: color-mix(in srgb, var(--default-color), transparent 40%); display: block; min-height: 18px; }
+.cd-modal-field { margin-bottom: 22px; }
+.cd-modal-textarea {
+  width: 100%; padding: 14px 16px;
+  border: 2px solid color-mix(in srgb, var(--default-color), transparent 82%);
+  border-radius: 12px; background: var(--background-color);
+  color: var(--default-color); font-size: 14px; resize: vertical;
+  transition: all 0.3s;
+}
+.cd-modal-textarea:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color), transparent 88%); }
+.cd-modal-textarea::placeholder { color: color-mix(in srgb, var(--default-color), transparent 55%); }
+.cd-modal-submit {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color), blue 20%));
+  color: #fff; border: none; border-radius: 12px;
+  font-size: 15px; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: all 0.3s;
+}
+.cd-modal-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 25px color-mix(in srgb, var(--accent-color), transparent 55%); }
+.cd-modal-login { text-align: center; padding: 24px; }
+.cd-modal-login i { font-size: 32px; color: color-mix(in srgb, var(--default-color), transparent 50%); display: block; margin-bottom: 12px; }
+.cd-modal-login a { color: var(--accent-color); font-weight: 600; }
+</style>
+
+<script>
+const stars = document.querySelectorAll('#star-container .star');
+const ratingInput = document.getElementById('rating-value');
+const ratingText = document.getElementById('ratingLabelText');
+const labels = ['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
+let selected = 0;
+
+stars.forEach(star => {
+  star.addEventListener('click', () => {
+    selected = +star.dataset.value;
+    ratingInput.value = selected;
+    ratingText.textContent = labels[selected];
+    update(selected);
+  });
+  star.addEventListener('mouseenter', () => {
+    update(+star.dataset.value);
+    ratingText.textContent = labels[+star.dataset.value];
+  });
+  star.addEventListener('mouseleave', () => {
+    update(selected);
+    ratingText.textContent = selected ? labels[selected] : '';
+  });
+});
+
+function update(val) {
+  stars.forEach(s => s.classList.toggle('active', +s.dataset.value <= val));
+}
+
+function copyLink() {
+  const input = document.getElementById('courseLink');
+  const btn = document.getElementById('copyBtn');
+  navigator.clipboard.writeText(input.value).then(() => {
+    btn.innerHTML = '<i class="bi bi-check-lg"></i>';
+    btn.style.background = '#10b981';
+    setTimeout(() => {
+      btn.innerHTML = '<i class="bi bi-clipboard"></i>';
+      btn.style.background = '';
+    }, 2000);
+  });
+}
+</script>
+
+{% endblock content %}

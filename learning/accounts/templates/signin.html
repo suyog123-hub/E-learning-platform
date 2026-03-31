@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<main class="main">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6 col-xl-5 mt-5 mb-5">
+        <div class="card shadow-sm border-0 rounded-4 p-4 p-md-5" style="background-color: var(--surface-color);">
+          <div class="text-center mb-4">
+            <h2 class="fw-bold mt-5" style="color: var(--heading-color);">Welcome Back</h2>
+            <p class="text-muted">Sign in to your account</p>
+          </div>
+
+          <form method="post" action="{% url 'signin' %}" class="php-email-form">
+            {% csrf_token %}
+            <!-- email -->
+            <div class="form-group mb-3">
+              <label for="username" class="form-label fw-semibold" style="color: var(--heading-color);">Email</label>
+              <input type="text" class="form-control rounded-3" name="username" id="email" placeholder="Enter your username" required>
+            </div>
+<!-- password -->
+            <div class="form-group mb-4">
+              <label for="password" class="form-label fw-semibold" style="color: var(--heading-color);">Password</label>
+              <input type="password" class="form-control rounded-3" name="password" id="password" placeholder="••••••••" required>
+            </div>
+<!-- remember me -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div class="form-check">
+                <input class="form-check-input" name="remember_me" type="checkbox" id="remember">
+                <label class="form-check-label" for="remember">Remember me</label>
+                <!-- for get password  -->
+              </div>
+              <a href="{% url 'password_reset' %}" class="text-decoration-none" style="color: var(--accent-color);">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn w-100 py-2 fw-semibold rounded-3" style="background-color: var(--accent-color); color: var(--contrast-color); border: none;">
+              Sign In
+            </button>
+
+            <p class="text-center mt-4 mb-5 mb-0">
+              Don't have an account?
+              <a href="{% url 'register' %}" class="text-decoration-none fw-semibold" style="color: var(--accent-color);">Register now</a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}

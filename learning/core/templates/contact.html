@@ -1,0 +1,254 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<main class="main">
+
+<!-- Contact Section -->
+<section id="contact" class="contact section">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+    <div class="contact-main-wrapper">
+
+      <!-- Map -->
+      <div class="map-wrapper">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d321.1170195027977!2d85.34622651593375!3d27.6654539009761!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19003e6a29a7%3A0x912d5e5651cc334a!2sSrijana%20marg%2C%20Imadol%2C%20Lalitpur!5e0!3m2!1sen!2snp!4v1773940184084!5m2!1sen!2snp"
+          width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+
+      <!-- Right Content -->
+      <div class="contact-content">
+
+        <!-- Info Cards -->
+        <div class="contact-cards-container" data-aos="fade-up" data-aos-delay="300">
+
+          <div class="contact-card cc-blue">
+            <div class="icon-box"><i class="bi bi-geo-alt-fill"></i></div>
+            <div class="contact-text">
+              <h4>Location</h4>
+              <p>Srijana marg, Imadol, Lalitpur M88W+574, 44600</p>
+            </div>
+            <div class="cc-bg-icon"><i class="bi bi-geo-alt"></i></div>
+          </div>
+
+          <div class="contact-card cc-green">
+            <div class="icon-box"><i class="bi bi-envelope-fill"></i></div>
+            <div class="contact-text">
+              <h4>Email Us</h4>
+              <p>ksuyog697@gmail.com</p>
+            </div>
+            <div class="cc-bg-icon"><i class="bi bi-envelope"></i></div>
+          </div>
+
+          <div class="contact-card cc-orange">
+            <div class="icon-box"><i class="bi bi-telephone-fill"></i></div>
+            <div class="contact-text">
+              <h4>Call Us</h4>
+              <p>+977 9766387873</p>
+            </div>
+            <div class="cc-bg-icon"><i class="bi bi-telephone"></i></div>
+          </div>
+
+          <div class="contact-card cc-purple">
+            <div class="icon-box"><i class="bi bi-clock-fill"></i></div>
+            <div class="contact-text">
+              <h4>Open Hours</h4>
+              <p>Monday - Friday: 9AM - 6PM</p>
+            </div>
+            <div class="cc-bg-icon"><i class="bi bi-clock"></i></div>
+          </div>
+
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form-container" data-aos="fade-up" data-aos-delay="400">
+
+          <div class="cfc-header">
+            <div>
+              <div class="cfc-label">
+                <i class="bi bi-send-fill me-2"></i>Contact Us
+              </div>
+              <h3>Get in Touch</h3>
+              <p>Fill out the form below and we'll get back to you within 24 hours.</p>
+            </div>
+            <div class="cfc-badge">
+              <i class="bi bi-lightning-charge-fill me-1"></i>Fast Response
+            </div>
+          </div>
+
+          <form action="{% url 'contact' %}" method="post" class="php-email-form">
+            {% csrf_token %}
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="cf-field">
+                  <label class="cf-label"><i class="bi bi-person me-1"></i>Your Name</label>
+                  <input type="text" name="name" class="cf-input" placeholder="John Doe" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="cf-field">
+                  <label class="cf-label"><i class="bi bi-envelope me-1"></i>Your Email</label>
+                  <input type="email" name="email" class="cf-input" placeholder="john@example.com" required>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="cf-field">
+                  <label class="cf-label"><i class="bi bi-tag me-1"></i>Subject</label>
+                  <input type="text" name="subject" class="cf-input" placeholder="How can we help?" required>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="cf-field">
+                  <label class="cf-label"><i class="bi bi-chat-text me-1"></i>Message</label>
+                  <textarea name="message" class="cf-input cf-textarea" rows="5"
+                    placeholder="Write your message here..." required></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="form-submit">
+              <button type="submit" class="cf-submit-btn">
+                <i class="bi bi-send-fill me-2"></i>Send Message
+              </button>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<style>
+/* ===== Map Label ===== */
+.map-wrapper { position: relative; }
+.map-label {
+  position: absolute; top: 14px; left: 14px; z-index: 2;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
+  border-radius: 10px; padding: 8px 14px;
+  font-size: 13px; font-weight: 600; color: var(--heading-color);
+  display: flex; align-items: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+.map-label i { color: var(--accent-color); }
+
+/* ===== Info Cards ===== */
+.contact-card {
+  position: relative; overflow: hidden;
+  border-radius: 16px !important;
+  color: #fff; transition: all 0.3s ease !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1) !important;
+}
+.contact-card:hover { transform: translateY(-4px) !important; box-shadow: 0 14px 35px rgba(0,0,0,0.15) !important; }
+.cc-blue   { background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important; }
+.cc-green  { background: linear-gradient(135deg, #10b981, #047857) !important; }
+.cc-orange { background: linear-gradient(135deg, #f97316, #c2410c) !important; }
+.cc-purple { background: linear-gradient(135deg, #8b5cf6, #6d28d9) !important; }
+.contact-card .icon-box {
+  background: rgba(255,255,255,0.2) !important;
+  border: none !important; color: #fff !important;
+}
+.contact-card .contact-text h4 { color: rgba(255,255,255,0.85) !important; font-size: 12px !important; text-transform: uppercase; letter-spacing: 0.5px; }
+.contact-card .contact-text p  { color: #fff !important; font-weight: 500 !important; font-size: 14px !important; }
+.cc-bg-icon {
+  position: absolute; right: -10px; bottom: -10px;
+  font-size: 65px; opacity: 0.12; color: #fff;
+}
+
+/* ===== Form Container ===== */
+.contact-form-container {
+  background: var(--surface-color) !important;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 88%) !important;
+  border-radius: 20px !important;
+  padding: 28px 30px !important;
+  box-shadow: 0 8px 30px color-mix(in srgb, var(--default-color), transparent 90%) !important;
+}
+
+/* ===== Form Header ===== */
+.cfc-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 24px; gap: 12px; flex-wrap: wrap;
+}
+.cfc-label {
+  display: inline-flex; align-items: center;
+  background: color-mix(in srgb, var(--accent-color), transparent 88%);
+  color: var(--accent-color); font-size: 12px; font-weight: 600;
+  padding: 5px 14px; border-radius: 14px; margin-bottom: 8px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.cfc-label i { color: var(--accent-color); }
+.contact-form-container h3 {
+  font-size: 20px !important; font-weight: 700 !important;
+  color: var(--heading-color) !important; margin-bottom: 5px !important;
+}
+.contact-form-container > div > p,
+.contact-form-container p {
+  font-size: 13px !important;
+  color: color-mix(in srgb, var(--default-color), transparent 40%) !important;
+  margin: 0 !important;
+}
+.cfc-badge {
+  display: inline-flex; align-items: center;
+  background: color-mix(in srgb, #10b981, transparent 85%);
+  color: #10b981; font-size: 12px; font-weight: 600;
+  padding: 6px 14px; border-radius: 14px; white-space: nowrap; flex-shrink: 0;
+}
+
+/* ===== Form Fields ===== */
+.cf-label {
+  display: flex; align-items: center;
+  font-size: 12px; font-weight: 600; color: var(--heading-color);
+  margin-bottom: 7px; text-transform: uppercase; letter-spacing: 0.4px;
+}
+.cf-label i { color: var(--accent-color); }
+.cf-input {
+  width: 100%; padding: 11px 16px;
+  border: 2px solid color-mix(in srgb, var(--default-color), transparent 82%) !important;
+  border-radius: 12px !important; background: var(--background-color) !important;
+  color: var(--default-color) !important; font-size: 14px; transition: all 0.3s;
+}
+.cf-input:focus {
+  outline: none !important; border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color), transparent 88%) !important;
+}
+.cf-input::placeholder { color: color-mix(in srgb, var(--default-color), transparent 55%); }
+.cf-textarea { resize: vertical; min-height: 120px; }
+
+/* ===== Submit Row ===== */
+.form-submit {
+  display: flex; align-items: center;
+  justify-content: space-between; flex-wrap: wrap;
+  gap: 14px; margin-top: 20px;
+}
+.cf-submit-btn {
+  display: inline-flex; align-items: center;
+  background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color), blue 20%));
+  color: #fff; border: none; padding: 13px 30px;
+  border-radius: 25px; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all 0.3s; gap: 6px;
+}
+.cf-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px color-mix(in srgb, var(--accent-color), transparent 55%); }
+
+/* ===== Social Links ===== */
+.cf-socials { display: flex; gap: 8px !important; }
+.cf-socials a {
+  width: 38px; height: 38px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; text-decoration: none; color: #fff !important;
+  transition: all 0.2s; border: none !important;
+}
+.cf-socials a:hover { transform: translateY(-2px); opacity: 0.88; }
+.cfs-tw { background: #1da1f2; }
+.cfs-fb { background: #1877f2; }
+.cfs-ig { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+.cfs-li { background: #0077b5; }
+</style>
+
+{% endblock content %}

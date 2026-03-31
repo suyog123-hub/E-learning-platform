@@ -1,0 +1,445 @@
+{% load static %}
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Learner - Expert Online Courses</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Raleway:wght@400;500;600;700;800;900&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+<!-- Font Awesome Icon Library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    /* ===== Header ===== */
+    .header {
+      background: var(--background-color);
+      border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+      padding: 10px 0;
+      z-index: 997;
+    }
+    .header .sitename {
+      font-size: 24px; font-weight: 800; margin: 0;
+      background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color), blue 20%));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .header .logo { text-decoration: none; }
+
+    /* ===== Enroll Button ===== */
+    .btn-getstarted {
+      background: var(--accent-color) !important;
+      color: #fff !important; padding: 9px 22px !important;
+      border-radius: 25px !important; font-size: 14px !important;
+      font-weight: 600 !important; text-decoration: none !important;
+      transition: all 0.3s !important; white-space: nowrap;
+      display: inline-flex !important; align-items: center !important;
+    }
+    .btn-getstarted:hover {
+      background: color-mix(in srgb, var(--accent-color), black 12%) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 18px color-mix(in srgb, var(--accent-color), transparent 60%) !important;
+      color: #fff !important;
+    }
+
+    /* ===== Nav Avatar ===== */
+    .nav-profile-img {
+      height: 36px; width: 36px;
+      border-radius: 50%; object-fit: cover;
+      border: 2px solid var(--accent-color);
+      transition: all 0.2s;
+    }
+    .nav-profile-img:hover { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color), transparent 70%); }
+
+    /* ===== Dropdown ===== */
+    .navmenu .dropdown ul {
+      border-radius: 14px !important;
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 88%) !important;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1) !important;
+      padding: 6px !important; min-width: 180px !important;
+    }
+    .navmenu .dropdown ul a {
+      border-radius: 8px !important;
+      padding: 9px 14px !important; font-size: 14px !important;
+      display: flex !important; align-items: center !important;
+      gap: 8px !important; transition: all 0.2s !important;
+      color: black !important;
+    }
+    .navmenu .dropdown ul a:hover {
+      background: rgb(77, 121, 217), transparent (90%) !important;
+      color: var(--accent-color) !important;
+    }
+
+    /* ===== Footer ===== */
+    .footer {
+      background: #0f172a !important;
+      color: #94a3b8 !important;
+    }
+    .footer .sitename {
+      font-size: 22px; font-weight: 800;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .footer .footer-about p { color: #64748b; font-size: 14px; line-height: 1.7; }
+    .footer h4 {
+      color: #f1f5f9 !important; font-size: 15px; font-weight: 700;
+      margin-bottom: 18px; padding-bottom: 10px;
+      border-bottom: 2px solid color-mix(in srgb, var(--accent-color), transparent 65%);
+      display: inline-block;
+    }
+    .footer .footer-links ul { list-style: none; padding: 0; }
+    .footer .footer-links ul li { padding: 6px 0; }
+    .footer .footer-links ul a {
+      color: #64748b !important; font-size: 14px; text-decoration: none;
+      transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+    }
+    .footer .footer-links ul a::before {
+      content: '\F285'; font-family: 'bootstrap-icons';
+      font-size: 10px; color: var(--accent-color);
+    }
+    .footer .footer-links ul a:hover { color: #fff !important; padding-left: 4px; }
+    .footer .footer-contact p { color: #64748b; font-size: 14px; margin-bottom: 5px; }
+    .footer .footer-contact strong { color: #94a3b8; }
+    .footer .footer-contact span  { color: #cbd5e1; }
+    .footer .social-links a {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1) !important;
+      display: flex; align-items: center; justify-content: center;
+      color: #94a3b8 !important; font-size: 15px; transition: all 0.3s;
+    }
+    .footer .social-links a:hover {
+      background: var(--accent-color) !important;
+      border-color: var(--accent-color) !important;
+      color: #fff !important; transform: translateY(-3px);
+    }
+    .footer .copyright {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 18px 0;
+    }
+    .footer .copyright p { color: #475569; font-size: 13px; margin: 0; }
+    .footer .credits { color: #475569; font-size: 12px; margin-top: 4px; }
+    .footer .credits a { color: #64748b; }
+    .footer .credits a:hover { color: var(--accent-color); }
+
+    /* ===== Back to Top ===== */
+    .btt-btn {
+      position: fixed; bottom: 20px; right: 20px; z-index: 999;
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--accent-color); color: #fff;
+      border: none; cursor: pointer; font-size: 18px;
+      display: none; align-items: center; justify-content: center;
+      box-shadow: 0 4px 14px color-mix(in srgb, var(--accent-color), transparent 55%);
+      transition: all 0.3s;
+    }
+    .btt-btn:hover { transform: translateY(-3px); }
+    .btt-btn.show { display: flex; }
+    @media (max-width: 1199px) {
+
+  /* Full nav drawer */
+  .mobile-nav-active .navmenu ul {
+    display: block !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: auto !important;
+    width: 260px !important;
+    height: 100vh !important;
+    background: var(--background-color) !important;
+    padding: 70px 12px 20px !important;
+    overflow-y: auto !important;
+    z-index: 9998 !important;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.15) !important;
+    border-right: 1px solid color-mix(in srgb, var(--default-color), transparent 88%) !important;
+  }
+
+  /* Overlay */
+  .mobile-nav-active .navmenu {
+    position: fixed !important;
+    inset: 0 !important;
+    background: rgba(0,0,0,0.5) !important;
+    z-index: 9997 !important;
+  }
+
+  /* Each nav item */
+  .navmenu ul li {
+    border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 90%) !important;
+  }
+  .navmenu ul li:last-child { border-bottom: none !important; }
+
+  .navmenu ul a,
+  .navmenu ul a:focus {
+    color: var(--default-color) !important;
+    padding: 12px 14px !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    border-radius: 10px !important;
+    transition: all 0.2s !important;
+  }
+  .navmenu ul a:hover {
+    background: color-mix(in srgb, var(--accent-color), transparent 90%) !important;
+    color: var(--accent-color) !important;
+  }
+
+  /* Hide dropdown ul by default on mobile */
+  .navmenu .dropdown ul {
+    display: none !important;
+    position: static !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: color-mix(in srgb, var(--accent-color), transparent 95%) !important;
+    border-radius: 10px !important;
+    padding: 6px !important;
+    margin: 4px 0 8px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  /* Show dropdown when active */
+  .navmenu .dropdown.active > ul {
+    display: block !important;
+  }
+
+  /* Profile image inside nav on mobile */
+  .nav-profile-img {
+    height: 32px !important;
+    width: 32px !important;
+  }
+
+  /* Close button */
+  .mobile-nav-active .mobile-nav-toggle {
+    position: fixed !important;
+    top: 15px !important;
+    left: 215px !important;
+    z-index: 9999 !important;
+    color: var(--default-color) !important;
+    font-size: 24px !important;
+  }
+
+  /* Hide enroll button on mobile */
+  .btn-getstarted {
+    display: none !important;
+  }
+
+}
+  </style>
+
+</head>
+
+<body class="enroll-page">
+
+  <!-- Header -->
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+
+      <!-- Logo -->
+      <a href="{% url 'home' %}" class="logo d-flex align-items-center me-auto">
+        <i class="bi bi-mortarboard-fill me-2" style="color:var(--accent-color);font-size:20px;"></i>
+        <h1 class="sitename">Learner</h1>
+      </a>
+
+      <!-- Nav -->
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'courses' %}">Courses</a></li>
+          <li><a href="{% url 'contact' %}">Contact</a></li>
+          <li class="dropdown">
+            {% if request.user.is_authenticated %}
+              {% if request.user.profile.profile_image %}
+                <img src="{{ request.user.profile.profile_image.url }}" class="nav-profile-img">
+              {% else %}
+                <img src="{% static 'image/default_profile.avif' %}" class="nav-profile-img">
+              {% endif %}
+            {% else %}
+              <i class="bi bi-person-circle" style="font-size:24px;color:var(--default-color);"></i>
+            {% endif %}
+            <i class="bi bi-chevron-down toggle-dropdown" style="font-size:11px;"></i>
+            <ul>
+              {% if request.user.is_authenticated %}
+              <li><a href="{% url 'profile' %}"><i class="bi bi-person"></i>Profile</a></li>
+              <li><a href="{% url 'renew_password' %}"><i class="bi bi-key"></i>Change Password</a></li>
+              <li><a href="{% url 'cart_detail' %}"><i class="bi bi-heart"></i>My Cart</a></li>
+              <li><a href="{% url 'logout' %}" style="color:#dc3545!important;"><i class="bi bi-box-arrow-right" style="color:#dc3545!important;"></i>Logout</a></li>
+              {% else %}
+              <li><a href="{% url 'signin' %}"><i class="bi bi-box-arrow-in-right"></i>Login</a></li>
+              <li><a href="{% url 'register' %}"><i class="bi bi-person-plus"></i>Register</a></li>
+              {% endif %}
+            </ul>
+          </li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+       <form action="{% url 'courses' %}" method="get" >
+            <div class="search-box enhanced-search ms-3">
+              <i class="bi bi-search"></i>
+              <input type="text" name="search" placeholder="Search courses...">
+              <button type="submit" style="display: none;">Submit</button>
+            </div>
+            </form>
+
+    </div>
+  </header>
+
+  {% block content %}
+  {% endblock content %}
+
+  <!-- Footer -->
+  <footer id="footer" class="footer">
+    <div class="container footer-top">
+      <div class="row gy-4">
+
+        <!-- About -->
+        <div class="col-lg-5 col-md-12 footer-about">
+          <a href="{% url 'home' %}" class="logo d-flex align-items-center mb-2">
+            <i class="bi bi-mortarboard-fill me-2" style="color:var(--accent-color);font-size:20px;"></i>
+            <span class="sitename">Learner</span>
+          </a>
+          <p>Empowering students worldwide with expert-led courses and industry-relevant skills for the digital era.</p>
+          <div class="social-links d-flex mt-3 gap-2">
+            <a href="#"><i class="bi bi-twitter-x"></i></a>
+            <a href="#"><i class="bi bi-facebook"></i></a>
+            <a href="#"><i class="bi bi-instagram"></i></a>
+            <a href="#"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+
+        <!-- Links -->
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about' %}">About Us</a></li>
+            <li><a href="{% url 'courses' %}">Courses</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+
+        <!-- Services -->
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Our Courses</h4>
+          <ul>
+            <li><a href="#">Web Development</a></li>
+            <li><a href="#">Data Science</a></li>
+            <li><a href="#">UI/UX Design</a></li>
+            <li><a href="#">Machine Learning</a></li>
+            <li><a href="#">Cybersecurity</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div class="col-lg-3 col-md-12 footer-contact">
+          <h4>Contact Us</h4>
+          <p>A108 Adam Street</p>
+          <p>New York, NY 535022</p>
+          <p>United States</p>
+          <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+          <p><strong>Email:</strong> <span>info@example.com</span></p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-3">
+      <p>© <span id="fyear"></span> <strong class="sitename">Learner</strong> — All Rights Reserved</p>
+      <div class="credits">
+        Designed by <a href="https://bootstrapmade.com/">Suyog khadka</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top -->
+  <button class="btt-btn" id="bttBtn">
+    <i class="bi bi-arrow-up"></i>
+  </button>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@srexi/purecounterjs/dist/purecounter_vanilla.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+
+  <script>
+    AOS.init({ duration: 600, easing: 'ease-in-out', once: true });
+    new PureCounter();
+
+    // Footer year
+    document.getElementById('fyear').textContent = new Date().getFullYear();
+
+    // Back to top
+    const bttBtn = document.getElementById('bttBtn');
+    window.addEventListener('scroll', () => bttBtn.classList.toggle('show', window.scrollY > 400));
+    bttBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  </script>
+<script>
+  const toggle = document.querySelector('.mobile-nav-toggle');
+
+  if (toggle) {
+    toggle.addEventListener('click', function () {
+      document.body.classList.toggle('mobile-nav-active');
+      this.classList.toggle('bi-list');
+      this.classList.toggle('bi-x');
+    });
+
+    // Close on outside click
+    document.addEventListener('click', function (e) {
+      const nav = document.querySelector('#navmenu');
+      if (
+        document.body.classList.contains('mobile-nav-active') &&
+        !nav.contains(e.target) &&
+        !toggle.contains(e.target)
+      ) {
+        document.body.classList.remove('mobile-nav-active');
+        toggle.classList.add('bi-list');
+        toggle.classList.remove('bi-x');
+      }
+    });
+
+    // Dropdown on mobile
+    document.querySelectorAll('.toggle-dropdown').forEach(el => {
+      el.addEventListener('click', function (e) {
+        if (window.innerWidth < 1200) {
+          e.preventDefault();
+          e.stopPropagation();
+          this.closest('.dropdown').classList.toggle('active');
+          const ul = this.closest('.dropdown').querySelector('ul');
+          if (ul) ul.style.display = ul.style.display === 'block' ? 'none' : 'block';
+        }
+      });
+    });
+  }
+</script>
+  {% if messages %}
+    {% for message in messages %}
+      {% if message.tags == "success" %}
+      <script>alertify.set('notifier','position','top-right'); alertify.success('{{message}}');</script>
+      {% else %}
+      <script>alertify.set('notifier','position','top-right'); alertify.error('{{message}}');</script>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+</body>
+</html>

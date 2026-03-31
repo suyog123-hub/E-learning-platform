@@ -1,0 +1,2569 @@
+{% extends "base.html" %}
+{% load static %}
+{% load cart_tag %}
+{% block content %}
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Raleway:wght@700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap"
+  rel="stylesheet">
+
+<main class="sp-root">
+
+  <!-- ════════════════════════════════════════
+     HERO BANNER
+════════════════════════════════════════ -->
+  <div class="sp-hero">
+    <!-- mesh bg -->
+    <div class="sp-hero-mesh"></div>
+    <div class="sp-hero-glow g1"></div>
+    <div class="sp-hero-glow g2"></div>
+    <div class="sp-hero-glow g3"></div>
+
+    <!-- floating stats top-right -->
+    <div class="sp-hero-fstats">
+      <div class="sp-fstat"><i class="bi bi-book-fill"></i>
+        <div><b>12</b><small>Courses</small></div>
+      </div>
+      <div class="sp-fstat"><i class="bi bi-award-fill"></i>
+        <div><b>8</b><small>Certs</small></div>
+      </div>
+      <div class="sp-fstat"><i class="bi bi-clock-fill"></i>
+        <div><b>150h</b><small>Learned</small></div>
+      </div>
+      <div class="sp-fstat sp-fstat-streak"><i class="bi bi-lightning-charge-fill"></i>
+        <div><b>7</b><small>Day Streak</small></div>
+      </div>
+    </div>
+
+    <div class="sp-hero-inner container">
+      <!-- Avatar -->
+      <div class="sp-avatar-wrap">
+        <div class="sp-avatar-ring"></div>
+        <div class="sp-avatar-ring sp-ring2"></div>
+        {% if request.user.profile.profile_image %}
+        <img src="{{ request.user.profile.profile_image.url }}" class="sp-avatar" alt="Avatar">
+        {% else %}
+        <img src="{% static 'image/default_profile.avif' %}" class="sp-avatar" alt="Avatar">
+        {% endif %}
+        <span class="sp-avatar-badge"><i class="bi bi-patch-check-fill"></i> Active</span>
+      </div>
+
+      <!-- Info -->
+      <div class="sp-hero-info">
+        <div class="sp-hero-eyebrow">
+          <span class="sp-dot"></span> Student Dashboard
+        </div>
+        <h1 class="sp-hero-name">
+          {% if request.user.profile.name %}{{ request.user.profile.name }}
+          {% else %}{{ request.user.first_name }} {{ request.user.last_name }}{% endif %}
+        </h1>
+        <p class="sp-hero-title">
+          <i class="bi bi-mortarboard-fill"></i>
+          {{ request.user.profile.bio|default:"Student & Lifelong Learner" }}
+        </p>
+
+        <div class="sp-hero-meta">
+          <span><i class="bi bi-envelope-fill"></i>{{ request.user.email }}</span>
+          <span><i class="bi bi-calendar-fill"></i>Joined {{ request.user.date_joined|date:"M Y" }}</span>
+          <span><i class="bi bi-geo-alt-fill"></i>{{ request.user.profile.address|default:"Nepal" }}</span>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="sp-prog-wrap">
+          <div class="sp-prog-label">
+            <span><i class="bi bi-graph-up-arrow me-1"></i>Overall Completion</span>
+            <span class="sp-prog-pct">78%</span>
+          </div>
+          <div class="sp-prog-track">
+            <div class="sp-prog-fill" style="width:78%">
+              <span class="sp-prog-shine"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="sp-hero-actions">
+          <button class="sp-btn sp-btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+            <i class="bi bi-pencil-square"></i> Edit Profile
+          </button>
+          <button class="sp-btn sp-btn-ghost">
+            <i class="bi bi-share-fill"></i> Share
+          </button>
+          <div class="sp-socials">
+            <a href="#" class="sp-social-link" title="GitHub"><i class="bi bi-github"></i></a>
+            <a href="#" class="sp-social-link" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+            <a href="#" class="sp-social-link" title="Twitter"><i class="bi bi-twitter-x"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+     QUICK STAT CARDS
+════════════════════════════════════════ -->
+  <div class="container sp-qs-grid" data-aos="fade-up" data-aos-delay="100">
+    <div class="sp-qs-card sp-qs-blue">
+      <div class="sp-qs-icon"><i class="bi bi-play-circle-fill"></i></div>
+      <div>
+        <h3>4</h3>
+        <p>In Progress</p>
+      </div>
+      <i class="bi bi-play-circle sp-qs-bg"></i>
+    </div>
+    <div class="sp-qs-card sp-qs-green">
+      <div class="sp-qs-icon"><i class="bi bi-check-circle-fill"></i></div>
+      <div>
+        <h3>8</h3>
+        <p>Completed</p>
+      </div>
+      <i class="bi bi-check-circle sp-qs-bg"></i>
+    </div>
+    <div class="sp-qs-card sp-qs-orange">
+      <div class="sp-qs-icon"><i class="bi bi-clock-fill"></i></div>
+      <div>
+        <h3>12.5h</h3>
+        <p>This Week</p>
+      </div>
+      <i class="bi bi-clock sp-qs-bg"></i>
+    </div>
+    <div class="sp-qs-card sp-qs-purple">
+      <div class="sp-qs-icon"><i class="bi bi-star-fill"></i></div>
+      <div>
+        <h3>4.8</h3>
+        <p>Avg Rating</p>
+      </div>
+      <i class="bi bi-star sp-qs-bg"></i>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+     MAIN CONTENT + SIDEBAR
+════════════════════════════════════════ -->
+  <div class="container sp-layout" data-aos="fade-up" data-aos-delay="150">
+
+    <!-- ── LEFT: Tabs ── -->
+    <div class="sp-main">
+
+      <!-- Tab bar -->
+      <div class="sp-tabbar">
+        <button class="sp-tab active" data-tab="courses">
+          <i class="bi bi-collection-play"></i><span>My Courses</span>
+        </button>
+        <button class="sp-tab" data-tab="favourites">
+          <i class="bi bi-heart-fill"></i><span>Favourites</span>
+          <span class="sp-tab-badge">3</span>
+        </button>
+        <button class="sp-tab" data-tab="achievements">
+          <i class="bi bi-trophy"></i><span>Achievements</span>
+        </button>
+        <button class="sp-tab" data-tab="quizzes">
+          <i class="bi bi-patch-question"></i><span>Quizzes</span>
+        </button>
+      </div>
+
+      <!-- ── Tab: My Courses ── -->
+      <div class="sp-tab-panel active" id="tab-courses">
+        <div class="sp-panel-header">
+          <h4><i class="bi bi-collection-play me-2"></i>My Courses</h4>
+          <div class="sp-filter-row">
+            <button class="sp-filter active">All</button>
+            <button class="sp-filter">In Progress</button>
+            <button class="sp-filter">Completed</button>
+          </div>
+        </div>
+
+        <div class="sp-course-grid">
+
+          <div class="sp-course-card" style="--ci:0">
+            <div class="sp-course-thumb">
+              <img src="{% static 'assets/img/education/courses-5.webp' %}" alt="Course">
+              <div class="sp-thumb-veil"><i class="bi bi-play-circle-fill"></i></div>
+              <span class="sp-status sp-status-progress">In Progress</span>
+            </div>
+            <div class="sp-course-body">
+              <span class="sp-cat-tag">Web Development</span>
+              <h5>Web Development Bootcamp</h5>
+              <p class="sp-instructor"><i class="bi bi-person-fill"></i>Sarah Johnson</p>
+              <div class="sp-mini-prog">
+                <div class="sp-mini-prog-top"><span>Progress</span><span class="sp-pct">75%</span></div>
+                <div class="sp-mini-track">
+                  <div class="sp-mini-fill" style="width:75%"></div>
+                </div>
+              </div>
+              <div class="sp-course-footer">
+                <span class="sp-last"><i class="bi bi-clock"></i>2 days ago</span>
+                <a href="#" class="sp-resume-btn">Resume <i class="bi bi-arrow-right"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="sp-course-card" style="--ci:1">
+            <div class="sp-course-thumb">
+              <img src="{% static 'assets/img/education/courses-9.webp' %}" alt="Course">
+              <div class="sp-thumb-veil"><i class="bi bi-play-circle-fill"></i></div>
+              <span class="sp-status sp-status-done">Completed</span>
+            </div>
+            <div class="sp-course-body">
+              <span class="sp-cat-tag sp-cat-green">Data Science</span>
+              <h5>Data Science Fundamentals</h5>
+              <p class="sp-instructor"><i class="bi bi-person-fill"></i>John Smith</p>
+              <div class="sp-mini-prog">
+                <div class="sp-mini-prog-top"><span>Progress</span><span class="sp-pct sp-pct-done">100%</span></div>
+                <div class="sp-mini-track">
+                  <div class="sp-mini-fill sp-fill-done" style="width:100%"></div>
+                </div>
+              </div>
+              <div class="sp-course-footer">
+                <span class="sp-last sp-done-text"><i class="bi bi-check-circle-fill"></i>Completed</span>
+                <a href="#" class="sp-cert-btn">Certificate <i class="bi bi-award"></i></a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Tab: Favourites ── -->
+      <div class="sp-tab-panel" id="tab-favourites">
+        <div class="sp-panel-header">
+          <h4><i class="bi bi-heart-fill me-2" style="color:#ef4444;"></i>Favourite Courses</h4>
+          <span class="sp-count-pill">3 saved</span>
+        </div>
+        <div class="sp-fav-list">
+         <p>Total favorites: {{ favorite_courses|length }}</p>
+
+{% for favorite in favorite_courses %}
+  <p>Course Title: {{ favorite.course.course_title }}</p>
+  <p>Instructor: {{ favorite.course.instructor_name }}</p>
+  <p>Course Image: {% if favorite.course.course_image %}Yes{% else %}No{% endif %}</p>
+{% empty %}
+  <p>No favorites found 😢</p>
+{% endfor %}
+        </div>
+      </div>
+
+      <!-- ── Tab: Achievements ── -->
+      <div class="sp-tab-panel" id="tab-achievements">
+        <div class="sp-panel-header">
+          <h4><i class="bi bi-trophy me-2"></i>Achievements</h4>
+        </div>
+
+        <div class="sp-ach-stats">
+          <div class="sp-ach-stat sp-ach-gold">
+            <div class="sp-ach-stat-icon"><i class="bi bi-trophy-fill"></i></div>
+            <div>
+              <h5>8</h5>
+              <p>Certificates</p>
+            </div>
+          </div>
+          <div class="sp-ach-stat sp-ach-blue">
+            <div class="sp-ach-stat-icon"><i class="bi bi-star-fill"></i></div>
+            <div>
+              <h5>12</h5>
+              <p>Skills</p>
+            </div>
+          </div>
+          <div class="sp-ach-stat sp-ach-orange">
+            <div class="sp-ach-stat-icon"><i class="bi bi-lightning-charge-fill"></i></div>
+            <div>
+              <h5>7</h5>
+              <p>Day Streak</p>
+            </div>
+          </div>
+        </div>
+
+        <h5 class="sp-sub-heading"><i class="bi bi-patch-check me-2"></i>Recent Badges</h5>
+        <div class="sp-badges-grid">
+          <div class="sp-badge-card sp-badge-gold">
+            <div class="sp-badge-glow"></div>
+            <div class="sp-badge-icon"><i class="bi bi-star-fill"></i></div>
+            <h6>Quick Learner</h6>
+            <p>Completed 5 courses in 3 months</p>
+            <span class="sp-badge-date"><i class="bi bi-calendar3"></i>Mar 2026</span>
+          </div>
+          <div class="sp-badge-card sp-badge-silver">
+            <div class="sp-badge-glow"></div>
+            <div class="sp-badge-icon"><i class="bi bi-chat-fill"></i></div>
+            <h6>Active Participant</h6>
+            <p>Posted 50+ discussion comments</p>
+            <span class="sp-badge-date"><i class="bi bi-calendar3"></i>Feb 2026</span>
+          </div>
+          <div class="sp-badge-card sp-badge-bronze">
+            <div class="sp-badge-glow"></div>
+            <div class="sp-badge-icon"><i class="bi bi-award-fill"></i></div>
+            <h6>Perfect Score</h6>
+            <p>100% on final exam</p>
+            <span class="sp-badge-date"><i class="bi bi-calendar3"></i>Jan 2026</span>
+          </div>
+        </div>
+
+        <h5 class="sp-sub-heading mt-4"><i class="bi bi-file-earmark-pdf me-2"></i>Certificates</h5>
+        <div class="sp-cert-list">
+          <div class="sp-cert-item">
+            <div class="sp-cert-icon"><i class="bi bi-file-earmark-pdf-fill"></i></div>
+            <div class="sp-cert-info">
+              <h6>Advanced Python Programming</h6>
+              <p><i class="bi bi-calendar3 me-1"></i>March 15, 2026 &nbsp;·&nbsp; <i
+                  class="bi bi-hash me-1"></i>PYTHON-2026-0123</p>
+            </div>
+            <a href="#" class="sp-cert-dl" title="Download"><i class="bi bi-download"></i></a>
+          </div>
+          <div class="sp-cert-item">
+            <div class="sp-cert-icon"><i class="bi bi-file-earmark-pdf-fill"></i></div>
+            <div class="sp-cert-info">
+              <h6>Data Science Fundamentals</h6>
+              <p><i class="bi bi-calendar3 me-1"></i>January 20, 2026 &nbsp;·&nbsp; <i
+                  class="bi bi-hash me-1"></i>DATA-2026-0456</p>
+            </div>
+            <a href="#" class="sp-cert-dl" title="Download"><i class="bi bi-download"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Tab: Quizzes ── -->
+      <div class="sp-tab-panel" id="tab-quizzes">
+        <div class="sp-panel-header">
+          <h4><i class="bi bi-patch-question me-2"></i>My Quizzes</h4>
+          <div class="sp-quiz-stats-row">
+            <span class="sp-qstat"><i class="bi bi-patch-question"></i> 24 Total</span>
+            <span class="sp-qstat sp-qstat-green"><i class="bi bi-check-circle"></i> 3 Done</span>
+            <span class="sp-qstat sp-qstat-orange"><i class="bi bi-bar-chart"></i> 69% Avg</span>
+          </div>
+        </div>
+
+        <div class="sp-quiz-prog-card">
+          <div class="sp-quiz-prog-top">
+            <span><i class="bi bi-graph-up me-1"></i>Overall Quiz Progress</span>
+            <span class="sp-quiz-prog-val">3 / 24</span>
+          </div>
+          <div class="sp-quiz-prog-track">
+            <div class="sp-quiz-prog-fill" style="width:12%"></div>
+          </div>
+        </div>
+
+        <div class="sp-quiz-list">
+
+          <div class="sp-quiz-item sp-quiz-pass">
+            <div class="sp-quiz-left">
+              <div class="sp-quiz-icon sp-qi-pass"><i class="bi bi-check-lg"></i></div>
+              <div class="sp-quiz-info">
+                <h5>Quiz 1: Introduction to the Course</h5>
+                <div class="sp-quiz-meta">
+                  <span><i class="bi bi-question-circle"></i> 10 Qs</span>
+                  <span><i class="bi bi-clock"></i> 5 min</span>
+                  <span class="sp-diff-easy"><i class="bi bi-bar-chart"></i> Easy</span>
+                  <span><i class="bi bi-calendar3"></i> Mar 10</span>
+                </div>
+              </div>
+            </div>
+            <div class="sp-quiz-right">
+              <div class="sp-score-ring sp-score-high"><span>90%</span></div>
+              <button class="sp-quiz-btn sp-qbtn-retake">Retake</button>
+            </div>
+          </div>
+
+          <div class="sp-quiz-item sp-quiz-pass">
+            <div class="sp-quiz-left">
+              <div class="sp-quiz-icon sp-qi-pass"><i class="bi bi-check-lg"></i></div>
+              <div class="sp-quiz-info">
+                <h5>Quiz 2: Core Concepts</h5>
+                <div class="sp-quiz-meta">
+                  <span><i class="bi bi-question-circle"></i> 15 Qs</span>
+                  <span><i class="bi bi-clock"></i> 8 min</span>
+                  <span class="sp-diff-med"><i class="bi bi-bar-chart"></i> Medium</span>
+                  <span><i class="bi bi-calendar3"></i> Mar 12</span>
+                </div>
+              </div>
+            </div>
+            <div class="sp-quiz-right">
+              <div class="sp-score-ring sp-score-med"><span>73%</span></div>
+              <button class="sp-quiz-btn sp-qbtn-retake">Retake</button>
+            </div>
+          </div>
+
+          <div class="sp-quiz-item sp-quiz-fail">
+            <div class="sp-quiz-left">
+              <div class="sp-quiz-icon sp-qi-fail"><i class="bi bi-x-lg"></i></div>
+              <div class="sp-quiz-info">
+                <h5>Quiz 3: Advanced Topics</h5>
+                <div class="sp-quiz-meta">
+                  <span><i class="bi bi-question-circle"></i> 20 Qs</span>
+                  <span><i class="bi bi-clock"></i> 10 min</span>
+                  <span class="sp-diff-hard"><i class="bi bi-bar-chart"></i> Hard</span>
+                  <span><i class="bi bi-calendar3"></i> Mar 13</span>
+                </div>
+              </div>
+            </div>
+            <div class="sp-quiz-right">
+              <div class="sp-score-ring sp-score-low"><span>45%</span></div>
+              <button class="sp-quiz-btn sp-qbtn-retake">Retry</button>
+            </div>
+          </div>
+
+          <div class="sp-quiz-item sp-quiz-open">
+            <div class="sp-quiz-left">
+              <div class="sp-quiz-icon sp-qi-open"><i class="bi bi-play-fill"></i></div>
+              <div class="sp-quiz-info">
+                <h5>Quiz 4: Practical Applications</h5>
+                <div class="sp-quiz-meta">
+                  <span><i class="bi bi-question-circle"></i> 12 Qs</span>
+                  <span><i class="bi bi-clock"></i> 6 min</span>
+                  <span class="sp-diff-med"><i class="bi bi-bar-chart"></i> Medium</span>
+                </div>
+              </div>
+            </div>
+            <div class="sp-quiz-right">
+              <button class="sp-quiz-btn sp-qbtn-start"><i class="bi bi-play-fill"></i> Start Quiz</button>
+            </div>
+          </div>
+
+          <div class="sp-quiz-item sp-quiz-locked">
+            <div class="sp-quiz-left">
+              <div class="sp-quiz-icon sp-qi-locked"><i class="bi bi-lock-fill"></i></div>
+              <div class="sp-quiz-info">
+                <h5>Quiz 5: Module 5 Assessment</h5>
+                <div class="sp-quiz-meta">
+                  <span><i class="bi bi-question-circle"></i> 18 Qs</span>
+                  <span><i class="bi bi-clock"></i> 9 min</span>
+                  <span class="sp-diff-hard"><i class="bi bi-bar-chart"></i> Hard</span>
+                </div>
+              </div>
+            </div>
+            <div class="sp-quiz-right">
+              <span class="sp-locked-label"><i class="bi bi-lock-fill"></i> Locked</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /sp-main -->
+
+    <!-- ── RIGHT: Sidebar ── -->
+    <div class="sp-sidebar">
+      <!-- Quick links -->
+      <div class="sp-widget" data-aos="fade-left" data-aos-delay="300">
+        <div class="sp-widget-head">
+          <h4><i class="bi bi-grid-3x3-gap"></i>Quick Links</h4>
+        </div>
+        <div class="sp-quick-links">
+          <a href="{% url 'cart_detail' %}" class="sp-qlink sp-ql-blue"><i
+              class="bi bi-heart"></i><span>Wishlist</span></a>
+          <a href="{% url 'courses' %}" class="sp-qlink sp-ql-green"><i class="bi bi-search"></i><span>Browse</span></a>
+          <a href="#" class="sp-qlink sp-ql-orange"><i class="bi bi-calendar3"></i><span>Schedule</span></a>
+          <a href="#tab-achievements" class="sp-qlink sp-ql-purple"><i class="bi bi-award"></i><span>Certs</span></a>
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- /sp-layout -->
+
+  <!-- ════════════════════════════════════════
+     EDIT PROFILE MODAL
+════════════════════════════════════════ -->
+  <div class="modal fade" id="editProfileModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content sp-modal">
+        <div class="modal-header sp-modal-header">
+          <div class="d-flex align-items-center gap-3">
+            <div class="sp-modal-icon"><i class="bi bi-person-fill"></i></div>
+            <div>
+              <h5 class="modal-title mb-0">Edit Profile</h5>
+              <small>Update your personal information</small>
+            </div>
+          </div>
+          <button type="button" class="sp-modal-close" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <form method="post" enctype="multipart/form-data" action="{% url 'profile' %}">
+          {% csrf_token %}
+          <div class="modal-body sp-modal-body">{{ form }}</div>
+          <div class="modal-footer sp-modal-footer">
+            <button type="button" class="sp-cancel-btn" data-bs-dismiss="modal"><i
+                class="bi bi-x me-1"></i>Cancel</button>
+            <button type="submit" class="sp-save-btn"><i class="bi bi-check-lg me-1"></i>Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+
+<!-- ════════════════════════════════════════
+     STYLES
+════════════════════════════════════════ -->
+<style>
+  /* ── Design tokens ── */
+  :root {
+    --sp-blue: #136ad5;
+    --sp-navy: #223a58;
+    --sp-light: #acd0fc;
+    --sp-green: #10b981;
+    --sp-orange: #f97316;
+    --sp-purple: #8b5cf6;
+    --sp-red: #ef4444;
+    --sp-gold: #f59e0b;
+    --sp-surf: #ffffff;
+    --sp-bg: #f5faff;
+    --sp-border: rgba(19, 106, 213, .12);
+    --sp-text: #394450;
+    --sp-head: #223a58;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .sp-root {
+    background: var(--sp-bg);
+    padding-bottom: 60px;
+  }
+
+  /* ── Hero ── */
+  .sp-hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0f2044 0%, #136ad5 55%, #4188de 100%);
+    padding: 52px 0 64px;
+    isolation: isolate;
+    margin-bottom: -30px;
+  }
+
+  .sp-hero-mesh {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, .1) 1px, transparent 1px);
+    background-size: 28px 28px;
+    opacity: .45;
+  }
+
+  .sp-hero-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    pointer-events: none;
+  }
+
+  .g1 {
+    width: 360px;
+    height: 360px;
+    background: rgba(172, 208, 252, .18);
+    top: -100px;
+    right: -60px;
+  }
+
+  .g2 {
+    width: 220px;
+    height: 220px;
+    background: rgba(19, 106, 213, .25);
+    bottom: -50px;
+    right: 200px;
+  }
+
+  .g3 {
+    width: 200px;
+    height: 200px;
+    background: rgba(15, 32, 68, .4);
+    top: 30px;
+    left: 35%;
+  }
+
+  /* floating stats */
+  .sp-hero-fstats {
+    position: absolute;
+    top: 18px;
+    right: 28px;
+    display: flex;
+    gap: 10px;
+    z-index: 4;
+  }
+
+  .sp-fstat {
+    background: rgba(255, 255, 255, .15);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, .25);
+    border-radius: 14px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+  }
+
+  .sp-fstat i {
+    font-size: 20px;
+  }
+
+  .sp-fstat b {
+    display: block;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1;
+    font-family: 'Raleway', sans-serif;
+  }
+
+  .sp-fstat small {
+    display: block;
+    font-size: 11px;
+    opacity: .8;
+  }
+
+  .sp-fstat-streak i {
+    color: #fbbf24;
+  }
+
+  @media(max-width:768px) {
+    .sp-hero-fstats {
+      display: none;
+    }
+  }
+
+  .sp-hero-inner {
+    display: flex;
+    align-items: flex-end;
+    gap: 32px;
+    position: relative;
+    z-index: 2;
+    flex-wrap: wrap;
+  }
+
+  /* avatar */
+  .sp-avatar-wrap {
+    position: relative;
+    flex-shrink: 0;
+    width: 130px;
+    height: 130px;
+  }
+
+  .sp-avatar-ring {
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, .3);
+    animation: spRingSpin 12s linear infinite;
+  }
+
+  .sp-ring2 {
+    inset: -13px;
+    border-color: rgba(255, 255, 255, .12);
+    animation-direction: reverse;
+    animation-duration: 18s;
+  }
+
+  @keyframes spRingSpin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .sp-avatar {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, .3);
+  }
+
+  .sp-avatar-badge {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    color: var(--sp-blue);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .sp-avatar-badge i {
+    color: var(--sp-blue);
+  }
+
+  /* hero info */
+  .sp-hero-info {
+    flex: 1;
+    min-width: 0;
+    color: #fff;
+    padding-bottom: 6px;
+  }
+
+  .sp-hero-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    color: rgba(255, 255, 255, .65);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .sp-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--sp-light);
+    box-shadow: 0 0 8px var(--sp-light);
+    animation: spBlink 2s infinite;
+  }
+
+  @keyframes spBlink {
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: .3;
+    }
+  }
+
+  .sp-hero-name {
+    font-family: 'Raleway', sans-serif;
+    font-size: clamp(26px, 3.5vw, 40px);
+    font-weight: 900;
+    color: #fff;
+    margin: 0 0 6px;
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+
+  .sp-hero-title {
+    font-size: 15px;
+    color: rgba(255, 255, 255, .75);
+    margin: 0 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .sp-hero-meta {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .sp-hero-meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, .78);
+  }
+
+  /* progress */
+  .sp-prog-wrap {
+    max-width: 440px;
+    margin-bottom: 20px;
+  }
+
+  .sp-prog-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: rgba(255, 255, 255, .75);
+    margin-bottom: 7px;
+  }
+
+  .sp-prog-pct {
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .sp-prog-track {
+    height: 10px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .2);
+    overflow: hidden;
+  }
+
+  .sp-prog-fill {
+    height: 100%;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #acd0fc, #fff);
+    position: relative;
+  }
+
+  .sp-prog-shine {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .4), transparent);
+    animation: spShine 2.5s ease-in-out infinite;
+  }
+
+  @keyframes spShine {
+    0% {
+      transform: translateX(-100%);
+    }
+
+    100% {
+      transform: translateX(200%);
+    }
+  }
+
+  /* actions */
+  .sp-hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .sp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 22px;
+    border-radius: 100px;
+    font-size: 13.5px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: all .25s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .sp-btn-primary {
+    background: #fff;
+    color: var(--sp-blue);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .15);
+  }
+
+  .sp-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .2);
+  }
+
+  .sp-btn-ghost {
+    background: rgba(255, 255, 255, .18);
+    color: #fff;
+    border: 1.5px solid rgba(255, 255, 255, .35);
+  }
+
+  .sp-btn-ghost:hover {
+    background: rgba(255, 255, 255, .28);
+  }
+
+  .sp-socials {
+    display: flex;
+    gap: 8px;
+  }
+
+  .sp-social-link {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .18);
+    border: 1.5px solid rgba(255, 255, 255, .3);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all .2s;
+  }
+
+  .sp-social-link:hover {
+    background: rgba(255, 255, 255, .35);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  /* ── Quick stat cards ── */
+  .sp-qs-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    padding-top: 44px;
+    position: relative;
+    z-index: 3;
+    margin-bottom: 28px;
+  }
+
+  @media(max-width:768px) {
+    .sp-qs-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .sp-qs-card {
+    border-radius: 18px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, .12);
+    transition: transform .3s, box-shadow .3s;
+    animation: spCardIn .5s cubic-bezier(.22, .97, .58, 1) both;
+  }
+
+  .sp-qs-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, .18);
+  }
+
+  .sp-qs-blue {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  }
+
+  .sp-qs-green {
+    background: linear-gradient(135deg, #10b981, #047857);
+  }
+
+  .sp-qs-orange {
+    background: linear-gradient(135deg, #f97316, #c2410c);
+  }
+
+  .sp-qs-purple {
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  }
+
+  .sp-qs-icon {
+    font-size: 32px;
+    opacity: .9;
+  }
+
+  .sp-qs-card h3 {
+    font-size: 26px;
+    font-weight: 900;
+    margin: 0;
+    color: #fff;
+    font-family: 'Raleway', sans-serif;
+  }
+
+  .sp-qs-card p {
+    font-size: 13px;
+    margin: 0;
+    opacity: .85;
+  }
+
+  .sp-qs-bg {
+    position: absolute;
+    right: -10px;
+    bottom: -10px;
+    font-size: 68px;
+    opacity: .1;
+    color: #fff;
+  }
+
+  /* ── Layout ── */
+  .sp-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+    align-items: start;
+  }
+
+  @media(max-width:1100px) {
+    .sp-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ── Tab bar ── */
+  .sp-tabbar {
+    display: flex;
+    gap: 4px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 6px;
+    box-shadow: 0 2px 12px rgba(19, 106, 213, .1);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .sp-tab {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 18px;
+    border-radius: 12px;
+    border: none;
+    background: transparent;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--sp-text);
+    cursor: pointer;
+    transition: all .22s;
+    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+    position: relative;
+  }
+
+  .sp-tab:hover {
+    background: rgba(19, 106, 213, .07);
+    color: var(--sp-blue);
+  }
+
+  .sp-tab.active {
+    background: linear-gradient(135deg, var(--sp-blue), #4188de);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(19, 106, 213, .35);
+  }
+
+  .sp-tab-badge {
+    background: rgba(239, 68, 68, .15);
+    color: var(--sp-red);
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 10px;
+  }
+
+  .sp-tab.active .sp-tab-badge {
+    background: rgba(255, 255, 255, .25);
+    color: #fff;
+  }
+
+  /* ── Tab panels ── */
+  .sp-tab-panel {
+    display: none;
+    animation: spFadeIn .3s ease;
+  }
+
+  .sp-tab-panel.active {
+    display: block;
+  }
+
+  @keyframes spFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .sp-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .sp-panel-header h4 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--sp-head);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    font-family: 'Raleway', sans-serif;
+  }
+
+  .sp-filter-row {
+    display: flex;
+    gap: 6px;
+  }
+
+  .sp-filter {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1.5px solid rgba(19, 106, 213, .15);
+    background: transparent;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--sp-text);
+    cursor: pointer;
+    transition: all .2s;
+  }
+
+  .sp-filter.active,
+  .sp-filter:hover {
+    background: var(--sp-blue);
+    border-color: var(--sp-blue);
+    color: #fff;
+  }
+
+  .sp-count-pill {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 20px;
+    background: rgba(19, 106, 213, .1);
+    color: var(--sp-blue);
+  }
+
+  /* ── Course cards ── */
+  .sp-course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+
+  .sp-course-card {
+    background: #fff;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--sp-border);
+    box-shadow: 0 2px 12px rgba(19, 106, 213, .07);
+    transition: transform .3s, box-shadow .3s;
+    animation: spCardIn .4s cubic-bezier(.22, .97, .58, 1) both;
+    animation-delay: calc(var(--ci, 0)*80ms);
+  }
+
+  @keyframes spCardIn {
+    from {
+      opacity: 0;
+      transform: translateY(18px) scale(.97);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .sp-course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 36px rgba(19, 106, 213, .15);
+  }
+
+  .sp-course-thumb {
+    position: relative;
+    overflow: hidden;
+    height: 170px;
+  }
+
+  .sp-course-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .4s;
+  }
+
+  .sp-course-card:hover .sp-course-thumb img {
+    transform: scale(1.06);
+  }
+
+  .sp-thumb-veil {
+    position: absolute;
+    inset: 0;
+    background: rgba(34, 58, 88, .4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 46px;
+    color: #fff;
+    opacity: 0;
+    transition: opacity .3s;
+  }
+
+  .sp-course-card:hover .sp-thumb-veil {
+    opacity: 1;
+  }
+
+  .sp-status {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 11px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+
+  .sp-status-progress {
+    background: #fef3c7;
+    color: #d97706;
+  }
+
+  .sp-status-done {
+    background: #d1fae5;
+    color: #059669;
+  }
+
+  .sp-course-body {
+    padding: 16px;
+  }
+
+  .sp-cat-tag {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 10px;
+    background: rgba(19, 106, 213, .1);
+    color: var(--sp-blue);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-bottom: 8px;
+  }
+
+  .sp-cat-green {
+    background: rgba(16, 185, 129, .1);
+    color: #059669;
+  }
+
+  .sp-course-body h5 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--sp-head);
+    margin-bottom: 6px;
+    font-family: 'Raleway', sans-serif;
+  }
+
+  .sp-instructor {
+    font-size: 12px;
+    color: rgba(57, 68, 80, .5);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+
+  .sp-mini-prog {}
+
+  .sp-mini-prog-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11.5px;
+    color: rgba(57, 68, 80, .5);
+    margin-bottom: 5px;
+  }
+
+  .sp-pct {
+    font-weight: 700;
+    color: var(--sp-blue);
+  }
+
+  .sp-pct-done {
+    color: var(--sp-green);
+  }
+
+  .sp-mini-track {
+    height: 5px;
+    border-radius: 4px;
+    background: rgba(19, 106, 213, .1);
+    overflow: hidden;
+  }
+
+  .sp-mini-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--sp-blue), #4188de);
+  }
+
+  .sp-fill-done {
+    background: linear-gradient(90deg, var(--sp-green), #34d399);
+  }
+
+  .sp-course-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+  }
+
+  .sp-last {
+    font-size: 11.5px;
+    color: rgba(57, 68, 80, .45);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .sp-done-text {
+    color: var(--sp-green);
+  }
+
+  .sp-resume-btn,
+  .sp-cert-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all .2s;
+  }
+
+  .sp-resume-btn {
+    background: linear-gradient(135deg, var(--sp-blue), #4188de);
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(19, 106, 213, .3);
+  }
+
+  .sp-resume-btn:hover {
+    color: #fff;
+    transform: translateY(-1px);
+  }
+
+  .sp-cert-btn {
+    background: rgba(16, 185, 129, .1);
+    color: var(--sp-green);
+    border: 1px solid rgba(16, 185, 129, .2);
+  }
+
+  .sp-cert-btn:hover {
+    background: var(--sp-green);
+    color: #fff;
+  }
+
+  /* ── Favourites ── */
+  .sp-fav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .sp-fav-card {
+    background: #fff;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--sp-border);
+    box-shadow: 0 2px 12px rgba(19, 106, 213, .07);
+    display: flex;
+    align-items: stretch;
+    transition: transform .3s, box-shadow .3s, border-color .3s;
+    animation: spCardIn .4s cubic-bezier(.22, .97, .58, 1) both;
+    animation-delay: calc(var(--fi, 0)*80ms);
+  }
+
+  .sp-fav-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(19, 106, 213, .14);
+    border-color: rgba(19, 106, 213, .25);
+  }
+
+  .sp-fav-thumb {
+    position: relative;
+    width: 160px;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .sp-fav-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .4s;
+  }
+
+  .sp-fav-card:hover .sp-fav-thumb img {
+    transform: scale(1.06);
+  }
+
+  .sp-fav-heart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .9);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    color: rgba(57, 68, 80, .35);
+    transition: all .2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+  }
+
+  .sp-fav-heart.active,
+  .sp-fav-heart:hover {
+    color: var(--sp-red);
+    transform: scale(1.12);
+  }
+
+  .sp-fav-ribbon {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: rgba(245, 158, 11, .9);
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+
+  .sp-ribbon-new {
+    background: rgba(19, 106, 213, .9);
+  }
+
+  .sp-fav-body {
+    flex: 1;
+    padding: 16px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .sp-fav-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 7px;
+    flex-wrap: wrap;
+  }
+
+  .sp-fav-cat {
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 10px;
+    background: rgba(19, 106, 213, .1);
+    color: var(--sp-blue);
+    text-transform: uppercase;
+    letter-spacing: .4px;
+  }
+
+  .sp-cat-purple {
+    background: rgba(139, 92, 246, .1);
+    color: var(--sp-purple);
+  }
+
+  .sp-cat-teal {
+    background: rgba(20, 184, 166, .1);
+    color: #0d9488;
+  }
+
+  .sp-fav-level {
+    font-size: 11px;
+    color: rgba(57, 68, 80, .45);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .sp-fav-level i {
+    font-size: 10px;
+    color: #f59e0b;
+  }
+
+  .sp-fav-body h5 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--sp-head);
+    margin: 0 0 5px;
+    font-family: 'Raleway', sans-serif;
+    line-height: 1.35;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .sp-fav-by {
+    font-size: 12px;
+    color: rgba(57, 68, 80, .45);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .sp-fav-stars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-bottom: 8px;
+  }
+
+  .sp-fav-stars i {
+    font-size: 12px;
+    color: #f59e0b;
+  }
+
+  .sp-fav-stars span {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--sp-head);
+    margin-left: 4px;
+  }
+
+  .sp-fav-rcount {
+    font-weight: 400;
+    color: rgba(57, 68, 80, .4);
+  }
+
+  .sp-fav-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .sp-fav-chips span {
+    font-size: 11px;
+    color: rgba(57, 68, 80, .45);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .sp-fav-chips i {
+    font-size: 11px;
+    color: rgba(19, 106, 213, .5);
+  }
+
+  .sp-fav-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 14px;
+    min-width: 150px;
+    border-left: 1px solid rgba(19, 106, 213, .08);
+    background: rgba(245, 250, 255, .5);
+  }
+
+  .sp-fav-price {
+    text-align: center;
+  }
+
+  .sp-fav-now {
+    display: block;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--sp-blue);
+    font-family: 'Raleway', sans-serif;
+    line-height: 1;
+  }
+
+  .sp-fav-orig {
+    font-size: 12px;
+    color: rgba(57, 68, 80, .35);
+    text-decoration: line-through;
+    display: block;
+    margin-top: 3px;
+  }
+
+  .sp-fav-enroll {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    text-decoration: none;
+    background: linear-gradient(135deg, var(--sp-blue), #4188de);
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 700;
+    box-shadow: 0 4px 14px rgba(19, 106, 213, .32);
+    transition: transform .2s, box-shadow .2s;
+  }
+
+  .sp-fav-enroll:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(19, 106, 213, .45);
+  }
+
+  .sp-fav-cart-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 12px;
+    border-radius: 12px;
+    border: 1.5px solid rgba(19, 106, 213, .2);
+    background: rgba(19, 106, 213, .06);
+    color: var(--sp-blue);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+  }
+
+  .sp-fav-cart-btn:hover {
+    background: var(--sp-blue);
+    color: #fff;
+    border-color: var(--sp-blue);
+  }
+
+  @media(max-width:680px) {
+    .sp-fav-card {
+      flex-direction: column;
+    }
+
+    .sp-fav-thumb {
+      width: 100%;
+      height: 160px;
+    }
+
+    .sp-fav-actions {
+      border-left: none;
+      border-top: 1px solid rgba(19, 106, 213, .08);
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .sp-fav-price {
+      flex: 1;
+    }
+  }
+
+  /* ── Achievements ── */
+  .sp-ach-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .sp-ach-stat {
+    background: #fff;
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 2px solid transparent;
+    transition: all .3s;
+  }
+
+  .sp-ach-stat:hover {
+    transform: translateY(-4px);
+  }
+
+  .sp-ach-stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .sp-ach-gold {
+    border-color: rgba(245, 158, 11, .3);
+  }
+
+  .sp-ach-gold .sp-ach-stat-icon {
+    background: rgba(245, 158, 11, .15);
+    color: #f59e0b;
+  }
+
+  .sp-ach-blue {
+    border-color: rgba(19, 106, 213, .3);
+  }
+
+  .sp-ach-blue .sp-ach-stat-icon {
+    background: rgba(19, 106, 213, .12);
+    color: var(--sp-blue);
+  }
+
+  .sp-ach-orange {
+    border-color: rgba(249, 115, 22, .3);
+  }
+
+  .sp-ach-orange .sp-ach-stat-icon {
+    background: rgba(249, 115, 22, .12);
+    color: var(--sp-orange);
+  }
+
+  .sp-ach-stat h5 {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0;
+    color: var(--sp-head);
+    font-family: 'Raleway', sans-serif;
+  }
+
+  .sp-ach-stat p {
+    font-size: 12px;
+    margin: 0;
+    color: rgba(57, 68, 80, .5);
+  }
+
+  .sp-sub-heading {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--sp-head);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    font-family: 'Raleway', sans-serif;
+  }
+
+  .sp-badges-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .sp-badge-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid var(--sp-border);
+    position: relative;
+    overflow: hidden;
+    transition: all .3s;
+    cursor: default;
+  }
+
+  .sp-badge-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(19, 106, 213, .12);
+  }
+
+  .sp-badge-glow {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    top: -20px;
+    right: -20px;
+    opacity: .2;
+  }
+
+  .sp-badge-gold .sp-badge-glow {
+    background: #ffd700;
+  }
+
+  .sp-badge-silver .sp-badge-glow {
+    background: #c0c0c0;
+  }
+
+  .sp-badge-bronze .sp-badge-glow {
+    background: #cd7f32;
+  }
+
+  .sp-badge-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin: 0 auto 10px;
+  }
+
+  .sp-badge-gold .sp-badge-icon {
+    background: #fef3c7;
+    color: #f59e0b;
+  }
+
+  .sp-badge-silver .sp-badge-icon {
+    background: #f1f5f9;
+    color: #64748b;
+  }
+
+  .sp-badge-bronze .sp-badge-icon {
+    background: #fef3c7;
+    color: #cd7f32;
+  }
+
+  .sp-badge-card h6 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--sp-head);
+    margin-bottom: 4px;
+  }
+
+  .sp-badge-card p {
+    font-size: 11.5px;
+    color: rgba(57, 68, 80, .5);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  .sp-badge-date {
+    font-size: 11px;
+    color: rgba(57, 68, 80, .4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .sp-cert-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .sp-cert-item {
+    background: #fff;
+    border: 1px solid var(--sp-border);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: all .3s;
+  }
+
+  .sp-cert-item:hover {
+    transform: translateX(5px);
+    border-color: rgba(19, 106, 213, .28);
+    box-shadow: 0 5px 18px rgba(19, 106, 213, .1);
+  }
+
+  .sp-cert-icon {
+    font-size: 30px;
+    color: #ef4444;
+    flex-shrink: 0;
+  }
+
+  .sp-cert-info {
+    flex: 1;
+  }
+
+  .sp-cert-info h6 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--sp-head);
+    margin-bottom: 4px;
+  }
+
+  .sp-cert-info p {
+    font-size: 12px;
+    color: rgba(57, 68, 80, .45);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .sp-cert-dl {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(19, 106, 213, .1);
+    color: var(--sp-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all .2s;
+    flex-shrink: 0;
+  }
+
+  .sp-cert-dl:hover {
+    background: var(--sp-blue);
+    color: #fff;
+  }
+
+  /* ── Quizzes ── */
+  .sp-quiz-stats-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .sp-qstat {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: rgba(19, 106, 213, .08);
+    color: var(--sp-blue);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .sp-qstat-green {
+    background: rgba(16, 185, 129, .1);
+    color: var(--sp-green);
+  }
+
+  .sp-qstat-orange {
+    background: rgba(249, 115, 22, .1);
+    color: var(--sp-orange);
+  }
+
+  .sp-quiz-prog-card {
+    background: #fff;
+    border: 1px solid var(--sp-border);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+  }
+
+  .sp-quiz-prog-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--sp-text);
+    margin-bottom: 10px;
+  }
+
+  .sp-quiz-prog-val {
+    font-weight: 700;
+    color: var(--sp-blue);
+  }
+
+  .sp-quiz-prog-track {
+    height: 7px;
+    border-radius: 5px;
+    background: rgba(19, 106, 213, .1);
+    overflow: hidden;
+  }
+
+  .sp-quiz-prog-fill {
+    height: 100%;
+    border-radius: 5px;
+    background: linear-gradient(90deg, var(--sp-blue), #4188de);
+  }
+
+  .sp-quiz-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .sp-quiz-item {
+    background: #fff;
+    border: 1px solid var(--sp-border);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-left: 4px solid transparent;
+    transition: all .3s;
+  }
+
+  .sp-quiz-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(19, 106, 213, .1);
+  }
+
+  .sp-quiz-pass {
+    border-left-color: var(--sp-green);
+  }
+
+  .sp-quiz-fail {
+    border-left-color: var(--sp-red);
+  }
+
+  .sp-quiz-open {
+    border-left-color: var(--sp-blue);
+  }
+
+  .sp-quiz-locked {
+    border-left-color: rgba(57, 68, 80, .2);
+    opacity: .72;
+  }
+
+  .sp-quiz-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+  }
+
+  .sp-quiz-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .sp-qi-pass {
+    background: rgba(16, 185, 129, .15);
+    color: var(--sp-green);
+  }
+
+  .sp-qi-fail {
+    background: rgba(239, 68, 68, .12);
+    color: var(--sp-red);
+  }
+
+  .sp-qi-open {
+    background: rgba(19, 106, 213, .12);
+    color: var(--sp-blue);
+  }
+
+  .sp-qi-locked {
+    background: rgba(57, 68, 80, .1);
+    color: rgba(57, 68, 80, .4);
+  }
+
+  .sp-quiz-info h5 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--sp-head);
+    margin: 0 0 6px;
+  }
+
+  .sp-quiz-meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .sp-quiz-meta span {
+    font-size: 12px;
+    color: rgba(57, 68, 80, .45);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .sp-quiz-meta i {
+    font-size: 11px;
+    color: rgba(19, 106, 213, .55);
+  }
+
+  .sp-diff-easy {
+    color: var(--sp-green) !important;
+    font-weight: 600;
+  }
+
+  .sp-diff-med {
+    color: var(--sp-gold) !important;
+    font-weight: 600;
+  }
+
+  .sp-diff-hard {
+    color: var(--sp-red) !important;
+    font-weight: 600;
+  }
+
+  .sp-quiz-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .sp-score-ring {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12.5px;
+    font-weight: 800;
+    border: 3px solid;
+  }
+
+  .sp-score-high {
+    border-color: var(--sp-green);
+    color: var(--sp-green);
+  }
+
+  .sp-score-med {
+    border-color: var(--sp-gold);
+    color: var(--sp-gold);
+  }
+
+  .sp-score-low {
+    border-color: var(--sp-red);
+    color: var(--sp-red);
+  }
+
+  .sp-quiz-btn {
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: all .2s;
+    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .sp-qbtn-start {
+    background: linear-gradient(135deg, var(--sp-blue), #4188de);
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(19, 106, 213, .3);
+  }
+
+  .sp-qbtn-start:hover {
+    transform: translateY(-2px);
+  }
+
+  .sp-qbtn-retake {
+    background: rgba(19, 106, 213, .08);
+    color: var(--sp-blue);
+    border: 1.5px solid rgba(19, 106, 213, .2);
+  }
+
+  .sp-qbtn-retake:hover {
+    background: var(--sp-blue);
+    color: #fff;
+  }
+
+  .sp-locked-label {
+    font-size: 13px;
+    color: rgba(57, 68, 80, .4);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+  }
+
+  /* ── Sidebar ── */
+  .sp-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .sp-widget {
+    background: #fff;
+    border: 1px solid var(--sp-border);
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 2px 12px rgba(19, 106, 213, .07);
+  }
+
+  .sp-widget-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+
+  .sp-widget-head h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--sp-head);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Raleway', sans-serif;
+  }
+
+  .sp-widget-head h4 i {
+    color: var(--sp-blue);
+  }
+
+  .sp-widget-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 12px;
+    background: rgba(19, 106, 213, .1);
+    color: var(--sp-blue);
+  }
+
+  .sp-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .sp-stat-box {
+    border-radius: 12px;
+    padding: 14px;
+    border: 2px solid transparent;
+    transition: all .3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sp-stat-box:hover {
+    transform: translateY(-3px);
+  }
+
+  .sp-sb-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .sp-stat-box h5 {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0;
+    font-family: 'Raleway', sans-serif;
+    line-height: 1;
+  }
+
+  .sp-stat-box p {
+    font-size: 11.5px;
+    margin: 0;
+    color: rgba(57, 68, 80, .5);
+  }
+
+  .sp-sb-blue {
+    border-color: rgba(59, 130, 246, .25);
+  }
+
+  .sp-sb-blue .sp-sb-icon {
+    background: rgba(59, 130, 246, .12);
+    color: #3b82f6;
+  }
+
+  .sp-sb-green {
+    border-color: rgba(16, 185, 129, .25);
+  }
+
+  .sp-sb-green .sp-sb-icon {
+    background: rgba(16, 185, 129, .12);
+    color: var(--sp-green);
+  }
+
+  .sp-sb-orange {
+    border-color: rgba(249, 115, 22, .25);
+  }
+
+  .sp-sb-orange .sp-sb-icon {
+    background: rgba(249, 115, 22, .12);
+    color: var(--sp-orange);
+  }
+
+  .sp-sb-purple {
+    border-color: rgba(139, 92, 246, .25);
+  }
+
+  .sp-sb-purple .sp-sb-icon {
+    background: rgba(139, 92, 246, .12);
+    color: var(--sp-purple);
+  }
+
+  /* streak widget */
+  .sp-streak-widget {
+    background: linear-gradient(135deg, #0f2044, #136ad5) !important;
+  }
+
+  .sp-streak-widget .sp-widget-head h4 {
+    color: #fff !important;
+  }
+
+  .sp-streak-widget .sp-widget-head h4 i {
+    color: #fbbf24 !important;
+  }
+
+  .sp-streak-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .sp-streak-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .sp-streak-day span {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, .55);
+  }
+
+  .sp-streak-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .15);
+    border: 2px solid rgba(255, 255, 255, .15);
+  }
+
+  .sp-streak-active .sp-streak-dot {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    border-color: #fbbf24;
+    box-shadow: 0 2px 8px rgba(251, 191, 36, .5);
+  }
+
+  .sp-streak-active span {
+    color: #fff;
+  }
+
+  .sp-streak-msg {
+    color: rgba(255, 255, 255, .8);
+    font-size: 13px;
+    margin: 0;
+    text-align: center;
+  }
+
+  .sp-streak-msg strong {
+    color: #fbbf24;
+  }
+
+  /* quick links */
+  .sp-quick-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .sp-qlink {
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all .3s;
+    border: 2px solid transparent;
+  }
+
+  .sp-qlink i {
+    font-size: 22px;
+  }
+
+  .sp-qlink:hover {
+    transform: translateY(-3px);
+  }
+
+  .sp-ql-blue {
+    background: rgba(19, 106, 213, .08);
+    color: var(--sp-blue);
+  }
+
+  .sp-ql-blue:hover {
+    background: var(--sp-blue);
+    color: #fff;
+    border-color: var(--sp-blue);
+  }
+
+  .sp-ql-green {
+    background: rgba(16, 185, 129, .08);
+    color: var(--sp-green);
+  }
+
+  .sp-ql-green:hover {
+    background: var(--sp-green);
+    color: #fff;
+  }
+
+  .sp-ql-orange {
+    background: rgba(249, 115, 22, .08);
+    color: var(--sp-orange);
+  }
+
+  .sp-ql-orange:hover {
+    background: var(--sp-orange);
+    color: #fff;
+  }
+
+  .sp-ql-purple {
+    background: rgba(139, 92, 246, .08);
+    color: var(--sp-purple);
+  }
+
+  .sp-ql-purple:hover {
+    background: var(--sp-purple);
+    color: #fff;
+  }
+
+  /* ── Modal ── */
+  .sp-modal {
+    border-radius: 22px !important;
+    overflow: hidden;
+    border: 1px solid var(--sp-border) !important;
+  }
+
+  .sp-modal-header {
+    background: linear-gradient(135deg, var(--sp-blue), #4188de);
+    padding: 20px 24px;
+    border-bottom: none !important;
+  }
+
+  .sp-modal-header h5 {
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
+    font-family: 'Raleway', sans-serif;
+  }
+
+  .sp-modal-header small {
+    color: rgba(255, 255, 255, .75);
+    font-size: 12px;
+  }
+
+  .sp-modal-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, .2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .sp-modal-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .15);
+    border: 1px solid rgba(255, 255, 255, .25);
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s;
+  }
+
+  .sp-modal-close:hover {
+    background: rgba(255, 255, 255, .3);
+  }
+
+  .sp-modal-body {
+    padding: 24px 28px;
+    background: var(--sp-bg);
+  }
+
+  .sp-modal-body label {
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    color: var(--sp-head) !important;
+    margin-bottom: 5px !important;
+    display: block !important;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+  }
+
+  .sp-modal-body input,
+  .sp-modal-body textarea,
+  .sp-modal-body select {
+    width: 100% !important;
+    padding: 10px 14px !important;
+    border: 2px solid rgba(19, 106, 213, .15) !important;
+    border-radius: 10px !important;
+    background: #fff !important;
+    color: var(--sp-text) !important;
+    font-size: 14px !important;
+    transition: all .3s !important;
+    margin-bottom: 14px !important;
+  }
+
+  .sp-modal-body input:focus,
+  .sp-modal-body textarea:focus,
+  .sp-modal-body select:focus {
+    outline: none !important;
+    border-color: var(--sp-blue) !important;
+    box-shadow: 0 0 0 3px rgba(19, 106, 213, .12) !important;
+  }
+
+  .sp-modal-footer {
+    padding: 16px 24px;
+    background: #fff;
+    border-top: 1px solid rgba(19, 106, 213, .08) !important;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+
+  .sp-cancel-btn {
+    display: inline-flex;
+    align-items: center;
+    background: transparent;
+    border: 1.5px solid rgba(19, 106, 213, .2);
+    color: var(--sp-text);
+    padding: 9px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+  }
+
+  .sp-cancel-btn:hover {
+    background: rgba(19, 106, 213, .05);
+  }
+
+  .sp-save-btn {
+    display: inline-flex;
+    align-items: center;
+    background: linear-gradient(135deg, var(--sp-blue), #4188de);
+    color: #fff;
+    border: none;
+    padding: 9px 24px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .3s;
+    box-shadow: 0 4px 14px rgba(19, 106, 213, .3);
+  }
+
+  .sp-save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(19, 106, 213, .45);
+  }
+</style>
+
+<script>
+  // ── Tab switching ──
+  document.querySelectorAll('.sp-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.tab;
+      document.querySelectorAll('.sp-tab').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.sp-tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + id).classList.add('active');
+    });
+  });
+
+  // ── Course filter buttons ──
+  document.querySelectorAll('.sp-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.closest('.sp-filter-row').querySelectorAll('.sp-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // ── Favourite heart toggle ──
+  document.querySelectorAll('.sp-fav-heart').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('active');
+      btn.querySelector('i').className = btn.classList.contains('active') ? 'bi bi-heart-fill' : 'bi bi-heart';
+    });
+  });
+
+  // ── Set first tab active on load ──
+  document.querySelector('.sp-tab[data-tab="courses"]').click();
+</script>
+
+{% endblock content %}
