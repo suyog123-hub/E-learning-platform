@@ -3,3 +3,6 @@ db.sqlite3
 db_backup_utf8.json
 db_backup.json
 handel.py
+echo ".env" >> .gitignore
+echo ".env.local" >> .gitignore
+echo ".env.production" >> .gitignore

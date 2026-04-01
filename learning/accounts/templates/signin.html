@@ -37,6 +37,9 @@
             <button type="submit" class="btn w-100 py-2 fw-semibold rounded-3" style="background-color: var(--accent-color); color: var(--contrast-color); border: none;">
               Sign In
             </button>
+            <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn w-100 py-2 fw-semibold rounded-3 mt-3" style="background-color: var(--accent-color); color: var(--contrast-color); border: none;">
+              Login with Google
+            </a>
 
             <p class="text-center mt-4 mb-5 mb-0">
               Don't have an account?
