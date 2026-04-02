@@ -157,7 +157,7 @@
                   <h6>{{ i.instructor_name }}</h6>
                   <small>Instructor</small>
                 </div>
-                <a href="#" class="btn-course ms-auto">
+                <a href="{% url 'course_detail' i.id %}" class="btn-course ms-auto">
                   View <i class="bi bi-arrow-right ms-1"></i>
                 </a>
               </div>
