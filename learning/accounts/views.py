@@ -9,7 +9,7 @@ from django.contrib.auth import views as auth_views
 from .forms import profileForm
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
-from cart.cart import Cart
+
 import uuid
 import json 
 import hmac
