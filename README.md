@@ -14,7 +14,6 @@ A comprehensive **E-Learning Platform** built with Django that enables instructo
 - 🎥 Stream video lectures
 - ✅ Track course progress
 - 📊 View completion certificates
-- 💬 Participate in discussion forums
 - ⭐ Rate and review courses
 
 
