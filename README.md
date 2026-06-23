@@ -6,7 +6,7 @@
 
 A comprehensive **E-Learning Platform** built with Django that enables instructors to create courses and students to learn at their own pace.
 
-## ✨ Featur
+## ✨ Features
 
 ### For Students
 - 📝 User registration and authentication
