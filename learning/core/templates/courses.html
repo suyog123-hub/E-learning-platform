@@ -53,54 +53,18 @@
               <i class="bi bi-grid me-2"></i>Category
             </h5>
             <div class="filter-options-list">
-              <a href="?" class="filter-option-item {% if not request.GET.category %}active{% endif %}">
+              <a href="{% querystring category=None page=None %}" class="filter-option-item {% if not request.GET.category %}active{% endif %}">
                 <span class="foi-dot"></span>
                 <span class="foi-label">All Categories</span>
               </a>
               {% for i in category %}
-              <a href="?category={{ i.id }}#course" class="filter-option-item {% if request.GET.category == i.id|stringformat:'s' %}active{% endif %}">
+              <a href="{% querystring category=i.id page=None %}#course" class="filter-option-item {% if request.GET.category == i.id|stringformat:'s' %}active{% endif %}">
                 <span class="foi-dot"></span>
                 <span class="foi-label">{{ i.title }}</span>
                 <span class="foi-count">{{ i.num_of_courses }}</span>
               </a>
               {% empty %}
               <p class="text-muted small">No categories available.</p>
-              {% endfor %}
-            </div>
-          </div>
-
-          <!-- Level Filter -->
-          <div class="filter-section">
-            <h5 class="filter-section-title">
-              <i class="bi bi-bar-chart me-2"></i>Level
-            </h5>
-            <div class="filter-options-list">
-              {% for i in level %}
-              <a href="?level={{ i.id }}#course" class="filter-option-item {% if request.GET.level == i.id|stringformat:'s' %}active{% endif %}">
-                <span class="foi-dot"></span>
-                <span class="foi-label">{{ i.title }}</span>
-                <span class="foi-count">{{ i.num_of_courses }}</span>
-              </a>
-              {% empty %}
-              <p class="text-muted small">No levels available.</p>
-              {% endfor %}
-            </div>
-          </div>
-
-          <!-- Price Filter -->
-          <div class="filter-section">
-            <h5 class="filter-section-title">
-              <i class="bi bi-tag me-2"></i>Price
-            </h5>
-            <div class="filter-options-list">
-              {% for i in price %}
-              <a href="?price={{ i.id }}#course" class="filter-option-item {% if request.GET.price == i.id|stringformat:'s' %}active{% endif %}">
-                <span class="foi-dot"></span>
-                <span class="foi-label">{{ i.title }}</span>
-                <span class="foi-count">{{ i.num_of_courses }}</span>
-              </a>
-              {% empty %}
-              <p class="text-muted small">No price options available.</p>
               {% endfor %}
             </div>
           </div>
@@ -137,20 +101,23 @@
             <form action="{% url 'courses' %}" method="get" >
             <div class="search-box enhanced-search">
               <i class="bi bi-search"></i>
-              <input type="text" name="search" placeholder="Search courses...">
+              {% if request.GET.category %}<input type="hidden" name="category" value="{{ request.GET.category }}">{% endif %}
+              <input type="text" name="search" placeholder="Search courses..." value="{{ request.GET.search }}">
               <button type="submit" style="display: none;">Submit</button>
             </div>
             </form>
-            <div class="sort-dropdown enhanced-sort">
+            <form action="{% url 'courses' %}" method="get" class="enhanced-sort">
               <i class="bi bi-sort-down-alt"></i>
-              <select>
-                <option>Most Popular</option>
-                <option>Newest First</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Duration: Short to Long</option>
+              {% if request.GET.search %}<input type="hidden" name="search" value="{{ request.GET.search }}">{% endif %}
+              {% if request.GET.category %}<input type="hidden" name="category" value="{{ request.GET.category }}">{% endif %}
+              <select name="sort" onchange="this.form.submit()">
+                <option value="" {% if not request.GET.sort %}selected{% endif %}>Most Popular</option>
+                <option value="newest" {% if request.GET.sort == 'newest' %}selected{% endif %}>Newest First</option>
+                <option value="price_low" {% if request.GET.sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+                <option value="price_high" {% if request.GET.sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+                <option value="duration" {% if request.GET.sort == 'duration' %}selected{% endif %}>Duration: Short to Long</option>
               </select>
-            </div>
+            </form>
           </div>
         </div>
 
@@ -164,14 +131,18 @@
                 <!-- Image -->
                 <div class="course-image">
                   <a href="{% url 'course_detail' i.id %}">
+                    {% if i.course_image %}
                     <img src="{{ i.course_image.url }}" alt="{{ i.course_title }}" class="img-fluid">
+                    {% else %}
+                    <img src="{% static 'image/education/courses-13.webp' %}" alt="{{ i.course_title }}" class="img-fluid">
+                    {% endif %}
                   </a>
                   <div class="course-image-overlay">
                     <a href="{% url 'course_detail' i.id %}" class="overlay-btn">
                       <i class="bi bi-eye"></i> Preview
                     </a>
                   </div>
-                  <div class="course-price-badge">${{ i.price }}</div>
+                  <div class="course-price-badge">{% if i.price %}${{ i.price }}{% elif i.mark_price %}${{ i.mark_price }}{% else %}Free{% endif %}</div>
                   {% if i.mark_price %}
                   <div class="course-discount-badge">
                     {{ i.discount_price }}% OFF
@@ -187,9 +158,6 @@
                   <div class="course-meta-row">
                     <span class="cmeta-category">
                       <i class="bi bi-grid me-1"></i>{{ i.category }}
-                    </span>
-                    <span class="cmeta-level cmeta-level-{{ i.level|lower }}">
-                      <i class="bi bi-bar-chart me-1"></i>{{ i.level }}
                     </span>
                   </div>
 
@@ -208,7 +176,11 @@
 
                   <div class="course-card-footer">
                     <div class="instructor-info enhanced-instructor">
+                      {% if i.instructor_image %}
                       <img src="{{ i.instructor_image.url }}" alt="Instructor" class="instructor-avatar">
+                      {% else %}
+                      <img src="{% static 'image/person/person-m-8.webp' %}" alt="Instructor" class="instructor-avatar">
+                      {% endif %}
                       <div>
                         <span class="instructor-name">{{ i.instructor_name }}</span>
                         <span class="instructor-role">Instructor</span>
@@ -242,7 +214,7 @@
 
               {% if course_data.has_previous %}
               <li class="page-item">
-                <a class="page-link" href="?page={{ course_data.previous_page_number }}">
+                <a class="page-link" href="{% querystring page=course_data.previous_page_number %}">
                   <i class="bi bi-chevron-left"></i>
                 </a>
               </li>
@@ -254,13 +226,13 @@
 
               {% for num in course_data.paginator.page_range %}
               <li class="page-item {% if course_data.number == num %}active{% endif %}">
-                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                <a class="page-link" href="{% querystring page=num %}">{{ num }}</a>
               </li>
               {% endfor %}
 
               {% if course_data.has_next %}
               <li class="page-item">
-                <a class="page-link" href="?page={{ course_data.next_page_number }}">
+                <a class="page-link" href="{% querystring page=course_data.next_page_number %}">
                   <i class="bi bi-chevron-right"></i>
                 </a>
               </li>
@@ -621,7 +593,7 @@
 .course-discount-badge {
   position: absolute;
   top: 14px; left: 14px;
-  background: #dc3545;
+  background: #10b981;
   color: #fff;
   padding: 4px 10px;
   border-radius: 12px;

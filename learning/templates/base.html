@@ -65,6 +65,14 @@
     }
     .nav-profile-img:hover { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color), transparent 70%); }
 
+    .cart-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 18px; height: 18px; padding: 0 5px;
+      margin-left: 6px; border-radius: 20px;
+      background: #dc3545; color: #fff;
+      font-size: 10px; font-weight: 700; line-height: 1;
+    }
+
     /* ===== Dropdown ===== */
     .navmenu .dropdown ul {
       border-radius: 14px !important;
@@ -267,7 +275,7 @@
               {% if request.user.profile.profile_image %}
                 <img src="{{ request.user.profile.profile_image.url }}" class="nav-profile-img">
               {% else %}
-                <img src="{% static 'image/default_profile.avif' %}" class="nav-profile-img">
+                <img src="{% static 'image/person/person-m-8.webp' %}" class="nav-profile-img">
               {% endif %}
             {% else %}
               <i class="bi bi-person-circle" style="font-size:24px;color:var(--default-color);"></i>
@@ -277,7 +285,7 @@
               {% if request.user.is_authenticated %}
               <li><a href="{% url 'profile' %}"><i class="bi bi-person"></i>Profile</a></li>
               <li><a href="{% url 'renew_password' %}"><i class="bi bi-key"></i>Change Password</a></li>
-              <li><a href="{% url 'cart_detail' %}"><i class="bi bi-heart"></i>My Cart</a></li>
+              <li><a href="{% url 'cart_detail' %}"><i class="bi bi-cart3"></i>My Cart{% if request.session.cart %}<span class="cart-badge">{{ request.session.cart|length }}</span>{% endif %}</a></li>
               <li><a href="{% url 'logout' %}" style="color:#dc3545!important;"><i class="bi bi-box-arrow-right" style="color:#dc3545!important;"></i>Logout</a></li>
               {% else %}
               <li><a href="{% url 'signin' %}"><i class="bi bi-box-arrow-in-right"></i>Login</a></li>

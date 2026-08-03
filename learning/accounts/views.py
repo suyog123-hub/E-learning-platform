@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect,get_list_or_404, get_object_or_404
+from django.shortcuts import render,redirect,get_list_or_404, get_object_or_404, reverse
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib import messages
@@ -6,6 +6,8 @@ from django.contrib.auth import authenticate, login, logout
 from accounts.models import CustomUser
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.utils.http import url_has_allowed_host_and_scheme
 from .forms import profileForm
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
@@ -16,10 +18,9 @@ import hmac
 import hashlib
 import base64
 from .models import FavoriteCourse
-
-
 from core.models import *
 # Create your views here.
+@login_required(login_url='signin')
 def renew_password(request):
     form= PasswordChangeForm(request.user)
     if request.method == 'POST':
@@ -55,6 +56,8 @@ def profile(request):
                 messages.error(request,error)
     context={
         'form': form,
+        'favorite_courses': FavoriteCourse.objects.filter(user=user_profile).select_related('course', 'course__category'),
+        'purchased_courses': Purchase.objects.filter(user=request.user).select_related('course', 'course__category').order_by('-purchased_at'),
     }
 
 
@@ -67,8 +70,9 @@ Authentication Views
 '''
 def signin(request):
     if request.method == 'POST':
-        username=request.POST['username']
-        password=request.POST['password']
+        username=request.POST.get('username','')
+        password=request.POST.get('password','')
+        next_url = request.POST.get('next')
 
         if not CustomUser.objects.filter(username=username).exists():
             messages.error(request,"username not found")
@@ -83,6 +87,12 @@ def signin(request):
             else:
                 request.session.set_expiry(0) # expire on browser close
             messages.success(request,"logged in successfully")
+            if next_url and url_has_allowed_host_and_scheme(
+                next_url,
+                allowed_hosts={request.get_host()},
+                require_https=request.is_secure(),
+            ):
+                return redirect(next_url)
             return redirect("home")
         else:
             messages.error(request,"invalid credentials")
@@ -137,7 +147,18 @@ def cart(request):
 def cart_add(request, id):
     cart = Cart(request)
     product = Course.objects.get(id=id)
+    if not product.image and product.course_image:
+        product.image = product.course_image
+        product.save(update_fields=['image'])
     cart.add(product=product)
+    item = cart.cart.get(str(product.id))
+    if item is not None:
+        item['duration'] = product.total_duration or 'Flexible'
+        item['lessons'] = product.curriculums.count()
+        item['instructor'] = product.instructor_name or 'Expert Instructor'
+        item['mark_price'] = f"${product.mark_price}" if product.mark_price else ''
+        cart.save()
+    messages.success(request, f'"{product.course_title}" added to your cart.')
     return redirect('course_detail', id=product.id)
 
 
@@ -185,28 +206,89 @@ def generate_signature(data, secret):
 
 @login_required(login_url="signin")
 def cart_detail(request):
-    cart=request.session.get('cart')
-    amount=0
-    for item in cart.values():
-        amount+=item['quantity']*float(item['price'])
-    amount=round(amount,2)
-    tax_amount=round(amount*0.13,2)
-    total_amount=round(amount+tax_amount,2)
-    secret_key = "8gBm/:&EnhH.1/q"
+    cart_items = request.session.get(settings.CART_SESSION_ID, {}) or {}
+    amount = 0
+    for item in cart_items.values():
+        amount += item['quantity'] * float(item['price'])
+    amount = round(amount, 2)
+    tax_amount = round(amount * 0.13, 2)
+    total_amount = round(amount + tax_amount, 2)
+    secret_key = settings.ESEWA_SECRET_KEY
     data = {
         "amount": amount,
         "tax_amount": tax_amount,
         "total_amount": total_amount,
         "transaction_uuid": str(uuid.uuid4()),
-        "product_code": 'EPAYTEST',
+        "product_code": settings.ESEWA_PRODUCT_CODE,
         "product_service_charge": 0,
         "product_delivery_charge": 0,
-        "success_url": "http://127.0.0.1:8000/esewa/success/",
-        "failure_url": "http://127.0.0.1:8000/esewa/failure/",
+        "success_url": request.build_absolute_uri(reverse('esewa_success')),
+        "failure_url": request.build_absolute_uri(reverse('esewa_failure')),
         "signed_field_names": "total_amount,transaction_uuid,product_code"
     }
-    data['signature']=generate_signature(data,secret_key)
-    return render(request, 'cart.html',data)
+    data['signature'] = generate_signature(data, secret_key)
+    return render(request, 'cart.html', data)
+
+
+def verify_esewa_signature(data_b64, secret):
+    """Verify the eSewa v2 payment response.
+
+    eSewa redirects to the success URL with a single ``data`` query param
+    (base64-encoded JSON). The JSON contains the transaction fields, a
+    ``signed_field_names`` list, and the ``signature`` to verify against.
+    """
+    import base64 as _b64
+    try:
+        decoded = json.loads(_b64.b64decode(data_b64).decode('utf-8'))
+    except (json.JSONDecodeError, ValueError, TypeError):
+        return None
+
+    if decoded.get('status') != 'COMPLETE':
+        return None
+
+    signed_fields = decoded.get('signed_field_names', '')
+    received_signature = decoded.get('signature', '')
+    if not signed_fields or not received_signature:
+        return None
+
+    message = ",".join([f"{field}={decoded.get(field, '')}" for field in signed_fields.split(",")])
+    expected = _b64.b64encode(hmac.new(
+        secret.encode('utf-8'),
+        message.encode('utf-8'),
+        hashlib.sha256
+    ).digest()).decode('utf-8')
+
+    if not hmac.compare_digest(expected, received_signature):
+        return None
+    return decoded
+
+
+def esewa_success(request):
+    data_b64 = request.GET.get('data', '')
+    payment = verify_esewa_signature(data_b64, settings.ESEWA_SECRET_KEY)
+
+    if payment is None:
+        messages.error(request, "Could not verify the payment with eSewa. Please contact support.")
+        return redirect('cart_detail')
+
+    cart_items = request.session.get(settings.CART_SESSION_ID, {}) or {}
+    if request.user.is_authenticated:
+        for course_id in cart_items.keys():
+            try:
+                course = Course.objects.get(id=course_id)
+                Purchase.objects.get_or_create(user=request.user, course=course)
+            except Course.DoesNotExist:
+                continue
+
+    request.session[settings.CART_SESSION_ID] = {}
+    request.session.modified = True
+    messages.success(request, "Payment successful! You are now enrolled in your courses.")
+    return redirect('home')
+
+
+def esewa_failure(request):
+    messages.error(request, "Payment was unsuccessful or cancelled. Please try again.")
+    return redirect('cart_detail')
 
 
 from django.shortcuts import redirect, get_object_or_404
@@ -251,7 +333,7 @@ def favorites_list(request):
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
     
     # Query all favorite courses of this user
-    favorite_courses = FavoriteCourse.objects.filter(user=user_profile).select_related('course', 'course__category', 'course__level1')
+    favorite_courses = FavoriteCourse.objects.filter(user=user_profile).select_related('course', 'course__category')
     
     context = {
         'favorite_courses': favorite_courses

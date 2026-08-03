@@ -2,10 +2,10 @@ from django.urls import path
 from .views import  *
 
 urlpatterns = [
-     path('signin/', signin, name='signin'),
-     path('register/',register, name='register'),
-     path('profile/', profile, name='profile'),
-     path('logout/', signout, name='logout'),
+    path('signin/', signin, name='signin'),
+    path('register/',register, name='register'),
+    path('profile/', profile, name='profile'),
+    path('logout/', signout, name='logout'),
     path('renew_password/', renew_password, name='renew_password'),
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='password_reset.html'), name='password_reset'),
     path('password_reset_done/', auth_views.PasswordResetDoneView.as_view(template_name='password_reset_done.html'), name='password_reset_done'),
@@ -22,7 +22,5 @@ urlpatterns = [
     path('favorites/add/<int:course_id>/', add_to_favorites, name='add_to_favorites'),
     path('favorites/remove/<int:course_id>/', remove_from_favorites, name='remove_from_favorites'),
     path('favorites/', favorites_list, name='favorite_courses'),
-    
-
 
 ]

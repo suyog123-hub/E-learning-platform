@@ -14,6 +14,9 @@ class UserProfile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     dob=models.DateField(null=True, blank=True)
     address=models.CharField(max_length=200,null=True)
+    github=models.URLField(null=True, blank=True)
+    linkedin=models.URLField(null=True, blank=True)
+    twitter=models.URLField(null=True, blank=True)
 
 
     def __str__(self):

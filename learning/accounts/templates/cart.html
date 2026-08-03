@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load cart_tag %}
+{% load static %}
 {% block content %}
 
 <!-- ══════════════════════════════════════
@@ -47,18 +48,16 @@
 
         <!-- Thumbnail -->
         <div class="wi-thumb">
+          {% if value.image %}
           <img src="{{ value.image }}" alt="{{ value.name }}">
+          {% else %}
+          <img src="{% static 'image/education/courses-13.webp' %}" alt="{{ value.name }}">
+          {% endif %}
         </div>
 
         <!-- Body -->
         <div class="wi-body">
           <div class="wi-meta-row">
-            {% if value.level %}
-            <span class="wi-level wi-lvl-{{ value.level|lower }}"><i class="bi bi-lightning-fill"></i>{{ value.level
-              }}</span>
-            {% else %}
-            <span class="wi-level wi-lvl-beginner"><i class="bi bi-lightning-fill"></i>Beginner</span>
-            {% endif %}
             <span class="wi-chip"><i class="bi bi-clock"></i>{{ value.duration|default:"12h 30m" }}</span>
             <span class="wi-chip"><i class="bi bi-collection-play"></i>{{ value.lessons|default:"42" }} lessons</span>
           </div>
@@ -91,15 +90,17 @@
         <!-- Actions -->
         <div class="wi-actions">
           <div class="wi-price-block">
-            <span class="wi-price">{{ value.price }}</span>
+            <span class="wi-price">{% if value.price %}${{ value.price }}{% elif value.mark_price %}{{ value.mark_price }}{% else %}Free{% endif %}</span>
             <div class="wi-price-sub">
-              <span class="wi-orig">{{ value.mark_price|default:"$89.99" }}</span>
+              {% if value.mark_price %}
+              <span class="wi-orig">{{ value.mark_price }}</span>
+              {% endif %}
               <span class="wi-save-badge">Save 30%</span>
             </div>
           </div>
-          <a href="{% url 'enroll' %}" class="wi-enroll-btn">
-            <i class="bi bi-rocket-takeoff-fill"></i>
-            <span>Enroll Now</span>
+          <a href="{% url 'course_detail' key %}" class="wi-enroll-btn">
+            <i class="bi bi-eye"></i>
+            <span>View Course</span>
             <i class="bi bi-arrow-right wi-arr"></i>
           </a>
 
@@ -137,7 +138,6 @@
 
   <!-- ══ RIGHT: Order Summary — col-3 ══ -->
   <div class="col-lg-3 mt-5 mb-5">
-    {% with tax=cart_total_amount|multiply:0.13 %}
     <div class="os-card">
 
       <div class="os-header">
@@ -152,11 +152,9 @@
       <!-- Line items -->
       <div class="os-lines">
 
-
-
         <div class="os-line">
           <span class="os-line-label"><i class="bi bi-bag-fill"></i> Subtotal</span>
-          <span class="os-line-val">Rs{{amount}}</span>
+          <span class="os-line-val">${{ amount }}</span>
         </div>
         <div class="os-line">
           <span class="os-line-label">
@@ -165,34 +163,31 @@
               <i class="bi bi-info-circle os-info-icon"></i>
             </span>
           </span>
-          <span class="os-line-val">${{tax_amount}}</span>
+          <span class="os-line-val">${{ tax_amount }}</span>
         </div>
-
       </div>
-
       <div class="os-divider">
         <span class="os-divider-dot"></span>
         <span class="os-divider-dot"></span>
         <span class="os-divider-dot"></span>
       </div>
-
       <div class="os-total-row">
         <span class="os-total-label">Total</span>
-        <span class="os-total-amt">${{total_amount}}</span>
+        <span class="os-total-amt">${{ total_amount }}</span>
       </div>
             <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
-        <input type="hidden" id="amount" name="amount" value="{{amount}}" required>
-        <input type="hidden" id="tax_amount" name="tax_amount" value="{{tax_amount}}" required>
-        <input type="hidden" id="total_amount" name="total_amount" value="{{total_amount}}" required>
-        <input type="hidden" id="transaction_uuid" name="transaction_uuid" value="{{transaction_uuid}}" required>
-        <input type="hidden" id="product_code" name="product_code" value="{{product_code}}" required>
+        <input type="hidden" id="amount" name="amount" value="{{ amount }}" required>
+        <input type="hidden" id="tax_amount" name="tax_amount" value="{{ tax_amount }}" required>
+        <input type="hidden" id="total_amount" name="total_amount" value="{{ total_amount }}" required>
+        <input type="hidden" id="transaction_uuid" name="transaction_uuid" value="{{ transaction_uuid }}" required>
+        <input type="hidden" id="product_code" name="product_code" value="{{ product_code }}" required>
         <input type="hidden" id="product_service_charge" name="product_service_charge" value="0" required>
         <input type="hidden" id="product_delivery_charge" name="product_delivery_charge" value="0" required>
-        <input type="hidden" id="success_url" name="success_url" value="https://developer.esewa.com.np/success" required>
-        <input type="hidden" id="failure_url" name="failure_url" value="https://developer.esewa.com.np/failure" required>
+        <input type="hidden" id="success_url" name="success_url" value="{{ success_url }}" required>
+        <input type="hidden" id="failure_url" name="failure_url" value="{{ failure_url }}" required>
         <input type="hidden" id="signed_field_names" name="signed_field_names"
-          value="{{signed_field_names}}" required>
-        <input type="hidden" id="signature" name="signature" value="{{signature}}"
+          value="{{ signed_field_names }}" required>
+        <input type="hidden" id="signature" name="signature" value="{{ signature }}"
           required>
         <input class="os-checkout-btn"  value="              Secure Checkout              " type="submit">
       </form>
@@ -201,7 +196,6 @@
         <span class="os-pay-pill"><i class="bi bi-esewa"></i> Esewa</span>
       </div>
 
-      {% endwith %}
     </div>
 
   </div><!-- /col-lg-3 -->

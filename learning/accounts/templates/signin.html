@@ -14,6 +14,7 @@
 
           <form method="post" action="{% url 'signin' %}" class="php-email-form">
             {% csrf_token %}
+            {% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}
             <!-- email -->
             <div class="form-group mb-3">
               <label for="username" class="form-label fw-semibold" style="color: var(--heading-color);">Email</label>
@@ -37,7 +38,7 @@
             <button type="submit" class="btn w-100 py-2 fw-semibold rounded-3" style="background-color: var(--accent-color); color: var(--contrast-color); border: none;">
               Sign In
             </button>
-            <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn w-100 py-2 fw-semibold rounded-3 mt-3" style="background-color: var(--accent-color); color: var(--contrast-color); border: none;">
+            <a href="{% url 'social:begin' 'google-oauth2' %}{% if request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}" class="btn w-100 py-2 fw-semibold rounded-3 mt-3" style="background-color: var(--accent-color); color: var(--contrast-color); border: none;">
               Login with Google
             </a>
 

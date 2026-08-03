@@ -24,7 +24,8 @@
 
             </div>
 
-            <form class="enrollment-form" data-aos="fade-up" data-aos-delay="300">
+            <form class="enrollment-form" method="post" data-aos="fade-up" data-aos-delay="300">
+              {% csrf_token %}
 
               <!-- Personal Info Section -->
               <div class="ef-section">
@@ -86,12 +87,11 @@
                       </label>
                       <select id="course" name="course" class="ef-input ef-select" required>
                         <option value="">Choose a course...</option>
-                        <option value="web-development">Full Stack Web Development</option>
-                        <option value="data-science">Data Science &amp; Analytics</option>
-                        <option value="digital-marketing">Digital Marketing Mastery</option>
-                        <option value="ui-ux-design">UI/UX Design Fundamentals</option>
-                        <option value="cybersecurity">Cybersecurity Essentials</option>
-                        <option value="mobile-development">Mobile App Development</option>
+                        {% for course in courses %}
+                        <option value="{{ course.id }}">{{ course.course_title }}</option>
+                        {% empty %}
+                        <option value="">No courses available right now</option>
+                        {% endfor %}
                       </select>
                     </div>
                   </div>

@@ -68,31 +68,13 @@
 
           <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
             <div class="hero-image">
+              <div class="hero-img-glow"></div>
               <div class="main-image">
-                <img src="{% static 'image/education/courses-13.webp' %}" alt="Online Learning" class="img-fluid">
-              </div>
-              <div class="floating-cards">
-                <div class="course-card" data-aos="fade-right" data-aos-delay="400">
-                  <div class="card-icon"><i class="bi bi-code-slash"></i></div>
-                  <div class="card-content">
-                    <h6>Web Development</h6>
-                    <span>2,450 Students</span>
-                  </div>
+                <div class="hero-img-frame">
+                  <img src="{% static 'image/education/courses-13.webp' %}" alt="Online Learning" class="img-fluid">
+                  <div class="hero-img-overlay"></div>
                 </div>
-                <div class="course-card" data-aos="fade-left" data-aos-delay="500">
-                  <div class="card-icon"><i class="bi bi-palette"></i></div>
-                  <div class="card-content">
-                    <h6>UI/UX Design</h6>
-                    <span>1,890 Students</span>
-                  </div>
-                </div>
-                <div class="course-card" data-aos="fade-up" data-aos-delay="600">
-                  <div class="card-icon"><i class="bi bi-graph-up"></i></div>
-                  <div class="card-content">
-                    <h6>Digital Marketing</h6>
-                    <span>3,200 Students</span>
-                  </div>
-                </div>
+             
               </div>
             </div>
           </div>
@@ -134,25 +116,33 @@
           <div class="course-card featured-course-card">
             <div class="course-image">
               <a href="{% url 'course_detail' i.id %}">
+                {% if i.course_image %}
                 <img src="{{ i.course_image.url }}" alt="{{ i.course_title }}" class="img-fluid">
+                {% else %}
+                <img src="{% static 'image/education/courses-13.webp' %}" alt="{{ i.course_title }}" class="img-fluid">
+                {% endif %}
               </a>
               <div class="fcc-overlay">
                 <a href="{% url 'course_detail' i.id %}" class="fcc-preview">
                   <i class="bi bi-eye me-1"></i>Preview
                 </a>
               </div>
-              <div class="price-badge">${{ i.price }}</div>
-              <div class="fcc-wishlist"><i class="bi bi-heart"></i></div>
+              <div class="price-badge">{% if i.price %}${{ i.price }}{% elif i.mark_price %}${{ i.mark_price }}{% else %}Free{% endif %}</div>
+              <a href="{% url 'add_to_favorites' i.id %}" class="fcc-wishlist"><i class="bi bi-heart"></i></a>
             </div>
             <div class="course-content">
               <div class="course-meta">
-                <span class="level fcc-level"><i class="bi bi-bar-chart me-1"></i>{{ i.level }}</span>
                 <span class="duration"><i class="bi bi-clock me-1"></i>{{ i.total_duration }}</span>
+                <span class="fcc-lessons"><i class="bi bi-collection-play me-1"></i>{{ i.curriculums.count }} Lessons</span>
               </div>
               <h3><a href="{% url 'course_detail' i.id %}">{{ i.course_title }}</a></h3>
               <p>{{ i.desc|truncatechars:90 }}</p>
               <div class="instructor">
+                {% if i.instructor_image %}
                 <img src="{{ i.instructor_image.url }}" alt="Instructor" class="instructor-img">
+                {% else %}
+                <img src="{% static 'image/person/person-m-8.webp' %}" alt="Instructor" class="instructor-img">
+                {% endif %}
                 <div class="instructor-info">
                   <h6>{{ i.instructor_name }}</h6>
                   <small>Instructor</small>

@@ -23,9 +23,6 @@
 
           <!-- Badge Row -->
           <div class="cd-badge-row">
-            <span class="cd-badge cd-badge-level">
-              <i class="bi bi-bar-chart me-1"></i>{{ course_detail.level1 }}
-            </span>
             <span class="cd-badge cd-badge-category">
               <i class="bi bi-grid me-1"></i>{{ course_detail.category }}
             </span>
@@ -40,7 +37,11 @@
 
           <!-- Instructor Strip -->
           <div class="cd-instructor-strip">
+            {% if course_detail.instructor_image %}
+            <img src="{{ course_detail.instructor_image.url }}" alt="Instructor" class="cis-avatar">
+            {% else %}
             <img src="{% static 'image/person/person-m-8.webp' %}" alt="Instructor" class="cis-avatar">
+            {% endif %}
             <div class="cis-info">
               <span class="cis-name">Prof. {{ course_detail.instructor_name }}</span>
               <span class="cis-role">{{ course_detail.instructor_experience }}</span>
@@ -53,9 +54,15 @@
           <!-- Video -->
           <div class="cd-video-wrapper">
             <div class="ratio ratio-16x9">
+              {% if course_detail.intro_video %}
               <video controls class="cd-video">
                 <source src="{{ course_detail.intro_video.url }}" type="video/mp4">
               </video>
+              {% else %}
+              <div class="cd-video-placeholder d-flex align-items-center justify-content-center">
+                <i class="bi bi-film" style="font-size:3rem;color:#fff;"></i>
+              </div>
+              {% endif %}
             </div>
             <div class="cd-video-label">
               <i class="bi bi-play-circle-fill me-2"></i>Course Preview
@@ -72,11 +79,13 @@
                 <i class="bi bi-layout-text-window-reverse me-2"></i>Overview
               </button>
             </li>
+            {% if is_purchased %}
             <li class="nav-item">
               <button class="nav-link" data-bs-toggle="tab" data-bs-target="#course-detailscurriculum" type="button" role="tab">
                 <i class="bi bi-list-ul me-2"></i>Curriculum
               </button>
             </li>
+            {% endif %}
             <li class="nav-item">
               <button class="nav-link" data-bs-toggle="tab" data-bs-target="#course-detailsreviews" type="button" role="tab">
                 <i class="bi bi-star me-2"></i>Reviews
@@ -134,6 +143,7 @@
             <!-- ===== Curriculum Tab ===== -->
             <div class="tab-pane fade" id="course-detailscurriculum" role="tabpanel">
 
+              {% if is_purchased %}
               <!-- Stats Bar -->
               <div class="curriculum-stats-bar">
                 <div class="csb-item">
@@ -161,42 +171,60 @@
                 </div>
               </div>
 
-              <div class="accordion cd-accordion" id="curriculumAccordion">
-                {% for i in course_detail.curriculums.all %}
-                <div class="accordion-item cd-accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button cd-accordion-btn" type="button"
-                      data-bs-toggle="collapse" data-bs-target="#module-{{ i.id }}">
-                      <div class="cd-module-info">
-                        <div class="cd-module-num">{{ forloop.counter }}</div>
-                        <div>
-                          <span class="cd-module-title">{{ i.title }}</span>
-                          <span class="cd-module-meta">8 lessons • 4h 15m</span>
-                        </div>
-                      </div>
-                    </button>
-                  </h2>
-                  <div id="module-{{ i.id }}" class="accordion-collapse collapse show" data-bs-parent="#curriculumAccordion">
-                    <div class="accordion-body cd-accordion-body">
-                      <ul class="cd-lesson-list">
-                        {% for topic in i.topics.all %}
-                        <li class="cd-lesson-item">
-                          <div class="cdli-left">
-                            <div class="cdli-icon"><i class="bi bi-play-circle-fill"></i></div>
-                            <span>{{ topic.title }}</span>
-                          </div>
-                          <div class="cdli-right">
-                            <span class="cdli-time">5:30</span>
-                            <span class="cdli-free">Free</span>
-                          </div>
-                        </li>
-                        {% endfor %}
-                      </ul>
-                    </div>
+              <ul class="cd-lesson-list">
+                {% for lesson in course_detail.curriculums.all %}
+                {% if lesson.video %}
+                <li class="cd-lesson-item cd-lesson-video">
+                  <div class="cdli-left">
+                    <div class="cdli-icon"><i class="bi bi-play-circle-fill"></i></div>
+                    <span>{{ lesson.title|default:"Lecture" }}</span>
                   </div>
-                </div>
+                  <div class="cdli-right">
+                    <span class="cdli-free">{{ course_detail.curriculums.count }} Videos</span>
+                  </div>
+                </li>
+                <li class="cd-lesson-video-wrap">
+                  <video controls preload="metadata" class="cd-video-player" src="{{ lesson.video.url }}">
+                    Your browser does not support the video tag.
+                  </video>
+                </li>
+                {% else %}
+                <li class="cd-lesson-item">
+                  <div class="cdli-left">
+                    <div class="cdli-icon"><i class="bi bi-play-circle-fill"></i></div>
+                    <span>{{ lesson.title }}</span>
+                  </div>
+                  <div class="cdli-right">
+                    <span class="cdli-time">5:30</span>
+                    <span class="cdli-free">Free</span>
+                  </div>
+                </li>
+                {% endif %}
                 {% endfor %}
+              </ul>
+              {% else %}
+              <div class="cd-curriculum-locked">
+                <div class="cd-cl-icon"><i class="bi bi-lock-fill"></i></div>
+                <h4>Curriculum is locked</h4>
+                <p>
+                  The curriculum for this course is only visible to students who have
+                  completed their secure eSewa payment.
+                </p>
+                {% if request.user.is_authenticated %}
+                <div class="cd-cl-actions">
+                  <a href="{% url 'cart_add' course_detail.id %}" class="cd-btn-buy">
+                    <i class="bi bi-cart-plus me-2"></i>Enroll Now
+                  </a>
+                </div>
+                {% else %}
+                <div class="cd-cl-actions">
+                  <a href="{% url 'signin' %}" class="cd-btn-buy">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Login to Enroll
+                  </a>
+                </div>
+                {% endif %}
               </div>
+              {% endif %}
 
             </div><!-- End Curriculum Tab -->
 
@@ -279,9 +307,17 @@
           <!-- Price Section -->
           <div class="cd-price-section">
             <div class="cd-price-row">
+              {% if course_detail.price %}
               <span class="cd-current-price">${{ course_detail.price }}</span>
+              {% elif course_detail.mark_price %}
+              <span class="cd-current-price">${{ course_detail.mark_price }}</span>
+              {% else %}
+              <span class="cd-current-price">Free</span>
+              {% endif %}
+              {% if course_detail.mark_price and course_detail.price %}
               <span class="cd-original-price">${{ course_detail.mark_price }}</span>
               <span class="cd-discount-tag">{{ course_detail.discount_price }}% OFF</span>
+              {% endif %}
             </div>
             <div class="cd-timer">
               <i class="bi bi-alarm-fill me-1"></i>
@@ -319,12 +355,12 @@
 
           <!-- Action Buttons -->
           <div class="cd-action-btns">
-            <a href="{% url 'enroll' %}" class="cd-btn-enroll">
-              <i class="bi bi-rocket-takeoff-fill me-2"></i>Add to Favorites
+            <a href="{% url 'cart_add' course_detail.id %}" class="cd-btn-enroll">
+              <i class="bi bi-cart-plus-fill me-2"></i>Add to Cart
             </a>
-            <button class="cd-btn-wishlist">
-             <a href="{% url 'cart_add' course_detail.id  %}"><i class="bi bi-heart me-2"></i>Add to Cart</a> 
-            </button>
+            <a href="{% url 'add_to_favorites' course_detail.id %}" class="cd-btn-wishlist">
+              <i class="bi bi-heart me-2"></i>Add to Favorites
+            </a>
           </div>
 
           <!-- Guarantee -->
@@ -347,13 +383,6 @@
               <div class="cdi-info">
                 <span class="cdi-label">Duration</span>
                 <span class="cdi-value">{{ course_detail.total_duration }}</span>
-              </div>
-            </div>
-            <div class="cd-detail-item">
-              <div class="cdi-icon cdi-green"><i class="bi bi-bar-chart"></i></div>
-              <div class="cdi-info">
-                <span class="cdi-label">Skill Level</span>
-                <span class="cdi-value">{{ course_detail.level1 }}</span>
               </div>
             </div>
             <div class="cd-detail-item">
@@ -572,6 +601,10 @@
   margin-bottom: 30px; position: relative;
 }
 .cd-video { border-radius: 18px; }
+.cd-video-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #1b2a4a, #2a3f6b);
+}
 .cd-video-label {
   position: absolute; bottom: 0; left: 0; right: 0;
   background: linear-gradient(0deg, rgba(0,0,0,0.6), transparent);
@@ -733,6 +766,14 @@
 .cdli-right { display: flex; align-items: center; gap: 10px; }
 .cdli-time { font-size: 12px; color: color-mix(in srgb, var(--default-color), transparent 45%); }
 .cdli-free { font-size: 11px; font-weight: 600; color: #10b981; background: color-mix(in srgb, #10b981, transparent 85%); padding: 2px 10px; border-radius: 10px; }
+.cd-lesson-video { cursor: default; }
+.cd-lesson-video-wrap {
+  list-style: none; padding: 4px 22px 18px;
+}
+.cd-video-player {
+  width: 100%; max-height: 380px; border-radius: 12px;
+  background: #000; border: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
+}
 
 /* ===== Rating Overview ===== */
 .cd-rating-overview {
@@ -782,6 +823,37 @@
 }
 .cd-login-prompt a { color: var(--accent-color); font-weight: 600; }
 
+/* ===== Curriculum Locked State ===== */
+.cd-curriculum-locked {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  padding: 60px 24px; margin: 8px 0 24px;
+  background: var(--surface-color);
+  border: 1px dashed color-mix(in srgb, var(--default-color), transparent 75%);
+  border-radius: 16px;
+}
+.cd-cl-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: color-mix(in srgb, var(--accent-color), transparent 88%);
+  color: var(--accent-color); font-size: 30px; margin-bottom: 18px;
+}
+.cd-curriculum-locked h4 { font-size: 22px; margin-bottom: 10px; }
+.cd-curriculum-locked p {
+  max-width: 480px; color: color-mix(in srgb, var(--default-color), transparent 25%);
+  font-size: 15px; margin-bottom: 24px;
+}
+.cd-cl-actions .cd-btn-buy {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--accent-color); color: #fff; font-weight: 600;
+  border-radius: 50px; padding: 12px 28px; text-decoration: none;
+  transition: all 0.3s ease;
+}
+.cd-cl-actions .cd-btn-buy:hover {
+  background: color-mix(in srgb, var(--accent-color), black 12%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-color), transparent 60%);
+}
+
 /* ===== Review Cards ===== */
 .cd-reviews-list { display: flex; flex-direction: column; gap: 16px; }
 .cd-review-card {
@@ -818,7 +890,7 @@
 .cd-price-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
 .cd-current-price { font-size: 36px; font-weight: 900; color: #fff; }
 .cd-original-price { font-size: 18px; color: rgba(255,255,255,0.65); text-decoration: line-through; }
-.cd-discount-tag { background: rgba(255,255,255,0.2); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 12px; }
+.cd-discount-tag { background: #10b981; color: #fff; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 12px; }
 .cd-timer { display: flex; align-items: center; color: rgba(255,255,255,0.85); font-size: 13px; }
 .cd-course-features { padding: 20px 28px; border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 92%); display: flex; flex-direction: column; gap: 12px; }
 .cd-feature-item { display: flex; align-items: center; gap: 12px; font-size: 14px; }
