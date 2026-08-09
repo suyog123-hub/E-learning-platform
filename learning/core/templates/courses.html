@@ -27,7 +27,7 @@
         <div class="cph-stat">
           <i class="bi bi-people-fill"></i>
           <div>
-            <strong>50k+</strong>
+            <strong>50+</strong>
             <span>Students</span>
           </div>
         </div>
@@ -68,22 +68,6 @@
               {% endfor %}
             </div>
           </div>
-
-          <!-- Popular Tags -->
-          <div class="filter-section">
-            <h5 class="filter-section-title">
-              <i class="bi bi-hash me-2"></i>Popular Tags
-            </h5>
-            <div class="filter-tags">
-              <span class="ftag">Python</span>
-              <span class="ftag">Django</span>
-              <span class="ftag">React</span>
-              <span class="ftag">Machine Learning</span>
-              <span class="ftag">Web Dev</span>
-              <span class="ftag">Data Science</span>
-            </div>
-          </div>
-
         </div>
       </div>
 
@@ -105,18 +89,6 @@
               <input type="text" name="search" placeholder="Search courses..." value="{{ request.GET.search }}">
               <button type="submit" style="display: none;">Submit</button>
             </div>
-            </form>
-            <form action="{% url 'courses' %}" method="get" class="enhanced-sort">
-              <i class="bi bi-sort-down-alt"></i>
-              {% if request.GET.search %}<input type="hidden" name="search" value="{{ request.GET.search }}">{% endif %}
-              {% if request.GET.category %}<input type="hidden" name="category" value="{{ request.GET.category }}">{% endif %}
-              <select name="sort" onchange="this.form.submit()">
-                <option value="" {% if not request.GET.sort %}selected{% endif %}>Most Popular</option>
-                <option value="newest" {% if request.GET.sort == 'newest' %}selected{% endif %}>Newest First</option>
-                <option value="price_low" {% if request.GET.sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
-                <option value="price_high" {% if request.GET.sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
-                <option value="duration" {% if request.GET.sort == 'duration' %}selected{% endif %}>Duration: Short to Long</option>
-              </select>
             </form>
           </div>
         </div>
@@ -142,7 +114,7 @@
                       <i class="bi bi-eye"></i> Preview
                     </a>
                   </div>
-                  <div class="course-price-badge">{% if i.price %}${{ i.price }}{% elif i.mark_price %}${{ i.mark_price }}{% else %}Free{% endif %}</div>
+                  <div class="course-price-badge">{% if i.price %}{{ i.price }}{% elif i.mark_price %}{{ i.mark_price }}{% else %}Free{% endif %}</div>
                   {% if i.mark_price %}
                   <div class="course-discount-badge">
                     {{ i.discount_price }}% OFF
@@ -165,12 +137,10 @@
                     <a href="{% url 'course_detail' i.id %}">{{ i.course_title }}</a>
                   </h3>
 
-                  <p class="course-desc">{{ i.desc|truncatechars:90 }}</p>
+                  <p class="course-desc">{{ i.desc|truncatechars:150 }}</p>
 
                   <div class="course-info-strip">
                     <span><i class="bi bi-clock me-1"></i>{{ i.total_duration }}</span>
-                    <span><i class="bi bi-play-circle me-1"></i>24 Lessons</span>
-                    <span><i class="bi bi-people me-1"></i>1.2k Students</span>
                   </div>
                  
 

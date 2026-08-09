@@ -118,12 +118,6 @@
               {% endif %}
               <h5>{{ course.course_title }}</h5>
               <p class="sp-instructor"><i class="bi bi-person-fill"></i>{{ course.instructor_name|default:"Instructor" }}</p>
-              <div class="sp-mini-prog">
-                <div class="sp-mini-prog-top"><span>Progress</span><span class="sp-pct">0%</span></div>
-                <div class="sp-mini-track">
-                  <div class="sp-mini-fill" style="width:0%"></div>
-                </div>
-              </div>
               <div class="sp-course-footer">
                 <span class="sp-last"><i class="bi bi-cart-check"></i>Purchased {{ purchase.purchased_at|date:"M d, Y" }}</span>
                 <a href="{% url 'course_detail' course.id %}" class="sp-resume-btn">Start <i class="bi bi-arrow-right"></i></a>

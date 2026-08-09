@@ -24,12 +24,12 @@
 
               <div class="hero-stats">
                 <div class="stat-item">
-                  <span class="number purecounter" data-purecounter-start="0" data-purecounter-end="50000" data-purecounter-duration="2">50000</span>
+                  <span class="number purecounter" data-purecounter-start="0" data-purecounter-end="50" data-purecounter-duration="2">50000</span>
                   <span class="label">Students Enrolled</span>
                 </div>
                 <div class="hero-stat-div"></div>
                 <div class="stat-item">
-                  <span class="number purecounter" data-purecounter-start="0" data-purecounter-end="1200" data-purecounter-duration="2">1200</span>
+                  <span class="number purecounter" data-purecounter-start="0" data-purecounter-end="12" data-purecounter-duration="2">1200</span>
                   <span class="label">Expert Courses</span>
                 </div>
                 <div class="hero-stat-div"></div>
@@ -127,7 +127,7 @@
                   <i class="bi bi-eye me-1"></i>Preview
                 </a>
               </div>
-              <div class="price-badge">{% if i.price %}${{ i.price }}{% elif i.mark_price %}${{ i.mark_price }}{% else %}Free{% endif %}</div>
+              <div class="price-badge">{% if i.price %}{{ i.price }}{% elif i.mark_price %}{{ i.mark_price }}{% else %}Free{% endif %}</div>
               <a href="{% url 'add_to_favorites' i.id %}" class="fcc-wishlist"><i class="bi bi-heart"></i></a>
             </div>
             <div class="course-content">
@@ -209,13 +209,13 @@
             <div class="stats-row" data-aos="fade-up" data-aos-delay="400">
               <div class="stat-item">
                 <h3>
-                  <span data-purecounter-start="0" data-purecounter-end="15000" data-purecounter-duration="2" class="purecounter">15000</span>+
+                  <span data-purecounter-start="0" data-purecounter-end="50" data-purecounter-duration="1" class="purecounter"></span>+
                 </h3>
                 <p>Students Enrolled</p>
               </div>
               <div class="stat-item">
                 <h3>
-                  <span data-purecounter-start="0" data-purecounter-end="150" data-purecounter-duration="2" class="purecounter">150</span>+
+                  <span data-purecounter-start="0" data-purecounter-end="12" data-purecounter-duration="2" class="purecounter">150</span>+
                 </h3>
                 <p>Courses Available</p>
               </div>
@@ -236,19 +236,13 @@
             <div class="floating-element student-card" data-aos="zoom-in" data-aos-delay="600">
               <div class="card-content">
                 <i class="bi bi-person-check-fill"></i>
-                <div class="text">
-                  <span class="number">2,450</span>
-                  <span class="label">New Students This Month</span>
-                </div>
+         
               </div>
             </div>
             <div class="floating-element course-card" data-aos="zoom-in" data-aos-delay="700">
               <div class="card-content">
                 <i class="bi bi-play-circle-fill"></i>
-                <div class="text">
-                  <span class="number">50+</span>
-                  <span class="label">Hours of Content</span>
-                </div>
+
               </div>
             </div>
           </div>

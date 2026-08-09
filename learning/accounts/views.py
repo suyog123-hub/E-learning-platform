@@ -21,27 +21,6 @@ from .models import FavoriteCourse
 from core.models import *
 # Create your views here.
 @login_required(login_url='signin')
-def renew_password(request):
-    form= PasswordChangeForm(request.user)
-    if request.method == 'POST':
-        form = PasswordChangeForm(user=request.user, data=request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request,"password changed successfully")
-            return redirect("signin")
-        else:
-            for error in form.errors.values():
-                messages.error(request,error)
-    return render(request, 'renew_password.html', {'form': form})
-
-
-
-'''
-===================================
-User Profile Views
-===================================
-'''
-@login_required(login_url='signin')
 def profile(request):
     user_profile,created= UserProfile.objects.get_or_create(user=request.user)
     form= profileForm(instance=user_profile)
@@ -68,6 +47,37 @@ def profile(request):
 Authentication Views
 ===================================
 '''
+def register(request):
+    if request.method == 'POST':
+        first_name=request.POST['first_name']
+        last_name=request.POST['last_name']
+        email=request.POST['email']
+        username=request.POST['username']
+        phone_number=request.POST['phone_number']
+        password=request.POST['password']
+        password1=request.POST['password1']
+
+        if password == password1:
+            if CustomUser.objects.filter(username=username).exists():
+                messages.error(request,"username alreadt exist")
+                return redirect("register")
+            if CustomUser.objects.filter(email=email).exists():
+                messages.error(request,"email alreadt exist")
+                return redirect("register")
+            try:
+                validate_password(password)
+                CustomUser.objects.create_user(first_name=first_name,last_name=last_name,email=email,username=username,phone_number=phone_number,password=password)
+                messages.success(request,"account created successafully")
+                return redirect("signin")
+            except ValidationError as e:
+                for i in e.messages:
+                    messages.error(request,i)
+                    return redirect("register")
+        else:
+            messages.error(request,"password doesnt match")
+            return redirect('register')
+    return render(request, 'register.html')
+    
 def signin(request):
     if request.method == 'POST':
         username=request.POST.get('username','')
@@ -104,36 +114,7 @@ def signout(request):
     messages.success(request,"logged out successfully")
     return redirect("signin")
 
-def register(request):
-    if request.method == 'POST':
-        first_name=request.POST['first_name']
-        last_name=request.POST['last_name']
-        email=request.POST['email']
-        username=request.POST['username']
-        phone_number=request.POST['phone_number']
-        password=request.POST['password']
-        password1=request.POST['password1']
 
-        if password == password1:
-            if CustomUser.objects.filter(username=username).exists():
-                messages.error(request,"username alreadt exist")
-                return redirect("register")
-            if CustomUser.objects.filter(email=email).exists():
-                messages.error(request,"email alreadt exist")
-                return redirect("register")
-            try:
-                validate_password(password)
-                CustomUser.objects.create_user(first_name=first_name,last_name=last_name,email=email,username=username,phone_number=phone_number,password=password)
-                messages.success(request,"account created successafully")
-                return redirect("signin")
-            except ValidationError as e:
-                for i in e.messages:
-                    messages.error(request,i)
-                    return redirect("register")
-        else:
-            messages.error(request,"password doesnt match")
-            return redirect('register')
-    return render(request, 'register.html')
 
 """
 ================
@@ -193,27 +174,58 @@ def cart_clear(request):
     return redirect("cart_detail")
 
 def generate_signature(data, secret):
-    # signed_field_names must be included in the payload
-    signed_fields = data["signed_field_names"].split(",")
-    # Create message string in exact order
-    message = ",".join([f"{field}={data[field]}" for field in signed_fields])
-    signature = hmac.new(
-    secret.encode("utf-8"),
-    message.encode("utf-8"),
-    hashlib.sha256
-    ).digest()
-    return base64.b64encode(signature).decode("utf-8")
+    """eSewa HMAC-SHA256 signature (base64) over the signed fields."""
+    fields = data["signed_field_names"].split(",")
+    message = ",".join(f"{field}={data[field]}" for field in fields)
+    digest = hmac.new(secret.encode("utf-8"), message.encode("utf-8"), hashlib.sha256).digest()
+    return base64.b64encode(digest).decode("utf-8")
+
+
+def _verify_esewa(data_b64, secret):
+    """Decode and verify the eSewa callback. Returns the payment dict or None."""
+    if not data_b64:
+        return None
+    try:
+        # eSewa sends base64 that may contain '+', which arrives as a space.
+        value = data_b64.replace(" ", "+").replace("-", "+").replace("_", "/")
+        decoded = json.loads(base64.b64decode(value + "=" * (-len(value) % 4)))
+    except Exception:
+        import logging
+        logging.getLogger("esewa").error("callback decode failed: %r", data_b64[:200])
+        return None
+
+    if decoded.get("status") != "COMPLETE":
+        import logging
+        logging.getLogger("esewa").warning("status=%r", decoded.get("status"))
+        return None
+
+    received = decoded.get("signature", "")
+    if not received:
+        import logging
+        logging.getLogger("esewa").warning("no signature in callback")
+        return None
+
+    fields = decoded.get("signed_field_names", "total_amount,transaction_uuid,product_code")
+    expected = generate_signature({**decoded, "signed_field_names": fields}, secret)
+    if not hmac.compare_digest(expected, received):
+        import logging
+        logging.getLogger("esewa").warning(
+            "signature mismatch: expected=%r received=%r", expected, received
+        )
+        return None
+    return decoded
+
 
 @login_required(login_url="signin")
 def cart_detail(request):
     cart_items = request.session.get(settings.CART_SESSION_ID, {}) or {}
     amount = 0
     for item in cart_items.values():
-        amount += item['quantity'] * float(item['price'])
-    amount = round(amount, 2)
-    tax_amount = round(amount * 0.13, 2)
-    total_amount = round(amount + tax_amount, 2)
-    secret_key = settings.ESEWA_SECRET_KEY
+        amount += int(item.get("quantity", 1)) * float(item.get("price", 0))
+    amount = f"{round(amount, 2):.2f}"
+    tax_amount = f"{round(float(amount) * 0.13, 2):.2f}"
+    total_amount = f"{round(float(amount) + float(tax_amount), 2):.2f}"
+
     data = {
         "amount": amount,
         "tax_amount": tax_amount,
@@ -224,71 +236,42 @@ def cart_detail(request):
         "product_delivery_charge": 0,
         "success_url": request.build_absolute_uri(reverse('esewa_success')),
         "failure_url": request.build_absolute_uri(reverse('esewa_failure')),
-        "signed_field_names": "total_amount,transaction_uuid,product_code"
+        "signed_field_names": "total_amount,transaction_uuid,product_code",
     }
-    data['signature'] = generate_signature(data, secret_key)
+    data['signature'] = generate_signature(data, settings.ESEWA_SECRET_KEY)
     return render(request, 'cart.html', data)
 
 
-def verify_esewa_signature(data_b64, secret):
-    """Verify the eSewa v2 payment response.
-
-    eSewa redirects to the success URL with a single ``data`` query param
-    (base64-encoded JSON). The JSON contains the transaction fields, a
-    ``signed_field_names`` list, and the ``signature`` to verify against.
-    """
-    import base64 as _b64
-    try:
-        decoded = json.loads(_b64.b64decode(data_b64).decode('utf-8'))
-    except (json.JSONDecodeError, ValueError, TypeError):
-        return None
-
-    if decoded.get('status') != 'COMPLETE':
-        return None
-
-    signed_fields = decoded.get('signed_field_names', '')
-    received_signature = decoded.get('signature', '')
-    if not signed_fields or not received_signature:
-        return None
-
-    message = ",".join([f"{field}={decoded.get(field, '')}" for field in signed_fields.split(",")])
-    expected = _b64.b64encode(hmac.new(
-        secret.encode('utf-8'),
-        message.encode('utf-8'),
-        hashlib.sha256
-    ).digest()).decode('utf-8')
-
-    if not hmac.compare_digest(expected, received_signature):
-        return None
-    return decoded
-
-
 def esewa_success(request):
-    data_b64 = request.GET.get('data', '')
-    payment = verify_esewa_signature(data_b64, settings.ESEWA_SECRET_KEY)
-
+    payment = _verify_esewa(request.GET.get("data", ""), settings.ESEWA_SECRET_KEY)
     if payment is None:
-        messages.error(request, "Could not verify the payment with eSewa. Please contact support.")
+        messages.error(request, "Could not verify the payment with eSewa.")
         return redirect('cart_detail')
-
-    cart_items = request.session.get(settings.CART_SESSION_ID, {}) or {}
-    if request.user.is_authenticated:
-        for course_id in cart_items.keys():
-            try:
-                course = Course.objects.get(id=course_id)
-                Purchase.objects.get_or_create(user=request.user, course=course)
-            except Course.DoesNotExist:
-                continue
-
-    request.session[settings.CART_SESSION_ID] = {}
-    request.session.modified = True
-    messages.success(request, "Payment successful! You are now enrolled in your courses.")
-    return redirect('home')
+    return _enroll_user(request)
 
 
 def esewa_failure(request):
+    payment = _verify_esewa(request.GET.get("data", ""), settings.ESEWA_SECRET_KEY)
+    if payment is not None:
+        return _enroll_user(request)
     messages.error(request, "Payment was unsuccessful or cancelled. Please try again.")
     return redirect('cart_detail')
+
+
+def _enroll_user(request):
+    cart_items = request.session.get(settings.CART_SESSION_ID, {}) or {}
+    if request.user.is_authenticated:
+        for course_id in cart_items:
+            try:
+                course = Course.objects.get(id=course_id)
+            except Course.DoesNotExist:
+                continue
+            Purchase.objects.get_or_create(user=request.user, course=course)
+
+    request.session[settings.CART_SESSION_ID] = {}
+    request.session.modified = True
+    messages.success(request, "Payment successful! Your courses are now in your profile.")
+    return redirect('home')
 
 
 from django.shortcuts import redirect, get_object_or_404
@@ -339,3 +322,17 @@ def favorites_list(request):
         'favorite_courses': favorite_courses
     }
     return render(request, 'profile.html', context)
+
+@login_required(login_url='signin')
+def renew_password(request):
+    form= PasswordChangeForm(request.user)
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,"password changed successfully")
+            return redirect("signin")
+        else:
+            for error in form.errors.values():
+                messages.error(request,error)
+    return render(request, 'renew_password.html', {'form': form})

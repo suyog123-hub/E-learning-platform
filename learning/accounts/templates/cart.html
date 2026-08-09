@@ -90,7 +90,7 @@
         <!-- Actions -->
         <div class="wi-actions">
           <div class="wi-price-block">
-            <span class="wi-price">{% if value.price %}${{ value.price }}{% elif value.mark_price %}{{ value.mark_price }}{% else %}Free{% endif %}</span>
+            <span class="wi-price">{% if value.price %}{{ value.price }}{% elif value.mark_price %}{{ value.mark_price }}{% else %}Free{% endif %}</span>
             <div class="wi-price-sub">
               {% if value.mark_price %}
               <span class="wi-orig">{{ value.mark_price }}</span>
@@ -154,7 +154,7 @@
 
         <div class="os-line">
           <span class="os-line-label"><i class="bi bi-bag-fill"></i> Subtotal</span>
-          <span class="os-line-val">${{ amount }}</span>
+          <span class="os-line-val">{{ amount }}</span>
         </div>
         <div class="os-line">
           <span class="os-line-label">
@@ -163,7 +163,7 @@
               <i class="bi bi-info-circle os-info-icon"></i>
             </span>
           </span>
-          <span class="os-line-val">${{ tax_amount }}</span>
+          <span class="os-line-val">{{ tax_amount }}</span>
         </div>
       </div>
       <div class="os-divider">
@@ -173,7 +173,7 @@
       </div>
       <div class="os-total-row">
         <span class="os-total-label">Total</span>
-        <span class="os-total-amt">${{ total_amount }}</span>
+        <span class="os-total-amt">{{ total_amount }}</span>
       </div>
             <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
         <input type="hidden" id="amount" name="amount" value="{{ amount }}" required>

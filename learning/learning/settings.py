@@ -12,9 +12,30 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import os
-from decouple import config 
+from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load .env into the environment explicitly. python-decouple's default search
+# only looks next to the settings module (learning/learning/), which has no
+# .env, so values from learning/.env would otherwise silently fall back to the
+# defaults (leaving keys/secret empty). Load them here so config() picks them up.
+def _load_env_file(path):
+    if not os.path.exists(path):
+        return
+    with open(path, encoding='utf-8') as _f:
+        for _line in _f:
+            _line = _line.strip()
+            if not _line or _line.startswith('#') or '=' not in _line:
+                continue
+            _key, _, _value = _line.partition('=')
+            _key = _key.strip()
+            _value = _value.strip()
+            if _key and _key not in os.environ:
+                os.environ[_key] = _value
+
+
+_load_env_file(os.path.join(BASE_DIR, '.env'))
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 # Quick-start development settings - unsuitable for production
@@ -50,7 +71,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'learning.middleware.SeparateAdminSessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -81,6 +102,11 @@ TEMPLATES = [
 
 CART_SESSION_ID = 'cart'
 
+# Public site uses its own session cookie (not the old shared 'sessionid') so
+# stale admin sessions that used to live in 'sessionid' no longer authenticate
+# the public site. Users will simply need to log in again once.
+SESSION_COOKIE_NAME = 'learnsite_sessionid'
+
 WSGI_APPLICATION = 'learning.wsgi.application'
 
 
@@ -99,7 +125,6 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 PASSWORD_HASHERS = [
-    # ✅ Argon2id - BEST for production
     'django.contrib.auth.hashers.Argon2PasswordHasher',
 
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',

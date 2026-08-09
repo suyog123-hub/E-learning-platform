@@ -10,12 +10,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from threading import Thread
 
-SORT_OPTIONS = {
-    'newest': '-upload_date',
-    'price_low': 'price',
-    'price_high': '-price',
-    'duration': 'total_duration',
-}
+
 
 def home(request):
     feature = Course.objects.filter(is_featuredCourse=True).select_related('category')
@@ -75,7 +70,7 @@ def courses(request):
 
     course_detail = course_detail.order_by(SORT_OPTIONS.get(sort, '-upload_date'))
 
-    paginator = Paginator(course_detail, 6)
+    paginator = Paginator(course_detail, 4)
     page = request.GET.get('page')
     course_data = paginator.get_page(page)
 
@@ -151,3 +146,11 @@ def contact(request):
         messages.success(request, f'Hi {name}, your form was submitted. Please check your email.')
     return render(request, 'contact.html')
 
+
+
+SORT_OPTIONS = {
+    'newest': '-upload_date',
+    'price_low': 'price',
+    'price_high': '-price',
+    'duration': 'total_duration',
+}

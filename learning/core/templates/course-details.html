@@ -89,7 +89,6 @@
             <li class="nav-item">
               <button class="nav-link" data-bs-toggle="tab" data-bs-target="#course-detailsreviews" type="button" role="tab">
                 <i class="bi bi-star me-2"></i>Reviews
-                <span class="tab-badge">{{ total_review }}</span>
               </button>
             </li>
           </ul>
@@ -308,14 +307,14 @@
           <div class="cd-price-section">
             <div class="cd-price-row">
               {% if course_detail.price %}
-              <span class="cd-current-price">${{ course_detail.price }}</span>
+              <span class="cd-current-price">{{ course_detail.price }}</span>
               {% elif course_detail.mark_price %}
-              <span class="cd-current-price">${{ course_detail.mark_price }}</span>
+              <span class="cd-current-price">{{ course_detail.mark_price }}</span>
               {% else %}
               <span class="cd-current-price">Free</span>
               {% endif %}
               {% if course_detail.mark_price and course_detail.price %}
-              <span class="cd-original-price">${{ course_detail.mark_price }}</span>
+              <span class="cd-original-price">{{ course_detail.mark_price }}</span>
               <span class="cd-discount-tag">{{ course_detail.discount_price }}% OFF</span>
               {% endif %}
             </div>
@@ -330,14 +329,6 @@
             <div class="cd-feature-item">
               <i class="bi bi-people-fill"></i>
               <span>3,892 students enrolled</span>
-            </div>
-            <div class="cd-feature-item">
-              <i class="bi bi-clock-fill"></i>
-              <span>{{ course_detail.total_duration }} on-demand video</span>
-            </div>
-            <div class="cd-feature-item">
-              <i class="bi bi-trophy-fill"></i>
-              <span>Certificate of completion</span>
             </div>
             <div class="cd-feature-item">
               <i class="bi bi-infinity"></i>
@@ -371,83 +362,6 @@
 
         </div><!-- End Enrollment Card -->
 
-        <!-- Course Details Card -->
-        <div class="cd-details-card" data-aos="fade-up" data-aos-delay="300">
-          <div class="cd-details-header">
-            <i class="bi bi-info-circle-fill me-2"></i>
-            <h4>Course Details</h4>
-          </div>
-          <div class="cd-details-list">
-            <div class="cd-detail-item">
-              <div class="cdi-icon cdi-blue"><i class="bi bi-clock"></i></div>
-              <div class="cdi-info">
-                <span class="cdi-label">Duration</span>
-                <span class="cdi-value">{{ course_detail.total_duration }}</span>
-              </div>
-            </div>
-            <div class="cd-detail-item">
-              <div class="cdi-icon cdi-orange"><i class="bi bi-translate"></i></div>
-              <div class="cdi-info">
-                <span class="cdi-label">Language</span>
-                <span class="cdi-value">English</span>
-              </div>
-            </div>
-            <div class="cd-detail-item">
-              <div class="cdi-icon cdi-purple"><i class="bi bi-patch-question"></i></div>
-              <div class="cdi-info">
-                <span class="cdi-label">Quizzes</span>
-                <span class="cdi-value">24</span>
-              </div>
-            </div>
-            <div class="cd-detail-item">
-              <div class="cdi-icon cdi-red"><i class="bi bi-file-earmark-text"></i></div>
-              <div class="cdi-info">
-                <span class="cdi-label">Assignments</span>
-                <span class="cdi-value">8 projects</span>
-              </div>
-            </div>
-            <div class="cd-detail-item">
-              <div class="cdi-icon cdi-teal"><i class="bi bi-calendar-check"></i></div>
-              <div class="cdi-info">
-                <span class="cdi-label">Last Updated</span>
-                <span class="cdi-value">{{ course_detail.updated_at|date:"M d, Y" }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Share Card -->
-        <div class="cd-share-card" data-aos="fade-up" data-aos-delay="400">
-          <div class="cd-details-header">
-            <i class="bi bi-share-fill me-2"></i>
-            <h4>Share This Course</h4>
-          </div>
-          <div class="cd-share-links">
-            <a href="#" class="cd-share-btn cd-share-fb">
-              <i class="bi bi-facebook"></i>
-              <span>Facebook</span>
-            </a>
-            <a href="#" class="cd-share-btn cd-share-tw">
-              <i class="bi bi-twitter"></i>
-              <span>Twitter</span>
-            </a>
-            <a href="#" class="cd-share-btn cd-share-li">
-              <i class="bi bi-linkedin"></i>
-              <span>LinkedIn</span>
-            </a>
-            <a href="#" class="cd-share-btn cd-share-em">
-              <i class="bi bi-envelope-fill"></i>
-              <span>Email</span>
-            </a>
-          </div>
-          <!-- Copy Link -->
-          <div class="cd-copy-link">
-            <input type="text" value="{{ request.build_absolute_uri }}" id="courseLink" readonly>
-            <button onclick="copyLink()" class="cd-copy-btn" id="copyBtn">
-              <i class="bi bi-clipboard"></i>
-            </button>
-          </div>
-        </div>
 
       </div><!-- end col-lg-4 -->
 
