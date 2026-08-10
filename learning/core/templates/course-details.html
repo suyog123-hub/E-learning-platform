@@ -3,25 +3,23 @@
 {% block content %}
 <main class="main">
 
-<!-- Course Details Section -->
 <section id="course-details" class="course-details section">
   <div class="container" data-aos="fade-up" data-aos-delay="100">
     <div class="row g-4">
 
-      <!-- ===== LEFT COLUMN ===== -->
+   
       <div class="col-lg-8">
 
-        <!-- Course Hero -->
         <div class="cd-hero" data-aos="fade-up" data-aos-delay="200">
 
-          <!-- Breadcrumb -->
+
           <div class="cd-breadcrumb">
             <a href="{% url 'courses' %}"><i class="bi bi-house me-1"></i>Courses</a>
             <i class="bi bi-chevron-right"></i>
             <span>{{ course_detail.course_title|truncatechars:40 }}</span>
           </div>
 
-          <!-- Badge Row -->
+ 
           <div class="cd-badge-row">
             <span class="cd-badge cd-badge-category">
               <i class="bi bi-grid me-1"></i>{{ course_detail.category }}
@@ -34,8 +32,6 @@
           <h1 class="cd-title">{{ course_detail.course_title }}</h1>
           <p class="cd-subtitle">{{ course_detail.desc }}</p>
 
-
-          <!-- Instructor Strip -->
           <div class="cd-instructor-strip">
             {% if course_detail.instructor_image %}
             <img src="{{ course_detail.instructor_image.url }}" alt="Instructor" class="cis-avatar">
@@ -143,32 +139,7 @@
             <div class="tab-pane fade" id="course-detailscurriculum" role="tabpanel">
 
               {% if is_purchased %}
-              <!-- Stats Bar -->
-              <div class="curriculum-stats-bar">
-                <div class="csb-item">
-                  <i class="bi bi-collection-play-fill"></i>
-                  <div>
-                    <strong>12</strong>
-                    <span>Sections</span>
-                  </div>
-                </div>
-                <div class="csb-divider"></div>
-                <div class="csb-item">
-                  <i class="bi bi-play-circle-fill"></i>
-                  <div>
-                    <strong>89</strong>
-                    <span>Lectures</span>
-                  </div>
-                </div>
-                <div class="csb-divider"></div>
-                <div class="csb-item">
-                  <i class="bi bi-clock-fill"></i>
-                  <div>
-                    <strong>45h 32m</strong>
-                    <span>Total Length</span>
-                  </div>
-                </div>
-              </div>
+            
 
               <ul class="cd-lesson-list">
                 {% for lesson in course_detail.curriculums.all %}
@@ -177,9 +148,6 @@
                   <div class="cdli-left">
                     <div class="cdli-icon"><i class="bi bi-play-circle-fill"></i></div>
                     <span>{{ lesson.title|default:"Lecture" }}</span>
-                  </div>
-                  <div class="cdli-right">
-                    <span class="cdli-free">{{ course_detail.curriculums.count }} Videos</span>
                   </div>
                 </li>
                 <li class="cd-lesson-video-wrap">
@@ -328,7 +296,7 @@
           <div class="cd-course-features">
             <div class="cd-feature-item">
               <i class="bi bi-people-fill"></i>
-              <span>3,892 students enrolled</span>
+              <span>50+ students enrolled</span>
             </div>
             <div class="cd-feature-item">
               <i class="bi bi-infinity"></i>

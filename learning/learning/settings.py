@@ -16,10 +16,6 @@ from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load .env into the environment explicitly. python-decouple's default search
-# only looks next to the settings module (learning/learning/), which has no
-# .env, so values from learning/.env would otherwise silently fall back to the
-# defaults (leaving keys/secret empty). Load them here so config() picks them up.
 def _load_env_file(path):
     if not os.path.exists(path):
         return
