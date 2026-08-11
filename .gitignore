@@ -1,0 +1,6 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+
+# media uploads (too large for GitHub)
+learning/media/
