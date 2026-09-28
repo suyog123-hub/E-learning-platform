@@ -47,8 +47,7 @@ class Course(models.Model):
     def name(self):
         return self.course_title  # cart needs .name
 
-    def __str__(self):
-        return self.course_title
+
     def save(self,*args, **kwargs):
         if self.mark_price is not None:
             discount = self.discount_price if self.discount_price is not None else 0
