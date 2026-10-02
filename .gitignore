@@ -4,3 +4,6 @@ __pycache__/
 
 # media uploads (too large for GitHub)
 learning/media/
+# Render / Django build output
+learning/staticfiles/
+staticfiles/
