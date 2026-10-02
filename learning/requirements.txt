@@ -9,3 +9,6 @@ django-allauth==65.14.0
 whitenoise==6.8.2
 asgiref==3.11.1
 sqlparse==0.5.5
+gunicorn==23.0.0
+dj-database-url==2.1.0
+psycopg2-binary==2.9.10
