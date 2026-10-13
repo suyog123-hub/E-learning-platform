@@ -61,4 +61,3 @@ python manage.py migrate
 # 7. Create superuser (admin account)
 python manage.py createsuperuser
 
-python manage.py runserver
